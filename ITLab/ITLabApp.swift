@@ -11,7 +11,7 @@ import SwiftUI
 struct ITLabApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AuthorizeView()
         }
     }
 }

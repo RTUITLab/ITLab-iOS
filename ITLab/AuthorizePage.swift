@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  AuthorizePage.swift
 //  ITLab
 //
 //  Created by Михаил Иванов on 21.09.2020.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct AuthorizeView: View {
     
     @State var email = ""
     @State var password = ""
@@ -27,7 +27,11 @@ struct ContentView: View {
             VStack{
                 HStack{
                     Image(systemName: "mail")
-                    TextField("Логин", text: $email)
+                    TextField("Электронная почта", text: $email)
+                        .keyboardType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/)
+                        .textContentType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                    
                 }
                 
                 Divider().padding(1)
@@ -35,6 +39,8 @@ struct ContentView: View {
                 HStack{
                     Spacer(minLength: 27)
                     SecureField("Пароль", text: $password)
+                        .textContentType(/*@START_MENU_TOKEN@*/.password/*@END_MENU_TOKEN@*/)
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                 }
                 
                 Toggle("Запомнить пароль", isOn: $saveEmail)
@@ -46,7 +52,7 @@ struct ContentView: View {
             .padding(.vertical, 20)
             
             Button(action: {
-                self.test()
+                print(email + " " + password + " \(saveEmail)")
             }) {
                 Text("Войти")
                     .font(.title2)
@@ -59,14 +65,14 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews_XIProMax: PreviewProvider {
+struct AuthorizeView_Previews_XIProMax: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        AuthorizeView()
             .previewDisplayName("Dark")
             .preferredColorScheme(.dark)
             .previewDevice(/*@START_MENU_TOKEN@*/"iPhone 11 Pro Max"/*@END_MENU_TOKEN@*/)
         
-        ContentView()
+        AuthorizeView()
             .previewDisplayName("Light")
             .preferredColorScheme(.light)
             .previewDevice(/*@START_MENU_TOKEN@*/"iPhone 11 Pro Max"/*@END_MENU_TOKEN@*/)
@@ -74,14 +80,14 @@ struct ContentView_Previews_XIProMax: PreviewProvider {
     }
 }
 
-struct ContentView_Previews_VIIPlus: PreviewProvider {
+struct AuthorizeView_Previews_VIIPlus: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        AuthorizeView()
             .previewDisplayName("Dark")
             .preferredColorScheme(.dark)
             .previewDevice(/*@START_MENU_TOKEN@*/"iPhone 8 Plus"/*@END_MENU_TOKEN@*/)
         
-        ContentView()
+        AuthorizeView()
             .previewDisplayName("Light")
             .preferredColorScheme(.light)
             .previewDevice(/*@START_MENU_TOKEN@*/"iPhone 8 Plus"/*@END_MENU_TOKEN@*/)

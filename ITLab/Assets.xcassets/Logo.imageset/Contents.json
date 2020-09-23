@@ -2,7 +2,7 @@
   "images" : [
     {
       "filename" : "black_2000_png.png",
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
@@ -13,11 +13,11 @@
         }
       ],
       "filename" : "white_2000_png.png",
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "2x"
     },
     {
@@ -27,11 +27,11 @@
           "value" : "dark"
         }
       ],
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "2x"
     },
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "3x"
     },
     {
@@ -41,12 +41,15 @@
           "value" : "dark"
         }
       ],
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "3x"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }
