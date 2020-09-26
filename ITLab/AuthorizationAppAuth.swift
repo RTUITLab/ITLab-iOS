@@ -23,6 +23,12 @@ class AutorizationAppAuth: NSObject {
    
     private var authState: OIDAuthState?
     
+    public var delegate: AppDelegate
+    
+    init(delegate: AppDelegate) {
+        self.delegate = delegate;
+    }
+    
     func doClientRegistration(configuration: OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) {
         guard let redirectURL = URL(string: AppAuthConfiguration.kRedirectURI) else {
             print("Error creating URL for : \(AppAuthConfiguration.kRedirectURI)")
@@ -62,10 +68,6 @@ class AutorizationAppAuth: NSObject {
             return
         }
         
-        guard var itLabApp = UIApplication.shared.delegate as? ITLabApp else {
-            print("Error accessing AppDelegate")
-            return
-        }
         
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
@@ -77,7 +79,7 @@ class AutorizationAppAuth: NSObject {
         
         print("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
         
-        itLabApp.currentAuthoriationFlow = OIDAuthState.authState(byPresenting: request, presenting: view) { authState, error in
+        self.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: view) { authState, error in
             
             if let authState = authState {
                 self.setAuthState(authState)

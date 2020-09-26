@@ -6,22 +6,17 @@
 //
 
 import SwiftUI
-import AppAuth
+//import AppAuth
 
 @main
 struct ITLabApp: App {
     
-    var currentAuthoriationFlow : OIDExternalUserAgentSession?
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {
-            AuthorizeView(app: self)
+            AuthorizeView(delegate: self.delegate)
         }
        
-    }
-    
-    init() {
-        currentAuthoriationFlow = nil
-        print("Hello")
     }
 }

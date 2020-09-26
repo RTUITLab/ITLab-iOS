@@ -10,12 +10,15 @@ import SwiftUI
 
 struct AuthorizeView: View {
     
-    init()
+    @State var delegate: AppDelegate?
+
+    init(delegate: AppDelegate)
     {
-        print("Hello AuthorizeView")
-        
-        let test : UIViewController = UIHostingController(rootView: self)
-        
+        self.delegate = delegate;
+    }
+    
+    init() {
+        delegate = nil
     }
     
     var body: some View {
