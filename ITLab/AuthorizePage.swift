@@ -7,14 +7,20 @@
 
 import SwiftUI
 
+
 struct AuthorizeView: View {
     
-    @State var email = ""
-    @State var password = ""
-    @State var saveEmail = false
+    init()
+    {
+        print("Hello AuthorizeView")
+        
+        let test : UIViewController = UIHostingController(rootView: self)
+        
+    }
     
     var body: some View {
-        VStack (spacing: 15){
+        VStack (spacing: 30){
+            Spacer()
             VStack {
                 Image("Logo")
                     .resizable()
@@ -24,44 +30,17 @@ struct AuthorizeView: View {
                     .bold()
             }
             
-            VStack{
-                HStack{
-                    Image(systemName: "mail")
-                    TextField("Электронная почта", text: $email)
-                        .keyboardType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/)
-                        .textContentType(/*@START_MENU_TOKEN@*/.emailAddress/*@END_MENU_TOKEN@*/)
-                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
-                    
-                }
-                
-                Divider().padding(1)
-                
-                HStack{
-                    Spacer(minLength: 27)
-                    SecureField("Пароль", text: $password)
-                        .textContentType(/*@START_MENU_TOKEN@*/.password/*@END_MENU_TOKEN@*/)
-                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
-                }
-                
-                Toggle("Запомнить пароль", isOn: $saveEmail)
-                    .padding(.vertical)
-//                    .padding(.horizontal, 20)
-            }
-            .padding()
-            .padding(.horizontal, 30)
-            .padding(.vertical, 20)
+            Spacer()
             
             Button(action: {
-                print(email + " " + password + " \(saveEmail)")
+                //
             }) {
                 Text("Войти")
-                    .font(.title2)
+                    .font(.title)
             }
+            
+            Spacer()
         }
-    }
-    
-    func test() -> Void {
-        print("Hello")
     }
 }
 

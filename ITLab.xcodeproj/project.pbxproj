@@ -13,6 +13,7 @@
 		6D9A0C672518EBAA007796CD /* AuthorizePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9A0C662518EBAA007796CD /* AuthorizePage.swift */; };
 		6D9A0C692518EBB2007796CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9A0C682518EBB2007796CD /* Assets.xcassets */; };
 		6D9A0C6C2518EBB2007796CD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9A0C6B2518EBB2007796CD /* Preview Assets.xcassets */; };
+		6DF4635D251E9AA5007149F6 /* AuthorizationAppAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF4635C251E9AA5007149F6 /* AuthorizationAppAuth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		6D9A0C682518EBB2007796CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D9A0C6B2518EBB2007796CD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6D9A0C6D2518EBB2007796CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DF4635C251E9AA5007149F6 /* AuthorizationAppAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationAppAuth.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				6D9A0C642518EBAA007796CD /* ITLabApp.swift */,
 				6D9A0C662518EBAA007796CD /* AuthorizePage.swift */,
+				6DF4635C251E9AA5007149F6 /* AuthorizationAppAuth.swift */,
 				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
 				6D9A0C6D2518EBB2007796CD /* Info.plist */,
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D9A0C672518EBAA007796CD /* AuthorizePage.swift in Sources */,
+				6DF4635D251E9AA5007149F6 /* AuthorizationAppAuth.swift in Sources */,
 				6D9A0C652518EBAA007796CD /* ITLabApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
