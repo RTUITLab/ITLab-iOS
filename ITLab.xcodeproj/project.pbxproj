@@ -63,10 +63,10 @@
 				6D9A0C642518EBAA007796CD /* ITLabApp.swift */,
 				6D9A0C662518EBAA007796CD /* AuthorizePage.swift */,
 				6DF4635C251E9AA5007149F6 /* AuthorizationAppAuth.swift */,
+				6DF46360251EC364007149F6 /* AppDelegate.swift */,
 				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
 				6D9A0C6D2518EBB2007796CD /* Info.plist */,
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
-				6DF46360251EC364007149F6 /* AppDelegate.swift */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";

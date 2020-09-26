@@ -12,9 +12,9 @@ import AppAuth
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
 struct AppAuthConfiguration {
-    static let kIssuer: String = "https://issuer.example.com"
-    static let kClientID: String? = "YOUR_CLIENT_ID"
-    static let kRedirectURI: String = "com.example.app:/oauth2redirect/example-provider"
+    static let kIssuer: String = "https://demo.identityserver.io"
+    static let kClientID: String? = "interactive.public"
+    static let kRedirectURI: String = "ru.RTUITLab.ITLab:/oauth2redirect/example-provider"
     static let kAppAuthAuthStateKey: String = "authState"
 }
 
@@ -22,6 +22,8 @@ struct AppAuthConfiguration {
 class AutorizationAppAuth: NSObject {
    
     private var authState: OIDAuthState?
+    
+    private var viewController : UIViewController?
     
     public var delegate: AppDelegate
     
@@ -63,6 +65,8 @@ class AutorizationAppAuth: NSObject {
     
     func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?, view: UIViewController)
     {
+        self.viewController = view
+        
         guard let redirectURL = URL(string: AppAuthConfiguration.kRedirectURI) else {
             print("Error creating URL for : \(AppAuthConfiguration.kRedirectURI)")
             return
@@ -79,7 +83,7 @@ class AutorizationAppAuth: NSObject {
         
         print("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
         
-        self.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: view) { authState, error in
+        self.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController!) { authState, error in
             
             if let authState = authState {
                 self.setAuthState(authState)
@@ -143,7 +147,7 @@ extension AutorizationAppAuth {
         }
     }
     
-    func setAuthState(_ authState: OIDAuthState?)
+    public func setAuthState(_ authState: OIDAuthState?)
     {
         if (self.authState == authState) { return }
         
