@@ -38,59 +38,13 @@ struct AuthorizeView: View {
             Spacer()
             
             Button(action: {
-                authWithAutoCodeExchange()
+                
             }) {
                 Text("Войти")
                     .font(.title)
             }
             
             Spacer()
-        }
-    }
-    
-    func authWithAutoCodeExchange()
-    {
-        if(self.delegate == nil)
-        {
-            print("AppDelegate needs to be initialized")
-            return
-            
-        }
-        
-        let authorize = AutorizationAppAuth(delegate: self.delegate!)
-        
-        guard let issuer = URL(string: AppAuthConfiguration.kIssuer) else {
-            print("Error creating URL for : \(AppAuthConfiguration.kIssuer)")
-            return
-        }
-        
-        print("Fetching configuration for issuer: \(issuer)")
-        
-        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
-            
-            guard let config = configuration
-            else {
-                print("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                authorize.setAuthState(nil)
-                return
-            }
-            
-            print("Got configuration: \(config)")
-            
-            if let clientId = AppAuthConfiguration.kClientID {
-                authorize.doAuthWithAutoCodeExchange(configuration: config, clientID: clientId, clientSecret: nil, view: UIHostingController(rootView: self)) }
-            else {
-                authorize.doClientRegistration(configuration: config) {
-                    configuration, response in
-                    guard let configuration = configuration, let clientID = response?.clientID
-                    else {
-                        print("Error retrieving configuration OR clientID")
-                        return
-                    }
-                    
-                    authorize.doAuthWithAutoCodeExchange(configuration: configuration, clientID: clientID, clientSecret: response?.clientSecret, view: UIHostingController(rootView: self))
-                }
-            }
         }
     }
     

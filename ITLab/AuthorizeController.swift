@@ -8,6 +8,15 @@
 import UIKit
 import AppAuth
 
+typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
+
+struct AppAuthConfiguration {
+    static let kIssuer: String = "https://demo.identityserver.io"
+    static let kClientID: String? = "interactive.public"
+    static let kRedirectURI: String = "ru.RTUITLab.ITLab:/oauth2redirect/example-provider"
+    static let kAppAuthAuthStateKey: String = "authState"
+}
+
 class AuthorizeController : UIViewController {
     
     @IBOutlet private weak var ClickButton: UIButton!
@@ -16,9 +25,13 @@ class AuthorizeController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.loadState()
+        self.stateChanged()
+        
+        
     }
-    
-    
+
 }
 
 extension AuthorizeController {
@@ -161,6 +174,7 @@ extension AuthorizeController {
         
         if let userDefaults = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab") {
             userDefaults.set(data, forKey: AppAuthConfiguration.kAppAuthAuthStateKey)
+//            print(data)
             userDefaults.synchronize()
         }
     }
@@ -172,13 +186,8 @@ extension AuthorizeController {
             return
         }
         
-        do {
-            let authState = try NSKeyedUnarchiver.unarchivedObject(ofClass: OIDAuthState.self, from: data)
-            
+        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
             self.setAuthState(authState)
-            
-        } catch (_) {
-            print("Try catch unarchivedObject")
         }
     }
 
