@@ -102,11 +102,6 @@ extension AuthorizeController {
             self.logMessage("Error creating URL for : \(AppAuthConfiguration.kRedirectURI)")
             return
         }
-        
-        guard let appDelegate = ITLabApp.delegate as? AppDelegate else {
-            self.logMessage("Error accessing AppDelegate")
-            return
-        }
 
         // builds authentication request
         let request = OIDAuthorizationRequest(configuration: configuration,
@@ -122,7 +117,7 @@ extension AuthorizeController {
         
         self.logMessage("\(self)")
 
-        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
+        ITLabApp.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
             
             
 

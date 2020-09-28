@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DOR-La-Ebt">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -16,10 +16,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mdd-WW-nlO">
-                                <rect key="frame" x="169.5" y="422.5" width="75" height="51"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RTU IT Lab" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="KPb-HA-QkP">
+                                <rect key="frame" x="80" y="371" width="255" height="39"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
-                                <state key="normal" title="Click"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" image="Logo" highlightedImage="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="P9m-c5-4LZ">
+                                <rect key="frame" x="47" y="31" width="321" height="332"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mdd-WW-nlO">
+                                <rect key="frame" x="89" y="710" width="237" height="48"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="30"/>
+                                <state key="normal" title="Войти"/>
                                 <connections>
                                     <action selector="authWithAutoCodeExchange:" destination="DOR-La-Ebt" eventType="touchUpInside" id="t1a-T9-gZ7"/>
                                 </connections>
@@ -28,8 +37,17 @@
                         <viewLayoutGuide key="safeArea" id="IRt-EH-QO5"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Mdd-WW-nlO" firstAttribute="centerY" secondItem="eRQ-ms-oYK" secondAttribute="centerY" id="Fmk-ZU-xu5"/>
-                            <constraint firstItem="Mdd-WW-nlO" firstAttribute="centerX" secondItem="eRQ-ms-oYK" secondAttribute="centerX" id="Q6A-dW-Y9a"/>
+                            <constraint firstItem="KPb-HA-QkP" firstAttribute="centerY" secondItem="eRQ-ms-oYK" secondAttribute="centerY" constant="-57.5" id="4jU-X3-dDt"/>
+                            <constraint firstItem="IRt-EH-QO5" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="P9m-c5-4LZ" secondAttribute="trailing" constant="46" id="CLa-dy-9tp"/>
+                            <constraint firstItem="P9m-c5-4LZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IRt-EH-QO5" secondAttribute="leading" constant="47" id="Nr6-ub-ek4"/>
+                            <constraint firstItem="IRt-EH-QO5" firstAttribute="trailing" secondItem="Mdd-WW-nlO" secondAttribute="trailing" constant="88" id="Tut-fo-IJY"/>
+                            <constraint firstItem="KPb-HA-QkP" firstAttribute="centerX" secondItem="P9m-c5-4LZ" secondAttribute="centerX" id="WAV-3e-7Nd"/>
+                            <constraint firstItem="Mdd-WW-nlO" firstAttribute="leading" secondItem="IRt-EH-QO5" secondAttribute="leading" constant="89" id="WrA-J8-efK"/>
+                            <constraint firstItem="IRt-EH-QO5" firstAttribute="bottom" secondItem="Mdd-WW-nlO" secondAttribute="bottom" constant="104" id="b34-yt-9Tt"/>
+                            <constraint firstItem="P9m-c5-4LZ" firstAttribute="top" secondItem="eRQ-ms-oYK" secondAttribute="firstBaseline" constant="31" id="f7g-4c-NwR"/>
+                            <constraint firstItem="KPb-HA-QkP" firstAttribute="top" secondItem="P9m-c5-4LZ" secondAttribute="bottom" constant="8" id="gng-8n-3VM"/>
+                            <constraint firstItem="KPb-HA-QkP" firstAttribute="centerX" secondItem="Mdd-WW-nlO" secondAttribute="centerX" id="r9k-oX-9Gz"/>
+                            <constraint firstItem="KPb-HA-QkP" firstAttribute="leading" secondItem="IRt-EH-QO5" secondAttribute="leading" constant="80" id="sZK-4W-JJg"/>
                         </constraints>
                     </view>
                     <connections>
@@ -38,10 +56,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TsH-Kx-t80" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="79"/>
+            <point key="canvasLocation" x="135" y="76.25"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Logo" width="1403" height="1205"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
