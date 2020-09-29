@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import AppAuth
 
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
@@ -137,6 +138,14 @@ extension AuthorizeController {
             if let authState = authState {
                 self.setAuthState(authState)
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
+                
+                let menuView = MainMenu(authState: authState)
+                
+                let controller = UIHostingController(rootView: menuView)
+                controller.modalPresentationStyle = .fullScreen
+                
+                self.present(controller, animated: true, completion: nil)
+                
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 self.setAuthState(nil)
