@@ -27,6 +27,7 @@ struct AuthorizeControllerUI : UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<AuthorizeControllerUI>) -> some UIViewController {
         let storyboard = UIStoryboard(name: "AuthorizeBoard", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(identifier: "Auth")
+        
         return controller
     }
     

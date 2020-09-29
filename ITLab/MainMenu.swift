@@ -10,21 +10,37 @@ import AppAuth
 
 struct MainMenu: View {
     
-    let authState : OIDAuthState?
+    @State var authState : OIDAuthState? = AppAuthInteraction.getAuthState()
     
     init()
     {
-        self.authState = nil
+        self.authState = AppAuthInteraction.getAuthState()
     }
     
-    init(authState: OIDAuthState) {
-        self.authState = authState
-    }
     
     var body: some View {
-        Text(authState?.lastTokenResponse?.accessToken ?? "kek")
+        VStack{
+            Text(authState?.lastTokenResponse?.accessToken ?? "Token")
+                .font(.body)
+            
+            
+            Text(authState?.isAuthorized ?? false ? "Authorized" : "Not authorize")
+                .font(.title)
+                .bold()
+            
+            Button(action: {
+                let appAuthInteractive = AppAuthInteraction()
+                appAuthInteractive.clearAuthState()
+                
+                self.authState = AppAuthInteraction.getAuthState()
+            })
+            {
+                Text("Clear token")
+            }
+        }
     }
 }
+
 
 struct MainMenu_Previews: PreviewProvider {
     static var previews: some View {

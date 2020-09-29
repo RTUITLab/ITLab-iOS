@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6D18429C252347D100B95EBB /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18429B252347D100B95EBB /* MainMenu.swift */; };
+		6D1842A02523588F00B95EBB /* AppAuthInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */; };
 		6D5141692522479800EFB01C /* AuthorizeBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */; };
 		6D51416C2522484B00EFB01C /* AuthorizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D51416B2522484B00EFB01C /* AuthorizeController.swift */; };
 		6D916172251BB0A20065B328 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6D916171251BB0A20065B328 /* AppAuth */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		6D18429B252347D100B95EBB /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthInteraction.swift; sourceTree = "<group>"; };
 		6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthorizeBoard.storyboard; sourceTree = "<group>"; };
 		6D51416B2522484B00EFB01C /* AuthorizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeController.swift; sourceTree = "<group>"; };
 		6D9A0C612518EBAA007796CD /* ITLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +80,7 @@
 				6D9A0C6D2518EBB2007796CD /* Info.plist */,
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
 				6D18429B252347D100B95EBB /* MainMenu.swift */,
+				6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
@@ -167,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D1842A02523588F00B95EBB /* AppAuthInteraction.swift in Sources */,
 				6DF46361251EC364007149F6 /* AppDelegate.swift in Sources */,
 				6D51416C2522484B00EFB01C /* AuthorizeController.swift in Sources */,
 				6D9A0C652518EBAA007796CD /* ITLabApp.swift in Sources */,
