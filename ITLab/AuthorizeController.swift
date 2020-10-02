@@ -30,7 +30,7 @@ class AuthorizeController : UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        let menuView = MainMenu()
+        let menuView = MainMenu(self)
         
         self.appAuthInteraction = AppAuthInteraction(view: self, newView: UIHostingController(rootView: menuView), openNewView: true)
         

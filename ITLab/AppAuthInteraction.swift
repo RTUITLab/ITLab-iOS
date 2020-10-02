@@ -100,6 +100,37 @@ extension AppAuthInteraction {
 
 //MARK: AppAuth Methods
 extension AppAuthInteraction {
+    
+    func endSession(configuration: OIDServiceConfiguration, viewController: UIViewController)
+    {
+        guard let redirectURI = URL(string: AppAuthConfiguration.kRedirectURI) else {
+            self.logMessage("Error creating URL for : \(AppAuthConfiguration.kRedirectURI)")
+            return
+        }
+        
+        
+        
+        let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: AppAuthInteraction.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
+        
+        let agent = OIDExternalUserAgentIOS(presenting: viewController)
+        
+        OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: {
+            (response, error) in
+                if let respon = response
+                           {
+                               print(respon)
+                           }
+
+                           if let err = error
+                           {
+                               print(err)
+                           }
+            
+            viewController.dismiss(animated: true, completion: nil)
+        })
+        
+        
+    }
 
     func doClientRegistration(configuration: OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) {
 
@@ -107,7 +138,6 @@ extension AppAuthInteraction {
             self.logMessage("Error creating URL for : \(AppAuthConfiguration.kRedirectURI)")
             return
         }
-
         let request: OIDRegistrationRequest = OIDRegistrationRequest(configuration: configuration,
                                                                      redirectURIs: [redirectURI],
                                                                      responseTypes: nil,
@@ -150,8 +180,6 @@ extension AppAuthInteraction {
 
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
-        
-        self.logMessage("\(self)")
 
         ITLabApp.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.viewController) { authState, error in
             
@@ -216,8 +244,29 @@ extension AppAuthInteraction {
         }
     }
     
-    func clearAuthState()
+    func clearAuthState(_ viewController: UIViewController)
     {
+        guard let issuer = URL(string: AppAuthConfiguration.kIssuer) else {
+            self.logMessage("Error creating URL for : \(AppAuthConfiguration.kIssuer)")
+            return
+        }
+
+        self.logMessage("Fetching configuration for issuer: \(issuer)")
+
+        // discovers endpoints
+        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
+
+            guard let config = configuration else {
+                self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.setAuthState(nil)
+                return
+            }
+
+            self.logMessage("Got configuration: \(config)")
+            
+            self.endSession(configuration: config, viewController: viewController)
+        }
+        
         AppAuthInteraction.authState = nil
         stateChanged()
     }
@@ -249,5 +298,6 @@ extension AppAuthInteraction {
         newViewController.modalPresentationStyle = .fullScreen
         
         viewController.present(newViewController, animated: false, completion: nil)
+        
     }
 }

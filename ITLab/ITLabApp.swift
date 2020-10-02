@@ -13,11 +13,11 @@ struct ITLabApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) static public var delegate
     
+    
     var body: some Scene {
         WindowGroup {
             AuthorizeControllerUI()
         }
-       
     }
 }
 

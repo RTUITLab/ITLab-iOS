@@ -10,35 +10,40 @@ import AppAuth
 
 struct MainMenu: View {
     
-    @State var authState : OIDAuthState? = AppAuthInteraction.getAuthState()
+    let authorizeController: UIViewController?
     
     init()
     {
-        self.authState = AppAuthInteraction.getAuthState()
+        self.authorizeController = nil
     }
     
+    init(_ viewController: UIViewController)
+    {
+        self.authorizeController = viewController
+    }
     
     var body: some View {
         VStack{
-            Text(authState?.lastTokenResponse?.accessToken ?? "Token")
+            Text(AppAuthInteraction.getAuthState()?.lastTokenResponse?.accessToken ?? "Token")
                 .font(.body)
             
             
-            Text(authState?.isAuthorized ?? false ? "Authorized" : "Not authorize")
+            Text(AppAuthInteraction.getAuthState()?.isAuthorized ?? false ? "Authorized" : "Not authorize")
                 .font(.title)
                 .bold()
             
             Button(action: {
                 let appAuthInteractive = AppAuthInteraction()
-                appAuthInteractive.clearAuthState()
+                appAuthInteractive.clearAuthState(self.authorizeController!)
                 
-                self.authState = AppAuthInteraction.getAuthState()
+                
             })
             {
                 Text("Clear token")
             }
         }
     }
+    
 }
 
 
