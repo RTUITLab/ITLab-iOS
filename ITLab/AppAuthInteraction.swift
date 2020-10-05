@@ -18,17 +18,12 @@ struct AppAuthConfiguration {
 }
 
 class AppAuthInteraction: NSObject {
-    static private var authState: OIDAuthState?
+    private var authState: OIDAuthState?
     
-    private var viewController : UIViewController
-    private var newViewController : UIViewController
+    private var viewController : AuthorizeController
     
-    private var openNewView: Bool = false
-    
-    override init()
-    {
-        self.viewController = UIViewController()
-        self.newViewController = UIViewController()
+    init(view: AuthorizeController) {
+        self.viewController = view
         
         super.init()
         
@@ -36,20 +31,7 @@ class AppAuthInteraction: NSObject {
         self.stateChanged()
     }
     
-    convenience init(view: UIViewController) {
-        self.init()
-        
-        self.viewController = view
-    }
-    
-    convenience init(view: UIViewController, newView: UIViewController, openNewView: Bool) {
-        self.init(view: view)
-        
-        self.newViewController = newView
-        self.openNewView = openNewView
-    }
-    
-    static public func getAuthState() -> OIDAuthState?
+    public func getAuthState() -> OIDAuthState?
     {
         return self.authState
     }
@@ -96,12 +78,39 @@ extension AppAuthInteraction {
             }
         }
     }
+    
+   public func logOut()
+    {
+        guard let issuer = URL(string: AppAuthConfiguration.kIssuer) else {
+            self.logMessage("Error creating URL for : \(AppAuthConfiguration.kIssuer)")
+            return
+        }
+
+        self.logMessage("Fetching configuration for issuer: \(issuer)")
+
+        // discovers endpoints
+        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
+
+            guard let config = configuration else {
+                self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.setAuthState(nil)
+                return
+            }
+
+            self.logMessage("Got configuration: \(config)")
+            
+            self.endSession(configuration: config)
+        }
+        
+        self.authState = nil
+        stateChanged()
+    }
 }
 
 //MARK: AppAuth Methods
 extension AppAuthInteraction {
     
-    func endSession(configuration: OIDServiceConfiguration, viewController: UIViewController)
+    func endSession(configuration: OIDServiceConfiguration)
     {
         guard let redirectURI = URL(string: AppAuthConfiguration.kRedirectURI) else {
             self.logMessage("Error creating URL for : \(AppAuthConfiguration.kRedirectURI)")
@@ -110,7 +119,7 @@ extension AppAuthInteraction {
         
         
         
-        let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: AppAuthInteraction.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
+        let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: self.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
         
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
         
@@ -125,10 +134,7 @@ extension AppAuthInteraction {
                            {
                                print(err)
                            }
-            
-            viewController.dismiss(animated: true, completion: nil)
         })
-        
         
     }
 
@@ -177,22 +183,20 @@ extension AppAuthInteraction {
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
                                               additionalParameters: nil)
-
+        
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
-
+        
         ITLabApp.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.viewController) { authState, error in
             
             
-
+            
             if let authState = authState {
                 self.setAuthState(authState)
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
                 
-                if (self.openNewView)
-                {
-                    self.self.openMenu()
-                }
+                self.viewController.logIn()
+                
                 
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
@@ -221,7 +225,7 @@ extension AppAuthInteraction {
 
         var data : Data? = nil
         
-        if let authState = AppAuthInteraction.authState {
+        if let authState = self.authState {
             data = NSKeyedArchiver.archivedData(withRootObject: authState)
         }
         
@@ -243,40 +247,13 @@ extension AppAuthInteraction {
             self.setAuthState(authState)
         }
     }
-    
-    func clearAuthState(_ viewController: UIViewController)
-    {
-        guard let issuer = URL(string: AppAuthConfiguration.kIssuer) else {
-            self.logMessage("Error creating URL for : \(AppAuthConfiguration.kIssuer)")
-            return
-        }
-
-        self.logMessage("Fetching configuration for issuer: \(issuer)")
-
-        // discovers endpoints
-        OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
-
-            guard let config = configuration else {
-                self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.setAuthState(nil)
-                return
-            }
-
-            self.logMessage("Got configuration: \(config)")
-            
-            self.endSession(configuration: config, viewController: viewController)
-        }
-        
-        AppAuthInteraction.authState = nil
-        stateChanged()
-    }
 
     func setAuthState(_ authState: OIDAuthState?) {
-        if (AppAuthInteraction.authState == authState) {
+        if (self.authState == authState) {
             return;
         }
-        AppAuthInteraction.authState = authState;
-        AppAuthInteraction.authState?.stateChangeDelegate = self;
+        self.authState = authState;
+        self.authState?.stateChangeDelegate = self;
         self.stateChanged()
     }
 
@@ -291,13 +268,5 @@ extension AppAuthInteraction {
         }
 
         print(message);
-    }
-    
-    public func openMenu()
-    {
-        newViewController.modalPresentationStyle = .fullScreen
-        
-        viewController.present(newViewController, animated: false, completion: nil)
-        
     }
 }

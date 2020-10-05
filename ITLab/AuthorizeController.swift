@@ -9,35 +9,36 @@ import UIKit
 import SwiftUI
 import AppAuth
 
-
-
 class AuthorizeController : UIViewController {
     
     @IBOutlet private weak var ClickButton: UIButton!
-
     
     private var appAuthInteraction : AppAuthInteraction?
-
+    
+    public func getAccsesToken() -> String{
+        return self.appAuthInteraction?.getAuthState()?.lastTokenResponse?.accessToken ?? ""
+    }
+    
+    public func isAuthorize() -> Bool {
+        return self.appAuthInteraction?.getAuthState()?.isAuthorized ?? false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.appAuthInteraction = AppAuthInteraction()
+        self.appAuthInteraction = AppAuthInteraction(view: self)
         
         appAuthInteraction?.loadState()
         appAuthInteraction?.stateChanged()
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        let menuView = MainMenu(self)
-        
-        self.appAuthInteraction = AppAuthInteraction(view: self, newView: UIHostingController(rootView: menuView), openNewView: true)
-        
-        if (AppAuthInteraction.getAuthState()?.isAuthorized ?? false)
+        if((appAuthInteraction?.getAuthState()?.isAuthorized) ?? false)
         {
-            appAuthInteraction?.openMenu()
+            self.logIn()
         }
+        
     }
 }
 
@@ -46,6 +47,23 @@ extension AuthorizeController {
     @IBAction func authWithAutoCodeExchange(_ sender: UIButton) {
 
         self.appAuthInteraction?.authorization()
+    }
+}
+
+extension AuthorizeController {
+    
+    public func logOut() {
+        
+        self.dismiss(animated: true, completion: nil)
+        self.appAuthInteraction?.logOut()
+    }
+    
+    func logIn() {
+        let menuView = UIHostingController(rootView: MainMenu())
+        
+        menuView.modalPresentationStyle = .fullScreen
+        
+        self.present(menuView, animated: false, completion: nil)
     }
 }
 
