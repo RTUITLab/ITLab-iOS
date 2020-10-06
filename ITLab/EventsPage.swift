@@ -30,24 +30,32 @@ struct EventsPage: View {
     {
         ITLabApp.authorizeController.performAction { (accessToken, idToken, error) in
             
-            guard let url = URL(string: "https://dev.rtuitlab.ru/events") else { return }
+            guard let accessToken = accessToken else {
+                print("not token")
+                return
+            }
+            
+            guard let url = URL(string: "https://dev.rtuitlab.ru/api/event") else { return }
             var urlReq = URLRequest(url: url)
-            urlReq.addValue("Authorization", forHTTPHeaderField: "Bearer \(accessToken)")
+            urlReq.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
             
             URLSession.shared.dataTask(with: urlReq) { (data, response, error) in
-                
-                guard let response = response as? HTTPURLResponse else {
-                    print("Non-HTTP response")
-                    return
+                DispatchQueue.main.async {
+                    
+                    guard let response = response as? HTTPURLResponse else {
+                        print("Non-HTTP response")
+                        return
+                    }
+                    
+                    guard let data = data else {
+                        print("HTTP response data is empty")
+                        return
+                    }
+                    
+                    print(response.statusCode)
+                    print(String(data: data, encoding: String.Encoding.utf8))
+                   
                 }
-
-                guard let data = data else {
-                    print("HTTP response data is empty")
-                    return
-                }
-                
-                print(response.statusCode)
-                print(data)
             }
             .resume()
         }
