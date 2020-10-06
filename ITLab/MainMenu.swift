@@ -21,6 +21,20 @@ struct MainMenu: View {
                 .font(.title)
                 .bold()
             
+            Button(action: {
+                let appAuthInteractive = ITLabApp.authorizeController
+                
+                appAuthInteractive.performAction { (accesToken, idToken, error) in
+                    
+                    print(accesToken)
+                }
+            })
+            {
+                Text("Update token")
+                    .font(.body)
+            }
+            .padding(.top, 10)
+            
             
             Button(action: {
                 let appAuthInteractive = ITLabApp.authorizeController

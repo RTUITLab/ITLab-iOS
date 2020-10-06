@@ -11,8 +11,8 @@ import AppAuth
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
 struct AppAuthConfiguration {
-    static let kIssuer: String = "https://demo.identityserver.io"
-    static let kClientID: String? = "interactive.public"
+    static let kIssuer: String = "https://dev.identity.rtuitlab.ru/"
+    static let kClientID: String? = "itlab_mobile_app"
     static let kRedirectURI: String = "ru.RTUITLab.ITLab:/oauth2redirect/example-provider"
     static let kAppAuthAuthStateKey: String = "authState"
 }
@@ -179,7 +179,7 @@ extension AppAuthInteraction {
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
                                               clientSecret: clientSecret,
-                                              scopes: [OIDScopeOpenID, OIDScopeProfile],
+                                              scopes: [OIDScopeOpenID, OIDScopeProfile, "itlab.events"],
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
                                               additionalParameters: nil)

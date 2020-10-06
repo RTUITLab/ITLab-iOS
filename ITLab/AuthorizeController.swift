@@ -65,5 +65,10 @@ extension AuthorizeController {
         
         self.present(menuView, animated: false, completion: nil)
     }
+    
+    func performAction(freshTokens: @escaping OIDAuthStateAction)
+    {
+        appAuthInteraction?.getAuthState()?.performAction(freshTokens: freshTokens)
+    }
 }
 
