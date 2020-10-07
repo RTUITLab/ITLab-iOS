@@ -8,26 +8,40 @@
 import SwiftUI
 
 struct EventsPage: View {
+    @State var events : [CompactEventView]?
+    
     var body: some View {
         NavigationView {
             
-            List {
-                Text("Event")
-                Text("Event")
+            List(events ?? []) { event in
+                Text(event.title ?? "Not title")
             }
             .navigationTitle("События")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(trailing: Button(action: {
-                test()
+               
             }) {
                 Image(systemName: "plus")
+            }.onAppear{
+                getEvents()
             }
             )
         }
     }
     
+    func getEvents()
+    {
+        ITLabApp.authorizeController.performAction { (token, _, _) in
+            SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
+            EventAPI.apiEventGet { (events, error) in
+                self.events = events
+            }
+        }
+    }
+    
     func test()
     {
+        
         ITLabApp.authorizeController.performAction { (accessToken, idToken, error) in
             
             guard let accessToken = accessToken else {
