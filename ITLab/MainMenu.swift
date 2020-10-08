@@ -31,7 +31,7 @@ struct MainMenu: View {
             TestPage()
                 .tabItem {
                     Text("Test")
-                }
+                    }
         }
     }
     
