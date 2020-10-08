@@ -22,7 +22,7 @@ struct EventsPage: View {
                             ForEach(events) { event in
                                 EventStack(event: event)
                                     .padding([.leading, .bottom, .trailing], 10)
-                                
+
                             }
                         }
                         
@@ -56,16 +56,31 @@ struct EventsPage: View {
     func getEvents()
     {
         if self.events.isEmpty {
-        self.isLoading = true
+            self.isLoading = true
         }
         
         ITLabApp.authorizeController.performAction { (token, _, _) in
+            
             SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
-            EventAPI.apiEventGet { (events, error) in
+            
+            let date = Date()
+           var dateComponents = DateComponents()
+            dateComponents.year = Calendar.current.component(.year, from: date)
+            dateComponents.month = Calendar.current.component(.month, from: date) - 1
+            dateComponents.day = Calendar.current.component(.day, from: date)
+            
+            dateComponents.hour = Calendar.current.component(.hour, from: date)
+            dateComponents.minute = Calendar.current.component(.minute, from: date)
+            dateComponents.timeZone = Calendar.current.timeZone
+            let newDate = Calendar.current.date(from: dateComponents)
+            
+            EventAPI.apiEventGet(begin: newDate) { (events, error) in
+            
                 self.events = events?.sorted() { (a, b) -> Bool in
                     a.endTime! > b.endTime!
                 } ?? []
                 self.isLoading = false
+                
             }
         }
     }
@@ -150,6 +165,7 @@ struct EventStack : View {
         .buttonStyle(PlainButtonStyle())
         
         .onAppear() {
+            
             let dateFormmat = DateFormatter()
             
             dateFormmat.dateFormat = "dd.MM.yy"
