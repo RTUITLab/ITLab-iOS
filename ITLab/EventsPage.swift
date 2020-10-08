@@ -8,32 +8,46 @@
 import SwiftUI
 
 struct EventsPage: View {
-   
+    
     @State var events : [CompactEventView] = []
-   
+    @State var isLoading: Bool = true;
     var body: some View {
         NavigationView {
-            
-            List {
-                ForEach(events.sorted() { (a, b) -> Bool in
-                    a.endTime! > b.endTime!
-                }) { event in
-                    EventStack(event: event)
-                        .padding(.vertical, 20)
-                        .padding(.horizontal, 5)
+            VStack {
+                if isLoading {
+                    ProgressView()
+                } else {
+                    ScrollView{
+                        VStack {
+                            ForEach(events) { event in
+                                EventStack(event: event)
+                                    .padding([.leading, .bottom, .trailing], 10)
+                                
+                            }
+                        }
+                        
+                    }
                 }
+                
             }
             .navigationTitle("События")
-            .navigationBarTitleDisplayMode(.inline)
-            
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarTitleDisplayMode(.automatic)
+            .navigationBarItems(leading: Button(action: {
+                isLoading = true
+                getEvents()
+                
+            }) {
+                Image(systemName: "arrow.clockwise")
+            }, trailing: Button(action: {
                 print("Not working")
             }) {
                 Image(systemName: "plus")
             })
-            .onAppear{
-                getEvents()
-            }
+        }
+        
+        
+        .onAppear{
+            getEvents()
         }
     }
     
@@ -41,70 +55,111 @@ struct EventsPage: View {
     
     func getEvents()
     {
+        if self.events.isEmpty {
+        self.isLoading = true
+        }
+        
         ITLabApp.authorizeController.performAction { (token, _, _) in
             SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
             EventAPI.apiEventGet { (events, error) in
-                self.events = events ?? []
+                self.events = events?.sorted() { (a, b) -> Bool in
+                    a.endTime! > b.endTime!
+                } ?? []
+                self.isLoading = false
             }
         }
     }
 }
 
 struct EventStack : View {
-    
-    enum dateMode {
-        case begin
-        case end
-    }
-    
-    var dateFormmat : DateFormatter = DateFormatter()
-    
+
     @State private var beginDate : String = ""
+    @State private var beginTime : String = ""
     @State private var endDate : String = ""
+    @State private var endTime : String = ""
+//    @State var beginDateFormate : Bool = false
+//    @State var endDateFormate : Bool = false
     
     @State var event : CompactEventView
     
-    @State var beginDateFormate : Bool = true
-    @State var endDateFormate : Bool = true
+    
     
     var body: some View {
+        NavigationLink(destination: EventPage(event: event))
+        {
+        HStack {
         VStack (alignment: .leading) {
             Text(event.title ?? "Not title")
-                .font(.title2)
+                .font(.title3)
+                .padding(.top, 10)
             HStack{
-                Text("Начало: \(beginDate)")
-                    .font(.callout)
-                    .onTapGesture {
-                        getDateFormat(mode: .begin)
+                HStack {
+                    VStack{
+                        Spacer()
+                        Text("Начало:")
+                            .font(.callout)
+                        Spacer()
                     }
+                    VStack {
+//                        if beginDateFormate {
+                            Text(beginTime)
+//                        }
+                        Text(beginDate)
+                        
+                    }
+                }
+//                .onTapGesture {
+//                    beginDateFormate.toggle()
+//                }
+                
                 Spacer()
-                Text("Конец: \(endDate)")
-                    .font(.callout)
-                    .onTapGesture {
-                        getDateFormat(mode: .end)
+                    
+                
+                HStack {
+                    VStack{
+                        Spacer()
+                        Text("Конец:")
+                            .font(.callout)
+                        Spacer()
                     }
+                    VStack {
+//                        if endDateFormate {
+                            Text(endTime)
+//                        }
+                        Text(endDate)
+                        
+                    }
+                }
+//                .onTapGesture {
+//                    endDateFormate.toggle()
+//                }
             }
+            .padding(.vertical, 5)
         }
+       
+            Image(systemName: "chevron.right")
+                .padding(.leading, 15.0)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 10)
+        .frame(height: 100)
+        .background(Color.gray.opacity(0.4))
+        
+        }
+        .buttonStyle(PlainButtonStyle())
+        
         .onAppear() {
+            let dateFormmat = DateFormatter()
+            
             dateFormmat.dateFormat = "dd.MM.yy"
             beginDate = dateFormmat.string(from: event.beginTime ?? Date())
             endDate = dateFormmat.string(from: event.endTime ?? Date())
-        }
-    }
-    
-    func getDateFormat(mode: dateMode)
-    {
-        switch mode {
-        case .begin:
-            beginDateFormate.toggle()
-            dateFormmat.dateFormat = beginDateFormate ? "dd.MM.yy" : "dd.MM.yy HH:mm"
-            beginDate = dateFormmat.string(from: event.beginTime ?? Date())
-            break
-        case .end:
-            endDateFormate.toggle()
-            dateFormmat.dateFormat = endDateFormate ? "dd.MM.yy" : "dd.MM.yy HH:mm"
-            endDate = dateFormmat.string(from: event.endTime ?? Date())
-            break
+            
+            dateFormmat.dateFormat = "HH:mm"
+            
+            beginTime = dateFormmat.string(from: event.beginTime ?? Date())
+            endTime = dateFormmat.string(from: event.endTime ?? Date())
         }
     }
 }

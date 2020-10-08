@@ -13,6 +13,7 @@
 		6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */; };
 		6D5141692522479800EFB01C /* AuthorizeBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */; };
 		6D51416C2522484B00EFB01C /* AuthorizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D51416B2522484B00EFB01C /* AuthorizeController.swift */; };
+		6D77A1C0252F5EE60086A360 /* EventPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A1BF252F5EE60086A360 /* EventPage.swift */; };
 		6D916172251BB0A20065B328 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6D916171251BB0A20065B328 /* AppAuth */; };
 		6D916174251BB0A20065B328 /* AppAuthCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6D916173251BB0A20065B328 /* AppAuthCore */; };
 		6D9A0C652518EBAA007796CD /* ITLabApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9A0C642518EBAA007796CD /* ITLabApp.swift */; };
@@ -107,6 +108,7 @@
 		6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsPage.swift; sourceTree = "<group>"; };
 		6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthorizeBoard.storyboard; sourceTree = "<group>"; };
 		6D51416B2522484B00EFB01C /* AuthorizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeController.swift; sourceTree = "<group>"; };
+		6D77A1BF252F5EE60086A360 /* EventPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPage.swift; sourceTree = "<group>"; };
 		6D9A0C612518EBAA007796CD /* ITLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D9A0C642518EBAA007796CD /* ITLabApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITLabApp.swift; sourceTree = "<group>"; };
 		6D9A0C682518EBB2007796CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */,
 				6D18A1E5252C8967002B0B3C /* TestPage.swift */,
 				6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */,
+				6D77A1BF252F5EE60086A360 /* EventPage.swift */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				6DDD81CB252DF78B008CE80A /* UserAPI.swift in Sources */,
 				6D51416C2522484B00EFB01C /* AuthorizeController.swift in Sources */,
 				6DDD81EF252DF78B008CE80A /* ShiftEditRequest.swift in Sources */,
+				6D77A1C0252F5EE60086A360 /* EventPage.swift in Sources */,
 				6DDD8214252DF78B008CE80A /* Models.swift in Sources */,
 				6DDD8206252DF78B008CE80A /* EquipmentTypeView.swift in Sources */,
 				6D9A0C652518EBAA007796CD /* ITLabApp.swift in Sources */,
