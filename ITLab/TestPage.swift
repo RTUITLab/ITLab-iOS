@@ -8,23 +8,37 @@
 import SwiftUI
 
 struct TestPage: View {
+    
+    @State var accesToken : String?
+    @State var isAuthorize : Bool?
+    
     var body: some View {
         VStack{
-            Text(ITLabApp.authorizeController.getAccsesToken())
-                .font(.body)
+            Text(accesToken ?? "Not token")
+                .font(.callout)
                 .padding()
             
             
-            Text(ITLabApp.authorizeController.isAuthorize() ? "Authorized" : "Not authorize")
+            Text(isAuthorize ?? false ? "Authorized" : "Not authorize")
                 .font(.title)
                 .bold()
             
             Button(action: {
                 let appAuthInteractive = ITLabApp.authorizeController
                 
+                let currentAccesToken = appAuthInteractive.getAccsesToken()
+                
                 appAuthInteractive.performAction { (accesToken, idToken, error) in
                     
-                    print(accesToken ?? "not token")
+                    if currentAccesToken == accesToken {
+                        print("Current token valid")
+                        return
+                    }
+                    
+                    print("Update token")
+                    
+                    self.accesToken = accesToken
+                    self.isAuthorize = ITLabApp.authorizeController.isAuthorize()
                 }
             })
             {
@@ -32,7 +46,6 @@ struct TestPage: View {
                     .font(.body)
             }
             .padding(.top, 10)
-            
             
             Button(action: {
                 let appAuthInteractive = ITLabApp.authorizeController
@@ -45,7 +58,14 @@ struct TestPage: View {
             }
             .padding(.top, 50)
         }
+        .onAppear(){
+            let appAuthInteractive = ITLabApp.authorizeController
+            
+            self.accesToken = appAuthInteractive.getAccsesToken()
+            self.isAuthorize =  appAuthInteractive.isAuthorize()
+        }
     }
+    
 }
 
 struct TestPage_Previews: PreviewProvider {
