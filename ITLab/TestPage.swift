@@ -42,7 +42,7 @@ struct TestPage: View {
                 }
             })
             {
-                Text("Update token")
+                Text("Update acces token")
                     .font(.body)
             }
             .padding(.top, 10)

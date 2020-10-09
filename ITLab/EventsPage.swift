@@ -19,11 +19,16 @@ struct EventsPage: View {
                 } else {
                     ScrollView{
                         VStack {
-                            ForEach(events) { event in
-                                EventStack(event: event)
-                                    .padding([.leading, .bottom, .trailing], 10)
-
+                            ForEach(0..<events.count) { index in
+                                EventStack(event: events[index])
+                                    
+                                if index + 1 != events.count {
+                                Divider()
+                                    .padding(.vertical, 5.0)
+                                }
+                                
                             }
+                            .padding([.leading, .trailing], 10)
                         }
                         
                     }
@@ -62,22 +67,23 @@ struct EventsPage: View {
         ITLabApp.authorizeController.performAction { (token, _, _) in
             
             SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
-            
+        
             let date = Date()
-           var dateComponents = DateComponents()
+            var dateComponents = DateComponents()
+            
             dateComponents.year = Calendar.current.component(.year, from: date)
             dateComponents.month = Calendar.current.component(.month, from: date) - 1
             dateComponents.day = Calendar.current.component(.day, from: date)
-            
             dateComponents.hour = Calendar.current.component(.hour, from: date)
             dateComponents.minute = Calendar.current.component(.minute, from: date)
             dateComponents.timeZone = Calendar.current.timeZone
+            
             let newDate = Calendar.current.date(from: dateComponents)
             
             EventAPI.apiEventGet(begin: newDate) { (events, error) in
             
                 self.events = events?.sorted() { (a, b) -> Bool in
-                    a.endTime! > b.endTime!
+                    a.beginTime! > b.beginTime!
                 } ?? []
                 self.isLoading = false
                 
@@ -100,7 +106,7 @@ struct EventStack : View {
     
     
     var body: some View {
-        NavigationLink(destination: EventPage(event: event))
+        NavigationLink(destination: EventPage(compactEvent: event))
         {
         HStack {
         VStack (alignment: .leading) {
