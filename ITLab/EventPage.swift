@@ -58,6 +58,7 @@ struct EventPage: View {
                         .padding(.bottom, 1)
                     
                     Text(event?._description ?? "")
+                    Markdown(markdownString:  event?._description ?? "")
                 }
                 .padding(.vertical, 5.0)
                 
@@ -110,6 +111,5 @@ struct EventPage_Previews: PreviewProvider {
     
     static var previews: some View {
         EventPage()
-            .previewDevice("iPod touch (7th generation)")
     }
 }

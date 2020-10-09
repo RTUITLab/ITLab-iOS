@@ -11,6 +11,8 @@
 		6D1842A02523588F00B95EBB /* AppAuthInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */; };
 		6D18A1E6252C8967002B0B3C /* TestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E5252C8967002B0B3C /* TestPage.swift */; };
 		6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */; };
+		6D5074252530F2BA00679B4C /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 6D5074242530F2BA00679B4C /* Down */; };
+		6D50743C2531085200679B4C /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D50743B2531085200679B4C /* Markdown.swift */; };
 		6D5141692522479800EFB01C /* AuthorizeBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */; };
 		6D51416C2522484B00EFB01C /* AuthorizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D51416B2522484B00EFB01C /* AuthorizeController.swift */; };
 		6D77A1C0252F5EE60086A360 /* EventPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A1BF252F5EE60086A360 /* EventPage.swift */; };
@@ -106,6 +108,7 @@
 		6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthInteraction.swift; sourceTree = "<group>"; };
 		6D18A1E5252C8967002B0B3C /* TestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPage.swift; sourceTree = "<group>"; };
 		6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsPage.swift; sourceTree = "<group>"; };
+		6D50743B2531085200679B4C /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthorizeBoard.storyboard; sourceTree = "<group>"; };
 		6D51416B2522484B00EFB01C /* AuthorizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeController.swift; sourceTree = "<group>"; };
 		6D77A1BF252F5EE60086A360 /* EventPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPage.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D5074252530F2BA00679B4C /* Down in Frameworks */,
 				6DDD8223252E0726008CE80A /* Alamofire in Frameworks */,
 				6D916172251BB0A20065B328 /* AppAuth in Frameworks */,
 				6D916174251BB0A20065B328 /* AppAuthCore in Frameworks */,
@@ -250,6 +254,7 @@
 				6D18A1E5252C8967002B0B3C /* TestPage.swift */,
 				6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */,
 				6D77A1BF252F5EE60086A360 /* EventPage.swift */,
+				6D50743B2531085200679B4C /* Markdown.swift */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
@@ -390,6 +395,7 @@
 				6D916171251BB0A20065B328 /* AppAuth */,
 				6D916173251BB0A20065B328 /* AppAuthCore */,
 				6DDD8222252E0726008CE80A /* Alamofire */,
+				6D5074242530F2BA00679B4C /* Down */,
 			);
 			productName = ITLab;
 			productReference = 6D9A0C612518EBAA007796CD /* ITLab.app */;
@@ -421,6 +427,7 @@
 			packageReferences = (
 				6D916170251BB0A20065B328 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				6DDD8217252DF80B008CE80A /* XCRemoteSwiftPackageReference "Alamofire" */,
+				6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */,
 			);
 			productRefGroup = 6D9A0C622518EBAA007796CD /* Products */;
 			projectDirPath = "";
@@ -459,6 +466,7 @@
 				6DDD81ED252DF78B008CE80A /* UserPropertyTypeView.swift in Sources */,
 				6DDD820D252DF78B008CE80A /* EventRoleEditRequest.swift in Sources */,
 				6DDD81D1252DF78B008CE80A /* AccountAPI.swift in Sources */,
+				6D50743C2531085200679B4C /* Markdown.swift in Sources */,
 				6DDD8204252DF78B008CE80A /* UserPropertyTypeCreateRequest.swift in Sources */,
 				6DDD81D4252DF78B008CE80A /* AboutAPI.swift in Sources */,
 				6DDD81DF252DF78B008CE80A /* EventRoleView.swift in Sources */,
@@ -731,6 +739,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iwasrobbed/Down";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.3;
+			};
+		};
 		6D916170251BB0A20065B328 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
@@ -750,6 +766,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D5074242530F2BA00679B4C /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
 		6D916171251BB0A20065B328 /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6D916170251BB0A20065B328 /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;

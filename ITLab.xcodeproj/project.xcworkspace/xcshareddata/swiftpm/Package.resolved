@@ -18,6 +18,15 @@
           "revision": "01131d68346c8ae552961c768d583c715fbe1410",
           "version": "1.4.0"
         }
+      },
+      {
+        "package": "Down",
+        "repositoryURL": "https://github.com/iwasrobbed/Down",
+        "state": {
+          "branch": null,
+          "revision": "427aec0a0ab342246ec02369dea398597b61174a",
+          "version": "0.9.3"
+        }
       }
     ]
   },

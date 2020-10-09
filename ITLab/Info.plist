@@ -41,7 +41,7 @@
 		<key>UIImageName</key>
 		<string>LauncheLogo</string>
 		<key>UIImageRespectsSafeAreaInsets</key>
-		<false/>
+		<true/>
 	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
