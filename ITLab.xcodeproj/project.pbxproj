@@ -11,8 +11,9 @@
 		6D1842A02523588F00B95EBB /* AppAuthInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */; };
 		6D18A1E6252C8967002B0B3C /* TestPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E5252C8967002B0B3C /* TestPage.swift */; };
 		6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */; };
+		6D2AB2802533686000AFCDBB /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2AB27F2533686000AFCDBB /* Markdown.swift */; };
+		6D2AB28425337AEB00AFCDBB /* DownView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6D2AB28325337AEB00AFCDBB /* DownView.bundle */; };
 		6D5074252530F2BA00679B4C /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 6D5074242530F2BA00679B4C /* Down */; };
-		6D50743C2531085200679B4C /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D50743B2531085200679B4C /* Markdown.swift */; };
 		6D5141692522479800EFB01C /* AuthorizeBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */; };
 		6D51416C2522484B00EFB01C /* AuthorizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D51416B2522484B00EFB01C /* AuthorizeController.swift */; };
 		6D77A1C0252F5EE60086A360 /* EventPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D77A1BF252F5EE60086A360 /* EventPage.swift */; };
@@ -108,7 +109,8 @@
 		6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthInteraction.swift; sourceTree = "<group>"; };
 		6D18A1E5252C8967002B0B3C /* TestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPage.swift; sourceTree = "<group>"; };
 		6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsPage.swift; sourceTree = "<group>"; };
-		6D50743B2531085200679B4C /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		6D2AB27F2533686000AFCDBB /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		6D2AB28325337AEB00AFCDBB /* DownView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DownView.bundle; sourceTree = "<group>"; };
 		6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthorizeBoard.storyboard; sourceTree = "<group>"; };
 		6D51416B2522484B00EFB01C /* AuthorizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeController.swift; sourceTree = "<group>"; };
 		6D77A1BF252F5EE60086A360 /* EventPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPage.swift; sourceTree = "<group>"; };
@@ -254,7 +256,8 @@
 				6D18A1E5252C8967002B0B3C /* TestPage.swift */,
 				6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */,
 				6D77A1BF252F5EE60086A360 /* EventPage.swift */,
-				6D50743B2531085200679B4C /* Markdown.swift */,
+				6D2AB28325337AEB00AFCDBB /* DownView.bundle */,
+				6D2AB27F2533686000AFCDBB /* Markdown.swift */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 			files = (
 				6D9A0C6C2518EBB2007796CD /* Preview Assets.xcassets in Resources */,
 				6D9A0C692518EBB2007796CD /* Assets.xcassets in Resources */,
+				6D2AB28425337AEB00AFCDBB /* DownView.bundle in Resources */,
 				6D5141692522479800EFB01C /* AuthorizeBoard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,7 +470,6 @@
 				6DDD81ED252DF78B008CE80A /* UserPropertyTypeView.swift in Sources */,
 				6DDD820D252DF78B008CE80A /* EventRoleEditRequest.swift in Sources */,
 				6DDD81D1252DF78B008CE80A /* AccountAPI.swift in Sources */,
-				6D50743C2531085200679B4C /* Markdown.swift in Sources */,
 				6DDD8204252DF78B008CE80A /* UserPropertyTypeCreateRequest.swift in Sources */,
 				6DDD81D4252DF78B008CE80A /* AboutAPI.swift in Sources */,
 				6DDD81DF252DF78B008CE80A /* EventRoleView.swift in Sources */,
@@ -496,6 +499,7 @@
 				6DDD81C8252DF78B008CE80A /* APIHelper.swift in Sources */,
 				6DDD820E252DF78B008CE80A /* EventApplicationView.swift in Sources */,
 				6DDD8202252DF78B008CE80A /* PlaceView.swift in Sources */,
+				6D2AB2802533686000AFCDBB /* Markdown.swift in Sources */,
 				6DDD8203252DF78B008CE80A /* ResetPasswordRequest.swift in Sources */,
 				6DDD8210252DF78B008CE80A /* PlaceCreateRequest.swift in Sources */,
 				6DDD81E5252DF78B008CE80A /* EquipmentCreateRequest.swift in Sources */,
@@ -672,6 +676,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
@@ -697,6 +702,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;

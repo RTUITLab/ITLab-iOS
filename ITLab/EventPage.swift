@@ -56,9 +56,11 @@ struct EventPage: View {
                     Text("Описание")
                         .bold()
                         .padding(.bottom, 1)
+            
+                    if self.event != nil && !self.event!._description!.isEmpty {
+                        Markdown(markdown: (event?._description)!)
                     
-                    Text(event?._description ?? "")
-                    Markdown(markdownString:  event?._description ?? "")
+                    }
                 }
                 .padding(.vertical, 5.0)
                 

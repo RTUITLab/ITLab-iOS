@@ -26,7 +26,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
@@ -41,7 +41,7 @@
 		<key>UIImageName</key>
 		<string>LauncheLogo</string>
 		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

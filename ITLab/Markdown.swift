@@ -1,45 +1,70 @@
 //
-//  Markdown.swift
+//  MarkdownTestWebView.swift
 //  ITLab
 //
-//  Created by Mikhail Ivanov on 10/10/20.
+//  Created by Mikhail Ivanov on 10/11/20.
 //
 
 import SwiftUI
-import WebKit
 import Down
-
-struct MarkdownComponent: UIViewRepresentable {
-
-   let string: String
-
-   func makeUIView(context: Context) -> UILabel {
-        let label = UILabel()
-        return label
-    }
-
-    func updateUIView(_ uiView: UILabel, context: Context) {
-        
-        let down = Down(markdownString: string)
-        guard let data = try? down.toAttributedString() else {
-            return
-        }
-        
-        uiView.attributedText = data
-        
-    }
-}
+import WebKit
 
 struct Markdown: View {
-    var markdownString: String
     
+    class MarkdownSize: ObservableObject {
+        @Published var height: CGFloat = 0;
+    }
+    
+   private struct WebView : UIViewRepresentable {
+        var markdown: String
+    
+   @State var maxHeight: CGFloat = -1
+    
+    @EnvironmentObject var markdownSize : MarkdownSize
+        
+        func makeUIView(context: Context) -> DownView {
+            
+            let webView = try? DownView(frame: UIScreen.main.bounds, markdownString: markdown)
+            webView!.scrollView.isScrollEnabled = false
+            
+            return webView!
+            
+        }
+        
+        func updateUIView(_ uiView: DownView, context: Context) {
+//            uiView.evaluateJavaScript("document.documentElement.scrollHeight", completionHandler: { (height, error) in
+//                if markdownSize.height != height as! CGFloat {
+//                    
+//                
+//                markdownSize.height = height as! CGFloat
+//                }
+////                markdownSize.height = height as! CGFloat
+//                    print(height as! CGFloat)
+//                
+//                
+//                print("Kek")
+//              })
+        }
+    }
+    
+    @State var markdown: String
+    @State var webView : DownView?
+    
+    @ObservedObject var markdownSize : MarkdownSize = MarkdownSize()
+   
     var body: some View {
-        MarkdownComponent(string: markdownString)
+        VStack(alignment: .leading) {
+            WebView(markdown: markdown).environmentObject(markdownSize)
+                .frame(height: 500)
+        }
+        
+        
     }
 }
+
 
 struct Markdown_Previews: PreviewProvider {
     static var previews: some View {
-        Markdown(markdownString: "## Test")
+        Markdown(markdown: "## Test")
     }
 }
