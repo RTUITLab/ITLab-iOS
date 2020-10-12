@@ -15,6 +15,7 @@ struct EventPage: View {
     @State var beginDate: String?
     @State var endDate: String?
     
+    
     var body: some View {
         ScrollView{
             VStack (alignment: .leading) {
@@ -65,6 +66,15 @@ struct EventPage: View {
                 .padding(.vertical, 5.0)
                 
                 Divider()
+                
+                if event != nil {
+                    VStack (alignment: .leading, spacing: 10) {
+                        ForEach (0..<event!.shifts!.count){ index in
+                            Shifts(shift: event!.shifts![index])
+                                .animation(.linear(duration: 0.3))
+                        }
+                    }
+                }
             }
             .padding(.horizontal, 20)
         }
@@ -95,6 +105,10 @@ struct EventPage: View {
             return a.endTime! < b.endTime!
         })?.endTime
         
+        event!.shifts!.sort { (a, b) -> Bool in
+            return a.beginTime! < b.beginTime!
+        }
+        
         self.beginDate = formateDateToString(beginDate)
         self.endDate = formateDateToString(endDate)
     }
@@ -107,7 +121,77 @@ struct EventPage: View {
         
         return dateFormmat.string(from: date ?? Date())
     }
+    
+   
 }
+
+extension EventPage {
+    private struct Shifts: View {
+        
+        @State var shift: ShiftView
+        
+        @State var isExpanded: Bool = false
+        
+        var body : some View {
+            VStack (alignment: .leading){
+                HStack {
+                    Image(systemName: "chevron.right")
+                        .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+                    
+                Text("\(localizedDate(shift.beginTime!).lowercased()) - \(localizedDate(shift.endTime!).lowercased())")
+                    .fontWeight(.bold)
+                    .padding(.trailing, 20.0)
+                    .padding(.leading, 10.0)
+                }
+                . onTapGesture(){
+                    isExpanded.toggle()
+                }
+               
+                
+                if isExpanded {
+                    VStack {
+                        
+                        ForEach (0..<shift.places!.count){ index in
+                            Place(place: shift.places![index], indexPlace: index + 1)
+                                .animation(.linear(duration: 0.3))
+                        }
+                    }.padding([.top, .leading, .trailing], 15.0)
+                }
+            }
+            .padding(.vertical, 10.0)
+        }
+        
+        func localizedDate(_ date: Date) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "E, dd.MM.yy HH:mm"
+            dateFormatter.locale = Locale(identifier: "ru_RU")
+            return dateFormatter.string(from: date)
+        }
+        
+        private struct Place: View {
+            @State var place: PlaceView
+            let indexPlace: Int
+            @State var isExpanded: Bool = false
+            
+            var body: some View {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Image(systemName: "chevron.right")
+                            .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+                        Text("Место #\(indexPlace)")
+                    }
+                    . onTapGesture(){
+                        isExpanded.toggle()
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+
 
 struct EventPage_Previews: PreviewProvider {
     

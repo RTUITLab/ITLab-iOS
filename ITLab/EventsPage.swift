@@ -92,96 +92,90 @@ struct EventsPage: View {
     }
 }
 
-struct EventStack : View {
-
-    @State private var beginDate : String = ""
-    @State private var beginTime : String = ""
-    @State private var endDate : String = ""
-    @State private var endTime : String = ""
-//    @State var beginDateFormate : Bool = false
-//    @State var endDateFormate : Bool = false
-    
-    @State var event : CompactEventView
-    
-    
-    
-    var body: some View {
-        NavigationLink(destination: EventPage(compactEvent: event))
-        {
-        HStack {
-        VStack (alignment: .leading) {
-            Text(event.title ?? "Not title")
-                .font(.title3)
-                .padding(.top, 10)
-            HStack{
+extension EventsPage {
+    private struct EventStack : View {
+        
+        @State private var beginDate : String = ""
+        @State private var beginTime : String = ""
+        @State private var endDate : String = ""
+        @State private var endTime : String = ""
+        //    @State var beginDateFormate : Bool = false
+        //    @State var endDateFormate : Bool = false
+        
+        @State var event : CompactEventView
+        
+        
+        
+        var body: some View {
+            NavigationLink(destination: EventPage(compactEvent: event))
+            {
                 HStack {
-                    VStack{
-                        Spacer()
-                        Text("Начало:")
-                            .font(.callout)
-                        Spacer()
+                    VStack (alignment: .leading) {
+                        Text(event.title ?? "Not title")
+                            .font(.title3)
+                            .padding(.top, 10)
+                        HStack{
+                            HStack {
+                                VStack{
+                                    Spacer()
+                                    Text("Начало:")
+                                        .font(.callout)
+                                    Spacer()
+                                }
+                                VStack {
+                                    Text(beginTime)
+                                    Text(beginDate)
+                                    
+                                }
+                            }
+                            
+                            Spacer()
+                            
+                            
+                            HStack {
+                                VStack{
+                                    Spacer()
+                                    Text("Конец:")
+                                        .font(.callout)
+                                    Spacer()
+                                }
+                                VStack {
+                                    
+                                    Text(endTime)
+                                    
+                                    Text(endDate)
+                                    
+                                }
+                            }
+                        }
+                        .padding(.vertical, 5)
                     }
-                    VStack {
-//                        if beginDateFormate {
-                            Text(beginTime)
-//                        }
-                        Text(beginDate)
-                        
-                    }
-                }
-//                .onTapGesture {
-//                    beginDateFormate.toggle()
-//                }
-                
-                Spacer()
                     
-                
-                HStack {
-                    VStack{
-                        Spacer()
-                        Text("Конец:")
-                            .font(.callout)
-                        Spacer()
-                    }
-                    VStack {
-//                        if endDateFormate {
-                            Text(endTime)
-//                        }
-                        Text(endDate)
-                        
-                    }
+                    Image(systemName: "chevron.right")
+                        .padding(.leading, 15.0)
+                    
+                    Spacer()
                 }
-//                .onTapGesture {
-//                    endDateFormate.toggle()
-//                }
+                .padding(.horizontal, 10)
+                .frame(height: 100)
+                .background(Color.gray.opacity(0.4))
+                
             }
-            .padding(.vertical, 5)
-        }
-       
-            Image(systemName: "chevron.right")
-                .padding(.leading, 15.0)
+            .buttonStyle(PlainButtonStyle())
             
-            Spacer()
-        }
-        .padding(.horizontal, 10)
-        .frame(height: 100)
-        .background(Color.gray.opacity(0.4))
-        
-        }
-        .buttonStyle(PlainButtonStyle())
-        
-        .onAppear() {
-            
-            let dateFormmat = DateFormatter()
-            
-            dateFormmat.dateFormat = "dd.MM.yy"
-            beginDate = dateFormmat.string(from: event.beginTime ?? Date())
-            endDate = dateFormmat.string(from: event.endTime ?? Date())
-            
-            dateFormmat.dateFormat = "HH:mm"
-            
-            beginTime = dateFormmat.string(from: event.beginTime ?? Date())
-            endTime = dateFormmat.string(from: event.endTime ?? Date())
+            .onAppear() {
+                
+                let dateFormmat = DateFormatter()
+                
+                dateFormmat.dateFormat = "dd.MM.yy"
+                beginDate = dateFormmat.string(from: event.beginTime ?? Date())
+                endDate = dateFormmat.string(from: event.endTime ?? Date())
+                
+                dateFormmat.dateFormat = "HH:mm"
+                
+                beginTime = dateFormmat.string(from: event.beginTime ?? Date())
+                endTime = dateFormmat.string(from: event.endTime ?? Date())
+            }
         }
     }
 }

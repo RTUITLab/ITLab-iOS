@@ -25,7 +25,7 @@ struct Markdown: View {
         func makeUIView(context: Context) -> DownView {
             
             let webView = try? DownView(frame: UIScreen.main.bounds, markdownString: markdown)
-            webView!.scrollView.isScrollEnabled = false
+            webView!.scrollView.isScrollEnabled = true
             
             return webView!
             
