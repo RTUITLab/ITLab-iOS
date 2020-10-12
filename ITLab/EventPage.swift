@@ -121,8 +121,6 @@ struct EventPage: View {
         
         return dateFormmat.string(from: date ?? Date())
     }
-    
-   
 }
 
 extension EventPage {
@@ -149,7 +147,7 @@ extension EventPage {
                
                 
                 if isExpanded {
-                    VStack {
+                    VStack(alignment: .leading) {
                         
                         ForEach (0..<shift.places!.count){ index in
                             Place(place: shift.places![index], indexPlace: index + 1)
@@ -179,12 +177,39 @@ extension EventPage {
                     HStack {
                         Image(systemName: "chevron.right")
                             .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
-                        Text("Место #\(indexPlace)")
+                        Text("Место #\(indexPlace) | \(declinationOfNumberOfParticipants(indexPlace))")
                     }
                     . onTapGesture(){
                         isExpanded.toggle()
                     }
                 }
+            }
+            
+            func declinationOfNumberOfParticipants(_ index: Int) -> String {
+                
+                var n = index
+                
+                if index == 0
+                {
+                    return "Участники не нужны"
+                }
+                n %= 100
+                
+                if (n >= 5 && n <= 20) {
+                    return "Нужно \(index) участников"
+                }
+                
+                n %= 10;
+                if n == 1 {
+                    return "Нужен \(index) участник";
+                }
+                
+                if (n >= 2 && n <= 4) {
+                    return "Нужно \(index) участника";
+                }
+                
+                return "Нужно \(index) участников";
+                
             }
         }
         
