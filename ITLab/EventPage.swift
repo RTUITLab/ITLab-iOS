@@ -75,6 +75,9 @@ struct EventPage: View {
                         }
                     }
                 }
+                
+                Spacer(minLength: 20)
+                
             }
             .padding(.horizontal, 20)
         }
@@ -126,7 +129,7 @@ struct EventPage: View {
 extension EventPage {
     private struct Shifts: View {
         
-        @State var shift: ShiftView
+        let shift: ShiftView
         
         @State var isExpanded: Bool = false
         
@@ -152,6 +155,7 @@ extension EventPage {
                         ForEach (0..<shift.places!.count){ index in
                             Place(place: shift.places![index], indexPlace: index + 1)
                                 .animation(.linear(duration: 0.3))
+                                .padding(.vertical, 2.0)
                         }
                     }.padding([.top, .leading, .trailing], 15.0)
                 }
@@ -168,28 +172,88 @@ extension EventPage {
         }
         
         private struct Place: View {
-            @State var place: PlaceView
+            let place: PlaceView
             let indexPlace: Int
+            
+            @State var isUsers: Bool = false
+            @State var isEquipment: Bool = false
+            
             @State var isExpanded: Bool = false
             
             var body: some View {
                 VStack(alignment: .leading) {
                     HStack {
+                        if isUsers || isEquipment {
                         Image(systemName: "chevron.right")
                             .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+                        }
+                        
                         Text("Место #\(indexPlace) | \(declinationOfNumberOfParticipants(indexPlace))")
                     }
                     . onTapGesture(){
+                        if isUsers || isEquipment {
                         isExpanded.toggle()
+                        }
+                    }
+                    if isExpanded
+                    {
+                        VStack(alignment: .leading) {
+                            
+                            if isUsers {
+                                
+                                VStack(alignment: .leading) {
+                                    
+                                    Text("Участники:")
+                                        .font(.callout)
+                                        .fontWeight(.bold)
+                                    
+                                    ForEach(0..<place.participants!.count) { index in
+                                        UserPlace(user: place.participants![index])
+                                    }
+                                    ForEach(0..<place.wishers!.count) { index in
+                                        UserPlace(user: place.wishers![index])
+                                    }
+                                    ForEach(0..<place.invited!.count) { index in
+                                        UserPlace(user: place.invited![index])
+                                    }
+                                }
+                            }
+                            
+                            if isUsers && isEquipment {
+                                Divider()
+                            }
+                            
+                            if isEquipment {
+                                
+                                VStack(alignment: .leading) {
+                                    
+                                    Text("Оборудование:")
+                                        .font(.callout)
+                                        .fontWeight(.bold)
+                                    ForEach(0..<place.equipment!.count) { index in
+                                        EquipmentPlace(equipment: place.equipment![index])
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 5.0)
+                        .padding(.vertical, 10.0)
                     }
                 }
+                .onAppear() {
+                    self.isUsers = place.participants!.count + place.wishers!.count + place.invited!.count != 0
+                    self.isEquipment = place.equipment!.count != 0
+                }
+                
             }
             
             func declinationOfNumberOfParticipants(_ index: Int) -> String {
                 
                 var n = index
                 
-                if index == 0
+                n -= place.participants!.count + place.wishers!.count + place.invited!.count
+                
+                if n <= 0
                 {
                     return "Участники не нужны"
                 }
@@ -210,6 +274,47 @@ extension EventPage {
                 
                 return "Нужно \(index) участников";
                 
+            }
+            
+            private struct UserPlace: View {
+                let user: UserAndEventRole
+                
+                var body: some View {
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .center) {
+                            Text("\(user.user!.lastName!) \(user.user!.firstName!) \(user.user!.middleName!)")
+                                .font(.footnote)
+                                .bold()
+                                .lineLimit(2)
+                            
+                            Spacer()
+                            
+                            Text(user.eventRole!.title!)
+                                .font(.caption)
+                        }
+                    }
+                    .padding(5.0)
+                    
+                }
+            }
+            
+            private struct EquipmentPlace: View {
+                let equipment: EquipmentView
+                
+                var body: some View {
+                    VStack(alignment: .leading) {
+
+                            Text("\(equipment.equipmentType!.title!)")
+                                .font(.footnote)
+                                .bold()
+                                .lineLimit(2)
+                            
+                        Text(equipment.serialNumber!)
+                                .font(.caption)
+                        
+                    }
+                    .padding(5.0)
+                }
             }
         }
         
