@@ -53,6 +53,16 @@ struct EventPage: View {
                 
                 Divider()
                 
+                if event == nil {
+                    
+                    VStack(alignment: .center){
+                    ProgressView()
+                        .padding(.top, 20.0)
+                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 20)
+                    }
+                    
+                } else {
+                
                 VStack(alignment: .leading) {
                     Text("Описание")
                         .bold()
@@ -79,7 +89,9 @@ struct EventPage: View {
                 Spacer(minLength: 20)
                 
             }
+            }
             .padding(.horizontal, 20)
+                
         }
         .onAppear() {
             

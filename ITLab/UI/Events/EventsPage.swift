@@ -42,11 +42,12 @@ struct EventsPage: View {
                 getEvents()
                 
             }) {
-                Image(systemName: "arrow.clockwise")
+                Image(systemName: "arrow.clockwise").padding([.top, .bottom, .trailing], 15)
             }, trailing: Button(action: {
                 print("Not working")
             }) {
                 Image(systemName: "plus")
+                    .padding([.top, .leading, .bottom], 15)
             })
         }
         

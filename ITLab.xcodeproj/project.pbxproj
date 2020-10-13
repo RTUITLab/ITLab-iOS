@@ -105,7 +105,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6D18429B252347D100B95EBB /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		6D18429B252347D100B95EBB /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainMenu.swift; path = ../MainMenu.swift; sourceTree = "<group>"; };
 		6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthInteraction.swift; sourceTree = "<group>"; };
 		6D18A1E5252C8967002B0B3C /* TestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPage.swift; sourceTree = "<group>"; };
 		6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsPage.swift; sourceTree = "<group>"; };
@@ -215,13 +215,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6D18429A2523477C00B95EBB /* Authorize */ = {
+		6D97CA2F2535C65C00D66E9A /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */,
+				6D77A1BF252F5EE60086A360 /* EventPage.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		6D97CA392535C8B600D66E9A /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				6D97CA3B2535C8C400D66E9A /* Authorize */,
+				6D97CA2F2535C65C00D66E9A /* Events */,
+				6D18429B252347D100B95EBB /* MainMenu.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		6D97CA3B2535C8C400D66E9A /* Authorize */ = {
 			isa = PBXGroup;
 			children = (
 				6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */,
 				6D51416B2522484B00EFB01C /* AuthorizeController.swift */,
 			);
-			name = Authorize;
+			path = Authorize;
 			sourceTree = "<group>";
 		};
 		6D9A0C582518EBAA007796CD = {
@@ -244,20 +263,17 @@
 		6D9A0C632518EBAA007796CD /* ITLab */ = {
 			isa = PBXGroup;
 			children = (
-				6DDD8177252DF78B008CE80A /* Swaggers */,
-				6D18429A2523477C00B95EBB /* Authorize */,
-				6D9A0C642518EBAA007796CD /* ITLabApp.swift */,
-				6DF46360251EC364007149F6 /* AppDelegate.swift */,
-				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
-				6D9A0C6D2518EBB2007796CD /* Info.plist */,
-				6D9A0C6A2518EBB2007796CD /* Preview Content */,
-				6D18429B252347D100B95EBB /* MainMenu.swift */,
-				6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */,
-				6D18A1E5252C8967002B0B3C /* TestPage.swift */,
-				6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */,
-				6D77A1BF252F5EE60086A360 /* EventPage.swift */,
 				6D2AB28325337AEB00AFCDBB /* DownView.bundle */,
+				6D9A0C6D2518EBB2007796CD /* Info.plist */,
+				6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */,
+				6DF46360251EC364007149F6 /* AppDelegate.swift */,
+				6D9A0C642518EBAA007796CD /* ITLabApp.swift */,
 				6D2AB27F2533686000AFCDBB /* Markdown.swift */,
+				6D18A1E5252C8967002B0B3C /* TestPage.swift */,
+				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
+				6D9A0C6A2518EBB2007796CD /* Preview Content */,
+				6DDD8177252DF78B008CE80A /* Swaggers */,
+				6D97CA392535C8B600D66E9A /* UI */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
@@ -292,22 +308,22 @@
 		6DDD817B252DF78B008CE80A /* APIs */ = {
 			isa = PBXGroup;
 			children = (
-				6DDD817C252DF78B008CE80A /* UserAPI.swift */,
+				6DDD8185252DF78B008CE80A /* AboutAPI.swift */,
+				6DDD8182252DF78B008CE80A /* AccountAPI.swift */,
+				6DDD8188252DF78B008CE80A /* DebugAPI.swift */,
+				6DDD818B252DF78B008CE80A /* EquipmentAPI.swift */,
+				6DDD8187252DF78B008CE80A /* EquipmentTypeAPI.swift */,
+				6DDD8189252DF78B008CE80A /* EquipmentUserAPI.swift */,
 				6DDD817D252DF78B008CE80A /* EventAPI.swift */,
+				6DDD8186252DF78B008CE80A /* EventRoleAPI.swift */,
+				6DDD8180252DF78B008CE80A /* EventTypeAPI.swift */,
 				6DDD817E252DF78B008CE80A /* RolesAPI.swift */,
 				6DDD817F252DF78B008CE80A /* SummaryAPI.swift */,
-				6DDD8180252DF78B008CE80A /* EventTypeAPI.swift */,
+				6DDD817C252DF78B008CE80A /* UserAPI.swift */,
 				6DDD8181252DF78B008CE80A /* UserPropertyAPI.swift */,
-				6DDD8182252DF78B008CE80A /* AccountAPI.swift */,
-				6DDD8183252DF78B008CE80A /* UserSettingsAPI.swift */,
 				6DDD8184252DF78B008CE80A /* UserPropertyTypeAPI.swift */,
-				6DDD8185252DF78B008CE80A /* AboutAPI.swift */,
-				6DDD8186252DF78B008CE80A /* EventRoleAPI.swift */,
-				6DDD8187252DF78B008CE80A /* EquipmentTypeAPI.swift */,
-				6DDD8188252DF78B008CE80A /* DebugAPI.swift */,
-				6DDD8189252DF78B008CE80A /* EquipmentUserAPI.swift */,
+				6DDD8183252DF78B008CE80A /* UserSettingsAPI.swift */,
 				6DDD818A252DF78B008CE80A /* VkPropertyAPI.swift */,
-				6DDD818B252DF78B008CE80A /* EquipmentAPI.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -315,58 +331,58 @@
 		6DDD818F252DF78B008CE80A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6DDD8190252DF78B008CE80A /* ShiftView.swift */,
-				6DDD8191252DF78B008CE80A /* EventRoleView.swift */,
-				6DDD8192252DF78B008CE80A /* RequestResetPasswordRequest.swift */,
-				6DDD8193252DF78B008CE80A /* EventView.swift */,
-				6DDD8194252DF78B008CE80A /* CreateEditPlaceView.swift */,
-				6DDD8195252DF78B008CE80A /* DeletableRequest.swift */,
-				6DDD8196252DF78B008CE80A /* UserPropertyEditRequest.swift */,
-				6DDD8197252DF78B008CE80A /* EquipmentCreateRequest.swift */,
-				6DDD8198252DF78B008CE80A /* CompactEquipmentView.swift */,
-				6DDD8199252DF78B008CE80A /* BuildInformation.swift */,
-				6DDD819A252DF78B008CE80A /* CompactEventView.swift */,
-				6DDD819B252DF78B008CE80A /* RoleView.swift */,
-				6DDD819C252DF78B008CE80A /* GetSummaryRequest.swift */,
-				6DDD819D252DF78B008CE80A /* UserView.swift */,
-				6DDD819E252DF78B008CE80A /* CompactEquipmentTypeView.swift */,
-				6DDD819F252DF78B008CE80A /* UserPropertyTypeView.swift */,
-				6DDD81A0252DF78B008CE80A /* EventTypeEditRequest.swift */,
-				6DDD81A1252DF78B008CE80A /* ShiftEditRequest.swift */,
-				6DDD81A2252DF78B008CE80A /* EventRoleCreateRequest.swift */,
-				6DDD81A3252DF78B008CE80A /* EquipmentTypeEditRequest.swift */,
-				6DDD81A4252DF78B008CE80A /* EquipmentEditRequest.swift */,
-				6DDD81A5252DF78B008CE80A /* ShiftCreateRequest.swift */,
-				6DDD81A6252DF78B008CE80A /* EquipmentTypeCreateRequest.swift */,
-				6DDD81A7252DF78B008CE80A /* EventTypeView.swift */,
-				6DDD81A8252DF78B008CE80A /* IdRequest.swift */,
-				6DDD81A9252DF78B008CE80A /* UserPropertyTypeEditRequest.swift */,
-				6DDD81AA252DF78B008CE80A /* InviteUserRequest.swift */,
-				6DDD81AB252DF78B008CE80A /* EventEditRequest.swift */,
-				6DDD81AC252DF78B008CE80A /* VkVerifyRequest.swift */,
-				6DDD81AD252DF78B008CE80A /* EquipmentView.swift */,
-				6DDD81AE252DF78B008CE80A /* PlaceEditRequest.swift */,
-				6DDD81AF252DF78B008CE80A /* UserAndEventRole.swift */,
-				6DDD81B0252DF78B008CE80A /* AccountEditRequest.swift */,
-				6DDD81B1252DF78B008CE80A /* UserPropertyView.swift */,
-				6DDD81B2252DF78B008CE80A /* ProblemDetails.swift */,
-				6DDD81B3252DF78B008CE80A /* CreateEditEventView.swift */,
-				6DDD81B4252DF78B008CE80A /* PlaceView.swift */,
-				6DDD81B5252DF78B008CE80A /* ResetPasswordRequest.swift */,
-				6DDD81B6252DF78B008CE80A /* UserPropertyTypeCreateRequest.swift */,
-				6DDD81B7252DF78B008CE80A /* UserSettingPresent.swift */,
-				6DDD81B8252DF78B008CE80A /* EquipmentTypeView.swift */,
-				6DDD81B9252DF78B008CE80A /* WisherEventView.swift */,
-				6DDD81BA252DF78B008CE80A /* EventCreateRequest.swift */,
-				6DDD81BB252DF78B008CE80A /* PersonWorkRequest.swift */,
-				6DDD81BC252DF78B008CE80A /* EventTypeCreateRequest.swift */,
-				6DDD81BD252DF78B008CE80A /* CreateEditShiftView.swift */,
-				6DDD81BE252DF78B008CE80A /* UsersEventsView.swift */,
-				6DDD81BF252DF78B008CE80A /* EventRoleEditRequest.swift */,
-				6DDD81C0252DF78B008CE80A /* EventApplicationView.swift */,
-				6DDD81C1252DF78B008CE80A /* ChangePasswordRequest.swift */,
-				6DDD81C2252DF78B008CE80A /* PlaceCreateRequest.swift */,
 				6DDD81C3252DF78B008CE80A /* AccountCreateRequest.swift */,
+				6DDD81B0252DF78B008CE80A /* AccountEditRequest.swift */,
+				6DDD8199252DF78B008CE80A /* BuildInformation.swift */,
+				6DDD81C1252DF78B008CE80A /* ChangePasswordRequest.swift */,
+				6DDD819E252DF78B008CE80A /* CompactEquipmentTypeView.swift */,
+				6DDD8198252DF78B008CE80A /* CompactEquipmentView.swift */,
+				6DDD819A252DF78B008CE80A /* CompactEventView.swift */,
+				6DDD81B3252DF78B008CE80A /* CreateEditEventView.swift */,
+				6DDD8194252DF78B008CE80A /* CreateEditPlaceView.swift */,
+				6DDD81BD252DF78B008CE80A /* CreateEditShiftView.swift */,
+				6DDD8195252DF78B008CE80A /* DeletableRequest.swift */,
+				6DDD8197252DF78B008CE80A /* EquipmentCreateRequest.swift */,
+				6DDD81A4252DF78B008CE80A /* EquipmentEditRequest.swift */,
+				6DDD81A6252DF78B008CE80A /* EquipmentTypeCreateRequest.swift */,
+				6DDD81A3252DF78B008CE80A /* EquipmentTypeEditRequest.swift */,
+				6DDD81B8252DF78B008CE80A /* EquipmentTypeView.swift */,
+				6DDD81AD252DF78B008CE80A /* EquipmentView.swift */,
+				6DDD81C0252DF78B008CE80A /* EventApplicationView.swift */,
+				6DDD81BA252DF78B008CE80A /* EventCreateRequest.swift */,
+				6DDD81AB252DF78B008CE80A /* EventEditRequest.swift */,
+				6DDD81A2252DF78B008CE80A /* EventRoleCreateRequest.swift */,
+				6DDD81BF252DF78B008CE80A /* EventRoleEditRequest.swift */,
+				6DDD8191252DF78B008CE80A /* EventRoleView.swift */,
+				6DDD81BC252DF78B008CE80A /* EventTypeCreateRequest.swift */,
+				6DDD81A0252DF78B008CE80A /* EventTypeEditRequest.swift */,
+				6DDD81A7252DF78B008CE80A /* EventTypeView.swift */,
+				6DDD8193252DF78B008CE80A /* EventView.swift */,
+				6DDD819C252DF78B008CE80A /* GetSummaryRequest.swift */,
+				6DDD81A8252DF78B008CE80A /* IdRequest.swift */,
+				6DDD81AA252DF78B008CE80A /* InviteUserRequest.swift */,
+				6DDD81BB252DF78B008CE80A /* PersonWorkRequest.swift */,
+				6DDD81C2252DF78B008CE80A /* PlaceCreateRequest.swift */,
+				6DDD81AE252DF78B008CE80A /* PlaceEditRequest.swift */,
+				6DDD81B4252DF78B008CE80A /* PlaceView.swift */,
+				6DDD81B2252DF78B008CE80A /* ProblemDetails.swift */,
+				6DDD8192252DF78B008CE80A /* RequestResetPasswordRequest.swift */,
+				6DDD81B5252DF78B008CE80A /* ResetPasswordRequest.swift */,
+				6DDD819B252DF78B008CE80A /* RoleView.swift */,
+				6DDD81A5252DF78B008CE80A /* ShiftCreateRequest.swift */,
+				6DDD81A1252DF78B008CE80A /* ShiftEditRequest.swift */,
+				6DDD8190252DF78B008CE80A /* ShiftView.swift */,
+				6DDD81AF252DF78B008CE80A /* UserAndEventRole.swift */,
+				6DDD8196252DF78B008CE80A /* UserPropertyEditRequest.swift */,
+				6DDD81B6252DF78B008CE80A /* UserPropertyTypeCreateRequest.swift */,
+				6DDD81A9252DF78B008CE80A /* UserPropertyTypeEditRequest.swift */,
+				6DDD819F252DF78B008CE80A /* UserPropertyTypeView.swift */,
+				6DDD81B1252DF78B008CE80A /* UserPropertyView.swift */,
+				6DDD81B7252DF78B008CE80A /* UserSettingPresent.swift */,
+				6DDD81BE252DF78B008CE80A /* UsersEventsView.swift */,
+				6DDD819D252DF78B008CE80A /* UserView.swift */,
+				6DDD81AC252DF78B008CE80A /* VkVerifyRequest.swift */,
+				6DDD81B9252DF78B008CE80A /* WisherEventView.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -676,7 +692,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
@@ -702,7 +718,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
