@@ -105,7 +105,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6D18429B252347D100B95EBB /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainMenu.swift; path = ../MainMenu.swift; sourceTree = "<group>"; };
+		6D18429B252347D100B95EBB /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		6D18429F2523588F00B95EBB /* AppAuthInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthInteraction.swift; sourceTree = "<group>"; };
 		6D18A1E5252C8967002B0B3C /* TestPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPage.swift; sourceTree = "<group>"; };
 		6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsPage.swift; sourceTree = "<group>"; };
@@ -227,9 +227,9 @@
 		6D97CA392535C8B600D66E9A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				6D18429B252347D100B95EBB /* MainMenu.swift */,
 				6D97CA3B2535C8C400D66E9A /* Authorize */,
 				6D97CA2F2535C65C00D66E9A /* Events */,
-				6D18429B252347D100B95EBB /* MainMenu.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -289,18 +289,18 @@
 		6DDD8177252DF78B008CE80A /* Swaggers */ = {
 			isa = PBXGroup;
 			children = (
-				6DDD8178252DF78B008CE80A /* APIHelper.swift */,
 				6DDD8179252DF78B008CE80A /* AlamofireImplementations.swift */,
-				6DDD817A252DF78B008CE80A /* JSONValue.swift */,
-				6DDD817B252DF78B008CE80A /* APIs */,
-				6DDD818C252DF78B008CE80A /* CodableHelper.swift */,
-				6DDD818D252DF78B008CE80A /* JSONEncodableEncoding.swift */,
+				6DDD8178252DF78B008CE80A /* APIHelper.swift */,
 				6DDD818E252DF78B008CE80A /* APIs.swift */,
-				6DDD818F252DF78B008CE80A /* Models */,
-				6DDD81C4252DF78B008CE80A /* Extensions.swift */,
-				6DDD81C5252DF78B008CE80A /* JSONEncodingHelper.swift */,
-				6DDD81C6252DF78B008CE80A /* Models.swift */,
+				6DDD818C252DF78B008CE80A /* CodableHelper.swift */,
 				6DDD81C7252DF78B008CE80A /* Configuration.swift */,
+				6DDD81C4252DF78B008CE80A /* Extensions.swift */,
+				6DDD818D252DF78B008CE80A /* JSONEncodableEncoding.swift */,
+				6DDD81C5252DF78B008CE80A /* JSONEncodingHelper.swift */,
+				6DDD817A252DF78B008CE80A /* JSONValue.swift */,
+				6DDD81C6252DF78B008CE80A /* Models.swift */,
+				6DDD817B252DF78B008CE80A /* APIs */,
+				6DDD818F252DF78B008CE80A /* Models */,
 			);
 			path = Swaggers;
 			sourceTree = "<group>";
