@@ -22,7 +22,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" image="Logo" highlightedImage="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="P9m-c5-4LZ">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="748" image="LogoRTU" highlightedImage="LogoRTU" translatesAutoresizingMaskIntoConstraints="NO" id="P9m-c5-4LZ">
                                 <rect key="frame" x="47" y="31" width="321" height="332"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mdd-WW-nlO">
@@ -60,7 +60,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Logo" width="1403" height="1205"/>
+        <image name="LogoRTU" width="1403" height="1205"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
