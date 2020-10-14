@@ -11,6 +11,9 @@ struct EventsPage: View {
     
     @State var events : [CompactEventView] = []
     @State var isLoading: Bool = true;
+    
+    @State var isEditungRight = ITLabApp.authorizeController.getUserInfo()?.getRole("CanEditEvent") ?? false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -43,13 +46,18 @@ struct EventsPage: View {
                 
             }) {
                 Image(systemName: "arrow.clockwise").padding([.top, .bottom, .trailing], 15)
-            }, trailing: Button(action: {
-                print("Not working")
-            }) {
-                Image(systemName: "plus")
-                    .padding([.top, .leading, .bottom], 15)
-            })
-        }
+            }, trailing:
+                VStack{
+                    if self.isEditungRight{
+                        Button(action: {
+                            print("Not working")
+                        }) {
+                            Image(systemName: "plus")
+                                .padding([.top, .leading, .bottom], 15)
+                        }
+                    }
+                })
+            }
         
         
         .onAppear{
