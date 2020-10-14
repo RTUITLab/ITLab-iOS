@@ -46,7 +46,7 @@ struct EventPage: View {
                         Text("Адрес:")
                             .bold()
                         
-                        Text(event?.address ?? compactEvent?.address ?? "тут должен быть адрес")
+                        Text(event?.address ?? compactEvent?.address ?? "")
                     } .padding(.top, 10)
                 }
                 .padding(.vertical, 5.0)
@@ -58,7 +58,7 @@ struct EventPage: View {
                     VStack(alignment: .center){
                     ProgressView()
                         .padding(.top, 20.0)
-                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 20)
+                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
                     }
                     
                 } else {

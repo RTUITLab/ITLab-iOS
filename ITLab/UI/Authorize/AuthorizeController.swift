@@ -15,12 +15,42 @@ class AuthorizeController : UIViewController {
     
     private var appAuthInteraction : AppAuthInteraction?
     
-    
     struct UserInfo: Codable {
         let userId: UUID
+        private var role: [String:Bool] = ["CanEditEquipment": false,
+                                           "CanEditEvent": false,
+                                           "CanInviteToSystem": false,
+                                           "Participant": false,
+                                           "CanDeleteEventRole": false,
+                                           "CanEditEquipmentOwner": false,
+                                           "CanEditRoles": false,
+                                           "CanEditEquipmentType": false,
+                                           "CanEditEventType": false,
+                                           "CanEditUserPropertyTypes": false]
+        
+        func getRole(_ key: String) ->  Bool {
+            
+            guard let index = role.index(forKey: key) else {
+                return false
+            }
+            
+            return role[index].value
+        }
         
         public enum CodingKeys: String, CodingKey {
             case userId = "sub"
+            case role
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            userId = try container.decode(UUID.self, forKey: .userId)
+            let myRoles: [String] = try container.decode([String].self, forKey: .role)
+            
+            myRoles.forEach { (role) in
+                self.role.updateValue(true, forKey: role)
+            }
+            
         }
     }
     
@@ -74,13 +104,13 @@ extension AuthorizeController {
     }
     
     func logIn() {
-        getUserInfoReq()
-        
+        getUserInfoReq() {
         let menuView = UIHostingController(rootView: MainMenu())
         
         menuView.modalPresentationStyle = .fullScreen
         
         self.present(menuView, animated: false, completion: nil)
+        }
     }
     
     func performAction(freshTokens: @escaping OIDAuthStateAction)
@@ -88,9 +118,8 @@ extension AuthorizeController {
         appAuthInteraction?.getAuthState()?.performAction(freshTokens: freshTokens)
     }
     
-    func getUserInfoReq() {
+    func getUserInfoReq(completion: @escaping () -> Void) {
         appAuthInteraction?.getAuthState()?.performAction(freshTokens: { (accessToken, _, error) in
-            
             if error != nil  {
                print("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
                 return
@@ -112,7 +141,7 @@ extension AuthorizeController {
             
             let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [self] in
                     
                     guard error == nil else {
                         print("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
@@ -136,7 +165,6 @@ extension AuthorizeController {
                     } catch {
                         print("JSON Serialization Error")
                     }
-
                     
                     if response.statusCode != 200 {
                         // server replied with an error
@@ -162,7 +190,7 @@ extension AuthorizeController {
                         return
                     }
                         self.userInfo = user
-                    print("Success: \(self.userInfo?.userId)")
+                    completion()
                 }
             }
             
