@@ -12,6 +12,7 @@ import AppAuth
 class AuthorizeController : UIViewController {
     
     @IBOutlet private weak var ClickButton: UIButton!
+    @IBOutlet private weak var LoadingIndicator: UIActivityIndicatorView!
     
     public static var shared : AuthorizeController?
     
@@ -84,8 +85,10 @@ class AuthorizeController : UIViewController {
         if((appAuthInteraction?.getAuthState()?.isAuthorized) ?? false)
         {
             self.logIn()
+            return
         }
-        
+        LoadingIndicator.isHidden = true;
+        ClickButton.isHidden = false;
     }
 }
 
