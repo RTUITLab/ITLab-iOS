@@ -187,7 +187,12 @@ extension AppAuthInteraction {
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
         
-        ITLabApp.delegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.viewController) { authState, error in
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            print("Not AppDelegate")
+            return
+        }
+        
+        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.viewController) { authState, error in
             
             
             

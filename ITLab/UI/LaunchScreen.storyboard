@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nEF-Xx-gAP">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="NJ3-xa-XfL">
+            <objects>
+                <viewController id="nEF-Xx-gAP" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lWa-3p-0TF">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoRTU" highlightedImage="LogoRTU" translatesAutoresizingMaskIntoConstraints="NO" id="Wq4-Hu-9xm">
+                                <rect key="frame" x="82" y="340.66666666666669" width="250" height="214.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Wq4-Hu-9xm" secondAttribute="height" multiplier="303:260" id="8Rn-gS-4SI"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="HZT-0C-pTZ"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="230" id="SSY-3u-vX1"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="eGd-M4-jab"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Wq4-Hu-9xm" firstAttribute="centerY" secondItem="lWa-3p-0TF" secondAttribute="centerY" id="Bcz-LH-8Y7"/>
+                            <constraint firstItem="Wq4-Hu-9xm" firstAttribute="centerX" secondItem="lWa-3p-0TF" secondAttribute="centerX" id="CVh-y2-lcg"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hux-nD-8KU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="102.89855072463769" y="105.80357142857143"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LogoRTU" width="1403" height="1205"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

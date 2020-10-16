@@ -12,7 +12,7 @@ struct EventsPage: View {
     @State var events : [CompactEventView] = []
     @State var isLoading: Bool = true;
     
-    @State var isEditungRight = ITLabApp.authorizeController.getUserInfo()?.getRole("CanEditEvent") ?? false
+    @State var isEditungRight = AuthorizeController.shared?.getUserInfo()?.getRole("CanEditEvent") ?? false
     
     var body: some View {
         NavigationView {
@@ -73,7 +73,7 @@ struct EventsPage: View {
             self.isLoading = true
         }
         
-        ITLabApp.authorizeController.performAction { (token, _, _) in
+        AuthorizeController.shared!.performAction { (token, _, _) in
             
             SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
         

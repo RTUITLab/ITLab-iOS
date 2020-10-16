@@ -13,6 +13,8 @@ class AuthorizeController : UIViewController {
     
     @IBOutlet private weak var ClickButton: UIButton!
     
+    public static var shared : AuthorizeController?
+    
     private var appAuthInteraction : AppAuthInteraction?
     
     struct UserInfo: Codable {
@@ -70,7 +72,7 @@ class AuthorizeController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        AuthorizeController.shared = self
         self.appAuthInteraction = AppAuthInteraction(view: self)
         
         appAuthInteraction?.loadState()

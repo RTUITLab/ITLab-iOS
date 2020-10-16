@@ -95,7 +95,7 @@ struct EventPage: View {
         }
         .onAppear() {
             
-            ITLabApp.authorizeController.performAction { (accesToken, _, _) in
+            AuthorizeController.shared!.performAction { (accesToken, _, _) in
                 
                 SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(accesToken ?? "")"]
                 
