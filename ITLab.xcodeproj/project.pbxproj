@@ -116,11 +116,13 @@
 		6D357CED2539BFFE000B0F60 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6D5141682522479800EFB01C /* AuthorizeBoard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AuthorizeBoard.storyboard; sourceTree = "<group>"; };
 		6D51416B2522484B00EFB01C /* AuthorizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizeController.swift; sourceTree = "<group>"; };
+		6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = "<group>"; };
 		6D77A1BF252F5EE60086A360 /* EventPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPage.swift; sourceTree = "<group>"; };
 		6D9A0C612518EBAA007796CD /* ITLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D9A0C682518EBB2007796CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D9A0C6B2518EBB2007796CD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6D9A0C6D2518EBB2007796CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		6DDD8178252DF78B008CE80A /* APIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIHelper.swift; sourceTree = "<group>"; };
 		6DDD8179252DF78B008CE80A /* AlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireImplementations.swift; sourceTree = "<group>"; };
 		6DDD817A252DF78B008CE80A /* JSONValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
@@ -274,6 +276,8 @@
 				6D357CED2539BFFE000B0F60 /* SceneDelegate.swift */,
 				6D18A1E5252C8967002B0B3C /* TestPage.swift */,
 				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
+				6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */,
+				6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */,
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
 				6DDD8177252DF78B008CE80A /* Swaggers */,
 				6D97CA392535C8B600D66E9A /* UI */,
@@ -575,6 +579,7 @@
 /* Begin XCBuildConfiguration section */
 		6D9A0C6E2518EBB2007796CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -636,6 +641,7 @@
 		};
 		6D9A0C6F2518EBB2007796CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

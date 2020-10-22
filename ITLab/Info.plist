@@ -62,6 +62,17 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>ServerApi</key>
+	<dict>
+		<key>isSecure</key>
+		<string>$(API_isProtocolSecure)</string>
+		<key>ServerURL</key>
+		<string>$(API_Issuer)</string>
+		<key>ClientName</key>
+		<string>$(API_Client)</string>
+		<key>RedirectURL</key>
+		<string>$(API_RedirectURL)</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
