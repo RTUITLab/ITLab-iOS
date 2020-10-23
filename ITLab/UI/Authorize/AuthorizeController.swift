@@ -125,7 +125,6 @@ extension AuthorizeController {
     
     public func logOut() {
         
-        self.dismiss(animated: true, completion: nil)
         self.isLoading(true)
         
         self.appAuthInteraction?.logOut()
@@ -135,9 +134,10 @@ extension AuthorizeController {
         getUserInfoReq() {
         let menuView = UIHostingController(rootView: MainMenu())
         
-        menuView.modalPresentationStyle = .fullScreen
+        menuView.modalPresentationStyle = .overFullScreen
         
         self.present(menuView, animated: false, completion: nil)
+            
         }
     }
     

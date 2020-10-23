@@ -163,35 +163,36 @@ extension AppAuthInteraction {
         
         let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: self.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
         
-        self.authState = nil
-        self.stateChanged()
         
         self.viewController.isLoading(false)
+//        self.viewController.dismiss(animated: true, completion: nil)
         
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
         
-        OIDAuthorizationService.present(request, externalUserAgent: agent!) {
-            (response, error) in
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            print("Not AppDelegate")
+            self.viewController.alertError("Not AppDelegate")
+            return
+        }
+
+        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
+            
             if let respon = response
             {
-                
-                HTTPCookieStorage.shared.cookies?.forEach({ (cookie) in
-                    HTTPCookieStorage.shared.deleteCookie(cookie)
-                })
                 print(respon)
+                self.authState = nil
+                self.stateChanged()
+                self.viewController.dismiss(animated: true, completion: nil)
             }
             
             if let err = error
             {
                 print(err)
+                self.authState = nil
+                self.stateChanged()
+                self.viewController.dismiss(animated: true, completion: nil)
             }
-            HTTPCookieStorage.shared.cookies?.forEach({ (cookie) in
-                HTTPCookieStorage.shared.deleteCookie(cookie)
-            })
-            
-            self.viewController.isLoading(false)
-        }
-        
+        })
     }
     
     private func closeApp()
