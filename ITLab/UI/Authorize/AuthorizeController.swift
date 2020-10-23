@@ -25,7 +25,7 @@ class AuthorizeController : UIViewController {
     
     struct UserInfo: Codable {
         let userId: UUID
-        private var role: [String:Bool] = ["CanEditEquipment": false,
+        private var roles: [String:Bool] = ["CanEditEquipment": false,
                                            "CanEditEvent": false,
                                            "CanInviteToSystem": false,
                                            "Participant": false,
@@ -38,27 +38,34 @@ class AuthorizeController : UIViewController {
         
         func getRole(_ key: String) ->  Bool {
             
-            guard let index = role.index(forKey: key) else {
+            guard let index = roles.index(forKey: key) else {
                 return false
             }
             
-            return role[index].value
+            return roles[index].value
         }
         
         public enum CodingKeys: String, CodingKey {
             case userId = "sub"
-            case role
+            case roles
         }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             userId = try container.decode(UUID.self, forKey: .userId)
-            let myRoles: [String] = try container.decode([String].self, forKey: .role)
+            let roles: [String]? = try? container.decode([String].self, forKey: .roles)
             
-            myRoles.forEach { (role) in
-                self.role.updateValue(true, forKey: role)
+            if let roles = roles {
+                roles.forEach { (role) in
+                    self.roles.updateValue(true, forKey: role)
+                }
+            } else {
+                let role: String? = try? container.decode(String.self, forKey: .roles)
+                
+                if let role = role {
+                    self.roles.updateValue(true, forKey: role)
+                }
             }
-            
         }
     }
     
