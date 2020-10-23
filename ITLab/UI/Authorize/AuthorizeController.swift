@@ -47,7 +47,7 @@ class AuthorizeController : UIViewController {
         
         public enum CodingKeys: String, CodingKey {
             case userId = "sub"
-            case roles
+            case roles = "role"
         }
         
         init(from decoder: Decoder) throws {
