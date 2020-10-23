@@ -14,6 +14,11 @@ class AuthorizeController : UIViewController {
     @IBOutlet private weak var ClickButton: UIButton!
     @IBOutlet private weak var LoadingIndicator: UIActivityIndicatorView!
     
+    public func isLoading(_ value:Bool) {
+        LoadingIndicator.isHidden = !value;
+        ClickButton.isHidden = value;
+    }
+    
     public static var shared : AuthorizeController?
     
     private var appAuthInteraction : AppAuthInteraction?
@@ -87,15 +92,24 @@ class AuthorizeController : UIViewController {
             self.logIn()
             return
         }
-        LoadingIndicator.isHidden = true;
-        ClickButton.isHidden = false;
+        self.isLoading(false)
+        
+       
+    }
+    
+    public func alertError(_ message: String) {
+        
+        let alert = UIAlertController(title: "Ой, ошибка", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.present(alert, animated: true)
     }
 }
 
 extension AuthorizeController {
     
     @IBAction func authWithAutoCodeExchange(_ sender: UIButton) {
-
+        self.isLoading(true)
         self.appAuthInteraction?.authorization()
     }
 }
@@ -105,6 +119,8 @@ extension AuthorizeController {
     public func logOut() {
         
         self.dismiss(animated: true, completion: nil)
+        self.isLoading(true)
+        
         self.appAuthInteraction?.logOut()
     }
     
@@ -127,21 +143,27 @@ extension AuthorizeController {
         appAuthInteraction?.getAuthState()?.performAction(freshTokens: { (accessToken, _, error) in
             if error != nil  {
                print("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
+                self.alertError("Error fetching fresh tokens: \(error?.localizedDescription ?? "ERROR")")
+                self.isLoading(false)
                 return
             }
             
             guard let accessToken = accessToken else {
                 print("Error getting accessToken")
+                self.alertError("Error getting accessToken")
+                self.isLoading(false)
                 return
             }
             
             guard let userinfoEndpoint = self.appAuthInteraction?.getAuthState()?.lastAuthorizationResponse.request.configuration.discoveryDocument?.userinfoEndpoint else {
                 print("Userinfo endpoint not declared in discovery document")
+                self.alertError("Userinfo endpoint not declared in discovery document")
+                self.isLoading(false)
                 return
             }
             
             var urlRequest = URLRequest(url: userinfoEndpoint)
-            print(userinfoEndpoint)
+            
             urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(accessToken)"]
             
             let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
@@ -150,16 +172,22 @@ extension AuthorizeController {
                     
                     guard error == nil else {
                         print("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
+                        self.alertError("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
+                        self.isLoading(false)
                         return
                     }
 
                     guard let response = response as? HTTPURLResponse else {
                         print("Non-HTTP response")
+                        self.alertError("Non-HTTP response")
+                        self.isLoading(false)
                         return
                     }
 
                     guard let data = data else {
                         print("HTTP response data is empty")
+                        self.alertError("HTTP response data is empty")
+                        self.isLoading(false)
                         return
                     }
 
@@ -169,6 +197,8 @@ extension AuthorizeController {
                         json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                     } catch {
                         print("JSON Serialization Error")
+                        self.alertError("JSON Serialization Error")
+                        self.isLoading(false)
                     }
                     
                     if response.statusCode != 200 {
@@ -183,15 +213,19 @@ extension AuthorizeController {
                                                                                                 underlyingError: error)
                             self.appAuthInteraction?.getAuthState()?.update(withAuthorizationError: oauthError)
                             print("Authorization Error (\(oauthError)). Response: \(responseText ?? "RESPONSE_TEXT")")
+                            self.alertError("Authorization Error (\(oauthError)). Response: \(responseText ?? "RESPONSE_TEXT")")
                         } else {
                             print("HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
+                            self.alertError("HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
                         }
-
+                        self.isLoading(false)
                         return
                     }
                         
                     guard let user: UserInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
                         print("JSON serialization error in UserInfo")
+                        self.alertError("JSON serialization error in UserInfo")
+                        self.isLoading(false)
                         return
                     }
                         self.userInfo = user

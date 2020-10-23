@@ -29,6 +29,17 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>ServerApi</key>
+	<dict>
+		<key>ClientName</key>
+		<string>$(API_Client)</string>
+		<key>RedirectURL</key>
+		<string>$(API_RedirectURL)</string>
+		<key>ServerURL</key>
+		<string>$(API_Issuer)</string>
+		<key>isSecure</key>
+		<string>$(API_isProtocolSecure)</string>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -62,17 +73,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>ServerApi</key>
-	<dict>
-		<key>isSecure</key>
-		<string>$(API_isProtocolSecure)</string>
-		<key>ServerURL</key>
-		<string>$(API_Issuer)</string>
-		<key>ClientName</key>
-		<string>$(API_Client)</string>
-		<key>RedirectURL</key>
-		<string>$(API_RedirectURL)</string>
-	</dict>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -10,13 +10,13 @@
 В данных файлах нужно прописать конфигруацию для подключения к удаленному серверу:
 
 ```swift
-API_Issuer = ... \\ Ссылка на сайт
+API_Issuer = ... // Ссылка на сайт
 
-API_isProtocolSecure = ... \\ Протокол шифрования. true - https, false - http. Сделанно это из за того, что xcconfig распознает двойной \ как комментарий
+API_isProtocolSecure = ... // Протокол шифрования. true - https, false - http. Сделанно это из за того, что xcconfig распознает двойной / как комментарий
 
-API_Client = ... \\ Имя клиента в IdentityServer
+API_Client = ... // Имя клиента в IdentityServer
 
-API_RedirectURL = ... \\ Ссылка по которой будет происходить перенаправление в IdentityServer
+API_RedirectURL = ... // Ссылка по которой будет происходить перенаправление в IdentityServer
 ```
 
 После добавление файлов нужно проверить, что конфигруации подключены в проекте в поле `Configuration`
