@@ -9,11 +9,19 @@ import SwiftUI
 
 struct EventPage: View {
     
+    class MarkdownSize: ObservableObject {
+        @Published var height: CGFloat = 0
+    }
+    
+    @ObservedObject var markdownSize = MarkdownSize()
+    
     @State var compactEvent : CompactEventView?
     @State var event : EventView?
     
     @State var beginDate: String?
     @State var endDate: String?
+    
+    @State var isExpandedDescription: Bool = false
     
     
     var body: some View {
@@ -56,42 +64,53 @@ struct EventPage: View {
                 if event == nil {
                     
                     VStack(alignment: .center){
-                    ProgressView()
-                        .padding(.top, 20.0)
-                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
+                        ProgressView()
+                            .padding(.top, 20.0)
+                            .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
                     }
                     
                 } else {
-                
-                VStack(alignment: .leading) {
-                    Text("Описание")
-                        .bold()
-                        .padding(.bottom, 1)
-            
-                    if self.event != nil && !self.event!._description!.isEmpty {
-                        Markdown(markdown: (event?._description)!)
                     
+                    if self.event != nil && !self.event!._description!.isEmpty {
+                        VStack(alignment: .leading) {
+                            HStack{
+                                Image(systemName: "chevron.right")
+                                    .rotationEffect(Angle(degrees: isExpandedDescription ? 90 : 0))
+                                Text("Описание")
+                                    .bold()
+                                    .padding(.bottom, 1)
+                                    .padding(.trailing, 20.0)
+                                    .padding(.leading, 10.0)
+                            }
+                            .onTapGesture{
+                                isExpandedDescription.toggle()
+                            }
+                            
+                            if isExpandedDescription {
+                                Markdown(markdown: (event?._description)!)
+                                    .environmentObject(markdownSize)
+                            }
+                        }
+                        .padding(.vertical, 5.0)
+                        
+                        Divider()
                     }
-                }
-                .padding(.vertical, 5.0)
-                
-                Divider()
-                
-                if event != nil {
-                    VStack (alignment: .leading, spacing: 10) {
-                        ForEach (0..<event!.shifts!.count){ index in
-                            Shifts(shift: event!.shifts![index])
-                                .animation(.linear(duration: 0.3))
+                    
+                    if event != nil {
+                        VStack (alignment: .leading, spacing: 10) {
+                            ForEach (0..<event!.shifts!.count){ index in
+                                Shifts(shift: event!.shifts![index])
+                                    .animation(.linear(duration: 0.3))
+                            }
                         }
                     }
+                    
+                    Spacer(minLength: 20)
+                    
                 }
-                
-                Spacer(minLength: 20)
-                
-            }
             }
             .padding(.horizontal, 20)
-                
+            
         }
         .onAppear() {
             
@@ -151,15 +170,15 @@ extension EventPage {
                     Image(systemName: "chevron.right")
                         .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
                     
-                Text("\(localizedDate(shift.beginTime!).lowercased()) - \(localizedDate(shift.endTime!).lowercased())")
-                    .fontWeight(.bold)
-                    .padding(.trailing, 20.0)
-                    .padding(.leading, 10.0)
+                    Text("\(localizedDate(shift.beginTime!).lowercased()) - \(localizedDate(shift.endTime!).lowercased())")
+                        .fontWeight(.bold)
+                        .padding(.trailing, 20.0)
+                        .padding(.leading, 10.0)
                 }
                 . onTapGesture(){
                     isExpanded.toggle()
                 }
-               
+                
                 
                 if isExpanded {
                     VStack(alignment: .leading) {
@@ -196,15 +215,15 @@ extension EventPage {
                 VStack(alignment: .leading) {
                     HStack {
                         if isUsers || isEquipment {
-                        Image(systemName: "chevron.right")
-                            .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+                            Image(systemName: "chevron.right")
+                                .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
                         }
                         
                         Text("Место #\(indexPlace) | \(declinationOfNumberOfParticipants(indexPlace))")
                     }
                     . onTapGesture(){
                         if isUsers || isEquipment {
-                        isExpanded.toggle()
+                            isExpanded.toggle()
                         }
                     }
                     if isExpanded
@@ -315,14 +334,14 @@ extension EventPage {
                 
                 var body: some View {
                     VStack(alignment: .leading) {
-
-                            Text("\(equipment.equipmentType!.title!)")
-                                .font(.footnote)
-                                .bold()
-                                .lineLimit(2)
-                            
+                        
+                        Text("\(equipment.equipmentType!.title!)")
+                            .font(.footnote)
+                            .bold()
+                            .lineLimit(2)
+                        
                         Text(equipment.serialNumber!)
-                                .font(.caption)
+                            .font(.caption)
                         
                     }
                     .padding(5.0)
