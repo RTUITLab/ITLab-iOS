@@ -8,43 +8,49 @@
 import SwiftUI
 import Down
 import WebKit
+import Combine
 
 struct Markdown: View {
-    
-   
     
     private struct DownViewSwiftUI : UIViewRepresentable {
         var markdown: String
        
         @EnvironmentObject var markdownSize: EventPage.MarkdownSize
         
-        @State var isResizeView: Bool = true
-        
         func makeUIView(context: Context) -> DownView {
             
             let webView = try? DownView(frame: UIScreen.main.bounds, markdownString: markdown)
+            webView?.navigationDelegate = context.coordinator
             return webView!
             
         }
         
-        func updateUIView(_ uiView: DownView, context: Context) {
+        class Coordinator: NSObject, WKNavigationDelegate {
+            private var markdownSize: EventPage.MarkdownSize
             
-            if isResizeView && markdownSize.height <= 0 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    isResizeView = false
+            init(_ markdownSize: EventPage.MarkdownSize) {
+                        self.markdownSize = markdownSize
+                    }
+            
+            func webView(_ webView: WKWebView,
+                         didFinish navigation: WKNavigation!) {
+                webView.evaluateJavaScript("document.documentElement.scrollHeight") { (height, error) in
                     
-                    uiView.evaluateJavaScript("document.documentElement.scrollHeight", completionHandler: { (height, error) in
+                    if let height = height as? CGFloat {
                         
-                        if let height = height as? CGFloat {
-                            
-                            markdownSize.height = height
-                            uiView.scrollView.isScrollEnabled = false
-                        }
-                    })
+                        self.markdownSize.height = height
+                        webView.scrollView.isScrollEnabled = false
+                    }
                 }
             }
-            
-            
+        }
+        
+        func makeCoordinator() -> DownViewSwiftUI.Coordinator {
+                Coordinator(markdownSize)
+            }
+        
+        func updateUIView(_ uiView: DownView, context: Context) {
+
         }
 
     }
