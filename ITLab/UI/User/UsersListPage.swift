@@ -26,17 +26,17 @@ extension UIApplication: UIGestureRecognizerDelegate {
 }
 
 struct SearchBar: UIViewRepresentable {
-
+    
     @Binding var text: String
-
+    
     class Coordinator: NSObject, UISearchBarDelegate {
-
+        
         @Binding var text: String
-
+        
         init(text: Binding<String>) {
             _text = text
         }
-
+        
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
             text = searchText
         }
@@ -45,11 +45,11 @@ struct SearchBar: UIViewRepresentable {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
-
+    
     func makeCoordinator() -> SearchBar.Coordinator {
         return Coordinator(text: $text)
     }
-
+    
     func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.placeholder = "Поиск пользователя"
@@ -58,7 +58,7 @@ struct SearchBar: UIViewRepresentable {
         searchBar.autocapitalizationType = .none
         return searchBar
     }
-
+    
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
         uiView.text = text
     }
@@ -90,7 +90,7 @@ struct UsersListPage: View {
                                 
                                 Divider()
                                     .padding(.vertical, 10.0)
-                            
+                                
                             }
                             .padding([.leading, .trailing], 10)
                         }
@@ -140,16 +140,24 @@ extension UsersListPage {
         @State var user: UserView
         
         var body: some View {
-            VStack(alignment: .leading) {
-                Text("\(user.lastName ?? "") \(user.firstName ?? "") \(user.middleName ?? "")")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 3.0)
-                
-                Text("Email: \(user.email ?? "")")
-                Text("Телефон: \(user.phoneNumber ?? "")")
+            NavigationLink(destination: UserPage(user: self.user)) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("\(user.lastName ?? "") \(user.firstName ?? "") \(user.middleName ?? "")")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 3.0)
+                        
+                        Text("Email: \(user.email ?? "")")
+                        Text("Телефон: \(user.phoneNumber ?? "")")
+                    }
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .padding(.leading, 15.0)
+                }
+                .padding(.horizontal, 10.0)
             }
-            .padding(.horizontal, 10.0)
+            .buttonStyle(PlainButtonStyle())
         }
     }
 }
