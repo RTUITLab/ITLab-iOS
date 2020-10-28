@@ -90,7 +90,9 @@ struct EventPage: View {
                                 Markdown(markdown: (event?._description)!)
                                     .environmentObject(markdownSize)
                                     .onDisappear() {
-                                        markdownSize.height = 0
+                                        if !isExpandedDescription {
+                                            markdownSize.height = 0
+                                        }
                                     }
                             }
                         }
