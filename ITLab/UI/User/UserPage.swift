@@ -19,7 +19,7 @@ struct UserPage: View {
                 HStack {
                     Image(systemName: "chevron.left")
                         .font(Font.title2.weight(.medium))
-                        
+                    
                     Text("Пользователи")
                         .font(.title3)
                 }
@@ -31,30 +31,36 @@ struct UserPage: View {
                 
                 Divider()
                 
-                HStack {
-                    Text("Телефон: ")
-                        .font(.headline)
-                    Button(action: {
-                        if let phone : String = user.phoneNumber {
-                            UIApplication.shared.open(URL(string: "tel://\(phone)")!)
+                if user.phoneNumber != nil {
+                    HStack {
+                        Text("Телефон: ")
+                            .font(.headline)
+                        Button(action: {
+                            if var phone : String = user.phoneNumber {
+                                let regex = try! NSRegularExpression(pattern: "[^0-9]")
+                                phone = regex.stringByReplacingMatches(in: phone, options: [], range: NSRange(0..<phone.utf8.count), withTemplate: "")
+                                
+                                UIApplication.shared.open(URL(string: "tel://\(phone)")!)
+                            }
+                        }) {
+                            Text(user.phoneNumber!)
                         }
-                    }) {
-                        Text(user.phoneNumber ?? "")
-                    }
-                }.padding(.bottom, 5)
-                
-                HStack {
-                    Text("Email: ")
-                        .font(.headline)
-                    Button(action: {
-                        if let email = user.email {
-                            UIApplication.shared.open(URL(string: "mailto://compose?to=\(email)")!)
-                        }
-                    }) {
-                        Text(user.email ?? "")
-                    }
+                    }.padding(.bottom, 5)
                 }
                 
+                if user.email != nil {
+                    HStack {
+                        Text("Email: ")
+                            .font(.headline)
+                        Button(action: {
+                            if let email = user.email {
+                                UIApplication.shared.open(URL(string: "mailto://compose?to=\(email)")!)
+                            }
+                        }) {
+                            Text(user.email!)
+                        }
+                    }
+                }
                 Divider()
                 
                 Spacer()
