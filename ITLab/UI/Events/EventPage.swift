@@ -90,7 +90,9 @@ struct EventPage: View {
                                 Markdown(markdown: (event?._description)!)
                                     .environmentObject(markdownSize)
                                     .onDisappear() {
-                                        markdownSize.height = 0
+                                        if !isExpandedDescription {
+                                            markdownSize.height = 0
+                                        }
                                     }
                             }
                         }
@@ -153,8 +155,8 @@ struct EventPage: View {
     func formateDateToString(_ date: Date?) -> String
     {
         let dateFormmat = DateFormatter()
-        
-        dateFormmat.dateFormat = "dd.MM.yy HH:mm"
+        dateFormmat.locale = Locale(identifier: "ru")
+        dateFormmat.dateFormat = "d MMMM yyyy HH:mm"
         
         return dateFormmat.string(from: date ?? Date())
     }
