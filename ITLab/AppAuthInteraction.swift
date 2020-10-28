@@ -98,6 +98,8 @@ extension AppAuthInteraction {
         
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
+            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
+            self.viewController.isLoading(false)
             return
         }
 
@@ -108,7 +110,8 @@ extension AppAuthInteraction {
 
             guard let config = configuration else {
                 self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.setAuthState(nil)
+                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.viewController.isLoading(false)
                 return
             }
             
@@ -122,6 +125,8 @@ extension AppAuthInteraction {
     {
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
+            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
+            self.closeApp()
             return
         }
 
@@ -132,7 +137,8 @@ extension AppAuthInteraction {
 
             guard let config = configuration else {
                 self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.setAuthState(nil)
+                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.closeApp()
                 return
             }
 
@@ -140,9 +146,6 @@ extension AppAuthInteraction {
             
             self.endSession(configuration: config)
         }
-        
-        self.authState = nil
-        stateChanged()
     }
 }
 
@@ -153,37 +156,62 @@ extension AppAuthInteraction {
     {
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+            self.closeApp()
             return
         }
-        
-        
         
         let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: self.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
         
+        
+        self.viewController.isLoading(false)
+//        self.viewController.dismiss(animated: true, completion: nil)
+        
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
         
-        OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: {
-            (response, error) in
-                if let respon = response
-                           {
-                               print(respon)
-                           }
-
-                           if let err = error
-                           {
-                               print(err)
-                           }
-        })
-        
-    }
-
-    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
-
-        guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
-            self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            print("Not AppDelegate")
+            self.viewController.alertError("Not AppDelegate")
             return
         }
 
+        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
+            
+            if let respon = response
+            {
+                print(respon)
+                self.authState = nil
+                self.stateChanged()
+                self.viewController.dismiss(animated: true, completion: nil)
+            }
+            
+            if let err = error
+            {
+                print(err)
+                self.authState = nil
+                self.stateChanged()
+                self.viewController.dismiss(animated: true, completion: nil)
+            }
+        })
+    }
+    
+    private func closeApp()
+    {
+        self.viewController.isLoading(false)
+        
+        self.authState = nil
+        self.stateChanged()
+    }
+    
+    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+        
+        guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
+            self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+            self.viewController.isLoading(false)
+            return
+        }
+        
         // builds authentication request
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
@@ -198,6 +226,8 @@ extension AppAuthInteraction {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             print("Not AppDelegate")
+            self.viewController.alertError("Not AppDelegate")
+            self.viewController.isLoading(false)
             return
         }
         
@@ -214,6 +244,7 @@ extension AppAuthInteraction {
                 
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                self.viewController.isLoading(false)
                 self.setAuthState(nil)
             }
         }
@@ -280,7 +311,6 @@ extension AppAuthInteraction {
         guard let message = message else {
             return
         }
-
         print(message);
     }
 }

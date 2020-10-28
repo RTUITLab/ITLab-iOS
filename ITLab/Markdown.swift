@@ -8,58 +8,72 @@
 import SwiftUI
 import Down
 import WebKit
+import Combine
 
 struct Markdown: View {
     
-    class MarkdownSize: ObservableObject {
-        @Published var height: CGFloat = 0;
-    }
-    
-   private struct WebView : UIViewRepresentable {
+    private struct DownViewSwiftUI : UIViewRepresentable {
         var markdown: String
-    
-   @State var maxHeight: CGFloat = -1
-    
-    @EnvironmentObject var markdownSize : MarkdownSize
+       
+        @EnvironmentObject var markdownSize: EventPage.MarkdownSize
         
         func makeUIView(context: Context) -> DownView {
             
             let webView = try? DownView(frame: UIScreen.main.bounds, markdownString: markdown)
-            webView!.scrollView.isScrollEnabled = true
-            
+            webView?.navigationDelegate = context.coordinator
             return webView!
             
         }
         
-        func updateUIView(_ uiView: DownView, context: Context) {
-//            uiView.evaluateJavaScript("document.documentElement.scrollHeight", completionHandler: { (height, error) in
-//                if markdownSize.height != height as! CGFloat {
-//                    
-//                
-//                markdownSize.height = height as! CGFloat
-//                }
-////                markdownSize.height = height as! CGFloat
-//                    print(height as! CGFloat)
-//                
-//                
-//                print("Kek")
-//              })
+        class Coordinator: NSObject, WKNavigationDelegate {
+            private var markdownSize: EventPage.MarkdownSize
+            
+            init(_ markdownSize: EventPage.MarkdownSize) {
+                        self.markdownSize = markdownSize
+                    }
+            
+            func webView(_ webView: WKWebView,
+                         didFinish navigation: WKNavigation!) {
+                webView.evaluateJavaScript("document.documentElement.scrollHeight") { (height, error) in
+                    
+                    if let height = height as? CGFloat {
+                        
+                        self.markdownSize.height = height
+                        webView.scrollView.isScrollEnabled = false
+                    }
+                }
+            }
         }
+        
+        func makeCoordinator() -> DownViewSwiftUI.Coordinator {
+                Coordinator(markdownSize)
+            }
+        
+        func updateUIView(_ uiView: DownView, context: Context) {
+
+        }
+
     }
     
     @State var markdown: String
-    @State var webView : DownView?
+    @EnvironmentObject var markdownSize: EventPage.MarkdownSize
     
-    @ObservedObject var markdownSize : MarkdownSize = MarkdownSize()
-   
     var body: some View {
         VStack(alignment: .leading) {
-            WebView(markdown: markdown).environmentObject(markdownSize)
-                .frame(height: 500)
+            
+            if markdownSize.height <= 0 {
+                ProgressView()
+                    .padding(.vertical, 20.0)
+                    .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
+            }
+            
+            DownViewSwiftUI(markdown: markdown).environmentObject(markdownSize)
+                .frame(height: markdownSize.height <= 0 ? 0.01 : markdownSize.height)
         }
-        
-        
     }
+    
+    
+    
 }
 
 
