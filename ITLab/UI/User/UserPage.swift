@@ -12,7 +12,7 @@ struct UserPage: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @State var equipments: [EquipmentView] = []
-    @State var isLoading: Bool = true
+    @State var isLoadingEquipments: Bool = true
     
     var body: some View {
         VStack (alignment: .leading) {
@@ -77,7 +77,7 @@ struct UserPage: View {
                 
                 Divider()
                 
-                if isLoading {
+                if isLoadingEquipments {
                     ProgressView()
                         .padding(.top, 15)
                         .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 10)
@@ -93,10 +93,9 @@ struct UserPage: View {
                                 ForEach(equipments, id: \._id) {
                                     equipment in
                                     
-                                    Text(equipment.equipmentType!.title!)
-                                    Text(equipment.serialNumber!)
+                                    EquipmentStack(equipment: equipment)
                                 }
-                            } .padding(.bottom, 10.0)
+                            }
                         } else {
                             Text("Оборудование на руках нет")
                         }
@@ -130,14 +129,30 @@ struct UserPage: View {
                 
                 if let error = error {
                     print(error)
-                    self.isLoading = false
+                    self.isLoadingEquipments = false
                     return
                 }
                 
                 self.equipments = equipments ?? []
-                self.isLoading = false
+                self.isLoadingEquipments = false
             }
             
+        }
+    }
+}
+
+extension UserPage {
+    struct EquipmentStack : View {
+        @State var equipment: EquipmentView
+        var body: some View {
+            VStack(alignment: .leading) {
+                Text(equipment.equipmentType!.title!)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .padding(.bottom, 2)
+                
+                Text(equipment.serialNumber!)
+            } .padding(5)
         }
     }
 }
