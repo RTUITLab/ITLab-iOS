@@ -24,10 +24,10 @@ struct EventsPage: View {
                         VStack {
                             ForEach(0..<events.count) { index in
                                 EventStack(event: events[index])
-                                    
+                                
                                 if index + 1 != events.count {
-                                Divider()
-                                    .padding(.vertical, 5.0)
+                                    Divider()
+                                        .padding(.vertical, 5.0)
                                 }
                                 
                             }
@@ -57,7 +57,7 @@ struct EventsPage: View {
                         }
                     }
                 })
-            }
+        }
         
         
         .onAppear{
@@ -65,7 +65,7 @@ struct EventsPage: View {
         }
     }
     
-   
+    
     
     func getEvents()
     {
@@ -76,7 +76,7 @@ struct EventsPage: View {
         AuthorizeController.shared!.performAction { (token, _, _) in
             
             SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
-        
+            
             let date = Date()
             var dateComponents = DateComponents()
             
@@ -90,7 +90,7 @@ struct EventsPage: View {
             let newDate = Calendar.current.date(from: dateComponents)
             
             EventAPI.apiEventGet(begin: newDate) { (events, error) in
-            
+                
                 self.events = events?.sorted() { (a, b) -> Bool in
                     a.beginTime! > b.beginTime!
                 } ?? []
@@ -104,16 +104,7 @@ struct EventsPage: View {
 extension EventsPage {
     private struct EventStack : View {
         
-        @State private var beginDate : String = ""
-        @State private var beginTime : String = ""
-        @State private var endDate : String = ""
-        @State private var endTime : String = ""
-        //    @State var beginDateFormate : Bool = false
-        //    @State var endDateFormate : Bool = false
-        
         @State var event : CompactEventView
-        
-        
         
         var body: some View {
             NavigationLink(destination: EventPage(compactEvent: event))
@@ -122,39 +113,26 @@ extension EventsPage {
                     VStack (alignment: .leading) {
                         Text(event.title ?? "Not title")
                             .font(.title3)
+                            .fontWeight(.bold)
                             .padding(.top, 10)
+                        Text(event.eventType?.title ?? "Not event type")
+                            .fontWeight(.light)
+                            .padding(.bottom, 5)
+                        
+                        ProgressView(value: Float(event.currentParticipantsCount ?? 4), total: Float(event.targetParticipantsCount ?? 10)).progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                        
                         HStack{
                             HStack {
-                                VStack{
-                                    Spacer()
-                                    Text("Начало:")
-                                        .font(.callout)
-                                    Spacer()
-                                }
-                                VStack {
-                                    Text(beginTime)
-                                    Text(beginDate)
-                                    
-                                }
+                                Image(systemName: "clock")
+                                Text(dateFormate(event.beginTime ?? Date()))
+                                    .fontWeight(.light)
                             }
                             
                             Spacer()
                             
-                            
                             HStack {
-                                VStack{
-                                    Spacer()
-                                    Text("Конец:")
-                                        .font(.callout)
-                                    Spacer()
-                                }
-                                VStack {
-                                    
-                                    Text(endTime)
-                                    
-                                    Text(endDate)
-                                    
-                                }
+                                Text("Готовность \(event.currentParticipantsCount ?? 4)/\(event.targetParticipantsCount ?? 10)")
+                                    .fontWeight(.light)
                             }
                         }
                         .padding(.vertical, 5)
@@ -167,24 +145,17 @@ extension EventsPage {
                 }
                 .padding(.horizontal, 10)
                 .frame(height: 100)
-                .background(Color.gray.opacity(0.4))
                 
             }
             .buttonStyle(PlainButtonStyle())
+        }
+        
+        func dateFormate(_ date: Date) -> String
+        {
+            let dateFormmat = DateFormatter()
             
-            .onAppear() {
-                
-                let dateFormmat = DateFormatter()
-                
-                dateFormmat.dateFormat = "dd.MM.yy"
-                beginDate = dateFormmat.string(from: event.beginTime ?? Date())
-                endDate = dateFormmat.string(from: event.endTime ?? Date())
-                
-                dateFormmat.dateFormat = "HH:mm"
-                
-                beginTime = dateFormmat.string(from: event.beginTime ?? Date())
-                endTime = dateFormmat.string(from: event.endTime ?? Date())
-            }
+            dateFormmat.dateFormat = "dd.MM.yy HH:mm"
+            return dateFormmat.string(from: date)
         }
     }
 }

@@ -153,8 +153,8 @@ struct EventPage: View {
     func formateDateToString(_ date: Date?) -> String
     {
         let dateFormmat = DateFormatter()
-        
-        dateFormmat.dateFormat = "dd.MM.yy HH:mm"
+        dateFormmat.locale = Locale(identifier: "ru")
+        dateFormmat.dateFormat = "d MMMM yyyy HH:mm"
         
         return dateFormmat.string(from: date ?? Date())
     }
