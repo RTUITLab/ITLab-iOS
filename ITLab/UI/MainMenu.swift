@@ -23,7 +23,7 @@ struct MainMenu: View {
                     Text("Оборудование")
                 }
             
-            Text("Users")
+            UsersListPage()
                 .tabItem {
                     Text("Пользователи")
                 }

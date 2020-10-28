@@ -119,7 +119,7 @@ extension EventsPage {
                             .fontWeight(.light)
                             .padding(.bottom, 5)
                         
-                        ProgressView(value: Float(event.currentParticipantsCount ?? 4), total: Float(event.targetParticipantsCount ?? 10)).progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                        ProgressView(value: Float(event.currentParticipantsCount ?? 4), total: Float((event.targetParticipantsCount ?? 10) >= (event.currentParticipantsCount ?? 4) ? event.targetParticipantsCount ?? 10 : event.currentParticipantsCount ?? 4 )).progressViewStyle(LinearProgressViewStyle(tint: .blue))
                         
                         HStack{
                             HStack {
