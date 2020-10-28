@@ -67,9 +67,7 @@ struct EventPage: View {
                         ProgressView()
                             .padding(.top, 20.0)
                             .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
-                    }
-                    
-                } else {
+                    }} else {
                     
                     if self.event != nil && !self.event!._description!.isEmpty {
                         VStack(alignment: .leading) {
