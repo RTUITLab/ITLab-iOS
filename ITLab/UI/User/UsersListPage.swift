@@ -62,7 +62,7 @@ struct UsersListPage: View {
                     ScrollView{
                         VStack(alignment: .leading) {
                             ForEach(self.users.filter {
-                                self.userSearch.isEmpty ? true : $0.lastName?.lowercased().contains(self.userSearch.lowercased()) ?? true
+                                self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
                             }, id: \._id) { user in
                                 
                                 UserStack(user: user)
