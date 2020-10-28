@@ -89,6 +89,9 @@ struct EventPage: View {
                             if isExpandedDescription {
                                 Markdown(markdown: (event?._description)!)
                                     .environmentObject(markdownSize)
+                                    .onDisappear() {
+                                        markdownSize.height = 0
+                                    }
                             }
                         }
                         .padding(.vertical, 5.0)
