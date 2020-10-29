@@ -56,6 +56,23 @@ struct UserPage: View {
                                     }
                                 }) {
                                     Text(user.email!)
+                                    
+                                }
+                                .contextMenu() {
+                                    Button(action: {
+                                        if let email = user.email {
+                                            UIApplication.shared.open(URL(string: "mailto://compose?to=\(email)")!)
+                                        }
+                                    }) {
+                                        Text("Отправить письмо")
+                                    }
+                                    
+                                    Button(action: {
+                                        UIPasteboard.general.string = user.email!
+                                    }) {
+                                        Text("Копировать")
+                                        Image(systemName: "doc.on.doc")
+                                    }
                                 }
                             }
                             
@@ -69,6 +86,25 @@ struct UserPage: View {
                                     }
                                 }) {
                                     Text(user.phoneNumber!)
+                                }
+                                .contextMenu() {
+                                    Button(action: {
+                                        if var phone : String = user.phoneNumber {
+                                            let regex = try! NSRegularExpression(pattern: "[^0-9]")
+                                            phone = regex.stringByReplacingMatches(in: phone, options: [], range: NSRange(0..<phone.utf8.count), withTemplate: "")
+                                            
+                                            UIApplication.shared.open(URL(string: "tel://\(phone)")!)
+                                        }
+                                    }) {
+                                        Text("Набрать номер")
+                                    }
+                                    
+                                    Button(action: {
+                                        UIPasteboard.general.string = user.phoneNumber!
+                                    }) {
+                                        Text("Копировать")
+                                        Image(systemName: "doc.on.doc")
+                                    }
                                 }
                             }
                         }
