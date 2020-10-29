@@ -50,62 +50,62 @@ struct UserPage: View {
                         
                         VStack(alignment: .leading, spacing: 10) {
                             if user.email != nil {
-                                Button(action: {
-                                    if let email = user.email {
-                                        UIApplication.shared.open(URL(string: "mailto://compose?to=\(email)")!)
+                                Text(user.email!)
+                                    .foregroundColor(.blue)
+                                    .contextMenu() {
+                                        Button(action: {
+                                            if let email = user.email {
+                                                UIApplication.shared.open(URL(string: "mailto://compose?to=\(email)")!)
+                                            }
+                                        }) {
+                                            Text("Отправить письмо")
+                                        }
+                                        
+                                        Button(action: {
+                                            UIPasteboard.general.string = user.email!
+                                        }) {
+                                            Text("Копировать")
+                                            Image(systemName: "doc.on.doc")
+                                        }
                                     }
-                                }) {
-                                    Text(user.email!)
-                                    
-                                }
-                                .contextMenu() {
-                                    Button(action: {
+                                    .onTapGesture {
                                         if let email = user.email {
                                             UIApplication.shared.open(URL(string: "mailto://compose?to=\(email)")!)
                                         }
-                                    }) {
-                                        Text("Отправить письмо")
+                                        
                                     }
-                                    
-                                    Button(action: {
-                                        UIPasteboard.general.string = user.email!
-                                    }) {
-                                        Text("Копировать")
-                                        Image(systemName: "doc.on.doc")
-                                    }
-                                }
                             }
                             
                             if user.phoneNumber != nil {
-                                Button(action: {
-                                    if var phone : String = user.phoneNumber {
-                                        let regex = try! NSRegularExpression(pattern: "[^0-9]")
-                                        phone = regex.stringByReplacingMatches(in: phone, options: [], range: NSRange(0..<phone.utf8.count), withTemplate: "")
+                                Text(user.phoneNumber!)
+                                    .foregroundColor(.blue)
+                                    .contextMenu() {
+                                        Button(action: {
+                                            if var phone : String = user.phoneNumber {
+                                                let regex = try! NSRegularExpression(pattern: "[^0-9]")
+                                                phone = regex.stringByReplacingMatches(in: phone, options: [], range: NSRange(0..<phone.utf8.count), withTemplate: "")
+                                                
+                                                UIApplication.shared.open(URL(string: "tel://\(phone)")!)
+                                            }
+                                        }) {
+                                            Text("Набрать номер")
+                                        }
                                         
-                                        UIApplication.shared.open(URL(string: "tel://\(phone)")!)
+                                        Button(action: {
+                                            UIPasteboard.general.string = user.phoneNumber!
+                                        }) {
+                                            Text("Копировать")
+                                            Image(systemName: "doc.on.doc")
+                                        }
                                     }
-                                }) {
-                                    Text(user.phoneNumber!)
-                                }
-                                .contextMenu() {
-                                    Button(action: {
+                                    .onTapGesture {
                                         if var phone : String = user.phoneNumber {
                                             let regex = try! NSRegularExpression(pattern: "[^0-9]")
                                             phone = regex.stringByReplacingMatches(in: phone, options: [], range: NSRange(0..<phone.utf8.count), withTemplate: "")
                                             
                                             UIApplication.shared.open(URL(string: "tel://\(phone)")!)
                                         }
-                                    }) {
-                                        Text("Набрать номер")
                                     }
-                                    
-                                    Button(action: {
-                                        UIPasteboard.general.string = user.phoneNumber!
-                                    }) {
-                                        Text("Копировать")
-                                        Image(systemName: "doc.on.doc")
-                                    }
-                                }
                             }
                         }
                     }
@@ -150,7 +150,8 @@ struct UserPage: View {
             }
             .padding(.horizontal, 20.0)
             .padding(.top, 10)
-        }        .frame(width: UIScreen.main.bounds.width, alignment: .leading)
+        }
+        .frame(width: UIScreen.main.bounds.width, alignment: .leading)
         .navigationBarHidden(true)
         .onAppear() {
             getEquimpment()
