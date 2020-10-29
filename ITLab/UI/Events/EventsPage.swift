@@ -24,7 +24,7 @@ struct EventsPage: View {
                     
                     ForEach(events, id: \.id) { event in
                         EventStack(event: event)
-                            .padding(.vertical, 5)
+                            .padding(.vertical, 10)
                 
                     }
                 }

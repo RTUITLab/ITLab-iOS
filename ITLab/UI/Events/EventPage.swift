@@ -25,96 +25,92 @@ struct EventPage: View {
     
     
     var body: some View {
-        ScrollView{
-            VStack (alignment: .leading) {
+        List {
+            Section {
                 
-                Text(event?.eventType?.title ?? compactEvent?.eventType?.title ?? "Лекция")
-                    .font(.title3)
-                
-                Divider()
-                
-                VStack(alignment: .leading) {
-                    HStack(spacing: 20) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Начало:")
-                                .bold()
-                            
-                            Text("Конец:")
-                                .bold()
-                            
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(beginDate ?? formateDateToString(compactEvent?.beginTime))
-                            Text(endDate ?? formateDateToString(compactEvent?.endTime))
-                        }
-                    }
+                HStack(alignment: .top) {
+                    Text("Тип события")
+                        .padding(.trailing, 15.0)
                     
-                    VStack(alignment: .leading) {
-                        Text("Адрес:")
-                            .bold()
-                        
-                        Text(event?.address ?? compactEvent?.address ?? "")
-                    } .padding(.top, 10)
+                    Spacer()
+                    Text(event?.eventType?.title ?? compactEvent?.eventType?.title ?? "Лекция")
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.trailing)
                 }
-                .padding(.vertical, 5.0)
                 
-                Divider()
                 
-                if event == nil {
+                HStack(alignment: .top) {
+                    Text("Начало")
+                        .padding(.trailing, 15.0)
                     
-                    VStack(alignment: .center){
-                        ProgressView()
-                            .padding(.top, 20.0)
-                            .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
-                    }} else {
-                    
-                    if self.event != nil && !self.event!._description!.isEmpty {
-                        VStack(alignment: .leading) {
-                            HStack{
-                                Image(systemName: "chevron.right")
-                                    .rotationEffect(Angle(degrees: isExpandedDescription ? 90 : 0))
-                                Text("Описание")
-                                    .bold()
-                                    .padding(.bottom, 1)
-                                    .padding(.trailing, 20.0)
-                                    .padding(.leading, 10.0)
-                            }
-                            .onTapGesture{
-                                isExpandedDescription.toggle()
-                            }
-                            
-                            if isExpandedDescription {
-                                Markdown(markdown: (event?._description)!)
-                                    .environmentObject(markdownSize)
-                                    .onDisappear() {
-                                        if !isExpandedDescription {
-                                            markdownSize.height = 0
-                                        }
-                                    }
-                            }
-                        }
-                        .padding(.vertical, 5.0)
+                    Spacer()
+                    Text(beginDate ?? formateDateToString(compactEvent?.beginTime))
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.trailing)
+                }
+                .padding(.vertical, 5)
+                
+                HStack(alignment: .top) {
+                    Text("Конец")
+                        .padding(.trailing, 15.0)
+                    Spacer()
+                    Text(endDate ?? formateDateToString(compactEvent?.endTime))
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
                         
-                        Divider()
-                    }
+                        .multilineTextAlignment(.trailing)
+                }
+                .padding(.vertical, 5)
+                
+                HStack(alignment: .top) {
+                    Text("Готовность")
+                        .padding(.trailing, 15.0)
                     
-                    if event != nil {
-                        VStack (alignment: .leading, spacing: 10) {
-                            ForEach (0..<event!.shifts!.count){ index in
-                                Shifts(shift: event!.shifts![index])
-                                    .animation(.linear(duration: 0.3))
-                            }
-                        }
-                    }
+                    Spacer()
+                    Text("\(compactEvent?.currentParticipantsCount ?? 4)/\(compactEvent?.targetParticipantsCount ?? 10)")
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.trailing)
+                }
+                
+                HStack(alignment: .top) {
+                    Text("Адрес")
+                        .padding(.trailing, 15.0)
                     
-                    Spacer(minLength: 20)
-                    
+                    Spacer()
+                    Text(event?.address ?? compactEvent?.address ?? "")
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.trailing)
                 }
             }
-            .padding(.horizontal, 20)
+            
+            
+            if event == nil {
+                
+                VStack(alignment: .center){
+                    ProgressView()
+                        .padding(.vertical)
+                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
+                }.listRowBackground(Color.clear)
+                
+            } else {
+                Section {
+                    if self.event != nil && !self.event!._description!.isEmpty {
+                        NavigationLink("Описание события", destination: Markdown(markdown: (event?._description)!)
+                                        .environmentObject(markdownSize))
+                    }
+                }
+                
+                if event != nil {
+                    VStack (alignment: .leading, spacing: 10) {
+                        ForEach (0..<event!.shifts!.count){ index in
+                            Shifts(shift: event!.shifts![index])
+                                .animation(.linear(duration: 0.3))
+                        }
+                    }
+                }
+            }
             
         }
+        .listStyle(GroupedListStyle())
         .onAppear() {
             
             AuthorizeController.shared!.performAction { (accesToken, _, _) in
@@ -129,7 +125,8 @@ struct EventPage: View {
                 }
             }
         }
-        .navigationBarTitle(Text(event?.title ?? compactEvent?.title ?? "Название события"), displayMode: .automatic)
+        .navigationBarTitle(Text(event?.title ?? compactEvent?.title ?? "Название события"), displayMode: .large)
+        
     }
     
     func countingDate()
@@ -154,7 +151,7 @@ struct EventPage: View {
     {
         let dateFormmat = DateFormatter()
         dateFormmat.locale = Locale(identifier: "ru")
-        dateFormmat.dateFormat = "d MMMM yyyy HH:mm"
+        dateFormmat.dateFormat = "d MMMM yyyy \nHH:mm"
         
         return dateFormmat.string(from: date ?? Date())
     }
