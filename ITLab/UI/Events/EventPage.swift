@@ -99,12 +99,13 @@ struct EventPage: View {
                     }
                 }
                 
-                if event != nil {
-                    VStack (alignment: .leading, spacing: 10) {
-                        ForEach (0..<event!.shifts!.count){ index in
-                            Shifts(shift: event!.shifts![index])
-                                .animation(.linear(duration: 0.3))
+                Section(header: Text("Смены")) {
+                    if event != nil {
+                        ForEach (event!.shifts!, id: \._id){ shift in
+                            
+                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  Shifts(shift: shift))
                         }
+                        
                     }
                 }
             }
@@ -155,6 +156,14 @@ struct EventPage: View {
         
         return dateFormmat.string(from: date ?? Date())
     }
+    
+    static func localizedDate(_ date: Date) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E, dd.MM.yy HH:mm"
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        return dateFormatter.string(from: date)
+    }
 }
 
 extension EventPage {
@@ -165,42 +174,31 @@ extension EventPage {
         @State var isExpanded: Bool = false
         
         var body : some View {
-            VStack (alignment: .leading){
-                HStack {
-                    Image(systemName: "chevron.right")
-                        .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+            List {
+                
+                ForEach (0..<shift.places!.count) { index in
                     
-                    Text("\(localizedDate(shift.beginTime!).lowercased()) - \(localizedDate(shift.endTime!).lowercased())")
-                        .fontWeight(.bold)
-                        .padding(.trailing, 20.0)
-                        .padding(.leading, 10.0)
-                }
-                . onTapGesture(){
-                    isExpanded.toggle()
-                }
-                
-                
-                if isExpanded {
-                    VStack(alignment: .leading) {
-                        
-                        ForEach (0..<shift.places!.count){ index in
+                    if index == 0 {
+                        Section(header: Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")) {
                             Place(place: shift.places![index], indexPlace: index + 1)
-                                .animation(.linear(duration: 0.3))
+                                .animation(.linear(duration: 0.1))
                                 .padding(.vertical, 2.0)
                         }
-                    }.padding([.top, .leading, .trailing], 15.0)
+                    } else {
+                        Section {
+                            Place(place: shift.places![index], indexPlace: index + 1)
+                                .animation(.easeIn(duration: 0.3))
+                                .padding(.vertical, 2.0)
+                        }
+                    }
                 }
             }
-            .padding(.vertical, 10.0)
+            .listStyle(GroupedListStyle())
+            .navigationBarTitleDisplayMode(.inline)
+            
         }
         
-        func localizedDate(_ date: Date) -> String
-        {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E, dd.MM.yy HH:mm"
-            dateFormatter.locale = Locale(identifier: "ru_RU")
-            return dateFormatter.string(from: date)
-        }
+        
         
         private struct Place: View {
             let place: PlaceView
@@ -216,10 +214,32 @@ extension EventPage {
                     HStack {
                         if isUsers || isEquipment {
                             Image(systemName: "chevron.right")
+                                
                                 .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+                                .padding(.trailing, 10)
+                        }
+                        VStack(alignment: .leading) {
+                            Text("Место #\(indexPlace)")
+                                .fontWeight(.bold)
+                            
+                            Text(declinationOfNumberOfParticipants(indexPlace))
+                                .font(.callout)
+                                .foregroundColor(Color.gray)
                         }
                         
-                        Text("Место #\(indexPlace) | \(declinationOfNumberOfParticipants(indexPlace))")
+                        Spacer()
+                        
+                        Text("Подать заявку")
+                            .foregroundColor(Color.blue)
+                            .onTapGesture(){
+                                print("Пока не работает")
+                            }
+                        
+//                        Button(action: {
+//                            print("Пока не работает =)")
+//                        }, label: {
+//                            Text("Подать заявку")
+//                        })
                     }
                     . onTapGesture(){
                         if isUsers || isEquipment {
@@ -229,6 +249,8 @@ extension EventPage {
                     if isExpanded
                     {
                         VStack(alignment: .leading) {
+                            
+                            Divider()
                             
                             if isUsers {
                                 
