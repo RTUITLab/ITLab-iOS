@@ -41,12 +41,12 @@ struct UserPage: View {
                         VStack(alignment: .leading, spacing: 10) {
                             if user.email != nil {
                                 Text("Email:")
-                                    .font(.headline)
+                                    .font(.title3)
                             }
                             
                             if user.phoneNumber != nil {
                                 Text("Телефон:")
-                                    .font(.headline)
+                                    .font(.title3)
                             }
                         }
                         
@@ -54,6 +54,7 @@ struct UserPage: View {
                             if user.email != nil {
                                 Text(user.email!)
                                     .foregroundColor(.blue)
+                                    .font(.title3)
                                     .contextMenu() {
                                         Button(action: {
                                             if let email = user.email {
@@ -82,6 +83,7 @@ struct UserPage: View {
                             if user.phoneNumber != nil {
                                 Text(user.phoneNumber!)
                                     .foregroundColor(.blue)
+                                    .font(.title3)
                                     .contextMenu() {
                                         Button(action: {
                                             if var phone : String = user.phoneNumber {
