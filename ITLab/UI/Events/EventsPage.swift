@@ -16,28 +16,21 @@ struct EventsPage: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            List {
                 if isLoading {
                     ProgressView()
+                        .frame(width: UIScreen.main.bounds.width)
                 } else {
-                    ScrollView{
-                        VStack {
-                            ForEach(0..<events.count) { index in
-                                EventStack(event: events[index])
-                                
-                                if index + 1 != events.count {
-                                    Divider()
-                                        .padding(.vertical, 5.0)
-                                }
-                                
-                            }
-                            .padding([.leading, .trailing], 10)
-                        }
-                        
+                    
+                    ForEach(events, id: \.id) { event in
+                        EventStack(event: event)
+                            .padding(.vertical, 5)
+                
                     }
                 }
                 
             }
+            .listStyle(GroupedListStyle())
             .navigationTitle("События")
             .navigationBarTitleDisplayMode(.automatic)
             .navigationBarItems(leading: Button(action: {
@@ -137,11 +130,6 @@ extension EventsPage {
                         }
                         .padding(.vertical, 5)
                     }
-                    
-                    Image(systemName: "chevron.right")
-                        .padding(.leading, 15.0)
-                    
-                    Spacer()
                 }
                 .padding(.horizontal, 10)
                 .frame(height: 100)
