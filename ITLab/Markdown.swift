@@ -39,7 +39,7 @@ struct Markdown: View {
                     if let height = height as? CGFloat {
                         
                         self.markdownSize.height = height
-                        webView.scrollView.isScrollEnabled = false
+//                        webView.scrollView.isScrollEnabled = false
                     }
                 }
             }
@@ -61,15 +61,9 @@ struct Markdown: View {
     var body: some View {
         VStack(alignment: .leading) {
             
-            if markdownSize.height <= 0 {
-                ProgressView()
-                    .padding(.vertical, 20.0)
-                    .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
-            }
-            
             DownViewSwiftUI(markdown: markdown).environmentObject(markdownSize)
-                .frame(height: markdownSize.height <= 0 ? 0.01 : markdownSize.height)
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     
