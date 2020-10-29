@@ -24,9 +24,11 @@ struct UserPage: View {
                         .font(Font.title2.weight(.medium))
                     
                     Text("Пользователи")
-                        .font(.title3)
+                        .font(.system(size: 17))
                 }
-            }) .padding([.top, .leading], 12.0)
+            })
+            .padding(.horizontal, 10)
+            .padding(.top, 12.0)
             VStack (alignment: .leading) {
                 Text("\(user.lastName ?? "") \(user.firstName ?? "") \(user.middleName ?? "")")
                     .font(.title)
@@ -59,6 +61,7 @@ struct UserPage: View {
                                             }
                                         }) {
                                             Text("Отправить письмо")
+                                            Image(systemName: "square.and.pencil")
                                         }
                                         
                                         Button(action: {
@@ -89,6 +92,7 @@ struct UserPage: View {
                                             }
                                         }) {
                                             Text("Набрать номер")
+                                            Image(systemName: "phone")
                                         }
                                         
                                         Button(action: {
@@ -113,40 +117,45 @@ struct UserPage: View {
                 
                 Divider()
                 
-                if isLoadingEquipments {
-                    ProgressView()
-                        .padding(.top, 15)
-                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 10)
-                } else {
-                    VStack (alignment: .leading) {
-                        Text("Оборудование")
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .padding(.bottom, 5)
-                        
-                        if equipments.count > 0 {
-                            VStack (alignment: .leading) {
-                                ForEach(equipments, id: \._id) {
-                                    equipment in
-                                    
-                                    EquipmentStack(equipment: equipment)
+                ScrollView() {
+                    VStack(alignment: .leading) {
+                        VStack (alignment: .leading) {
+                            Text("Оборудование")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .padding(.bottom, 5)
+                            
+                            if isLoadingEquipments {
+                                ProgressView()
+                                    .padding(.vertical, 15)
+                                    .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 10)
+                            } else {
+                                
+                                if equipments.count > 0 {
+                                    VStack (alignment: .leading) {
+                                        ForEach(equipments, id: \._id) {
+                                            equipment in
+                                            
+                                            EquipmentStack(equipment: equipment)
+                                        }
+                                    }
+                                } else {
+                                    Text("Оборудование на руках нет")
                                 }
                             }
-                        } else {
-                            Text("Оборудование на руках нет")
+                        }
+                        
+                        Divider().padding(.top, 10)
+                        
+                        VStack (alignment: .leading) {
+                            Text("Участие в событиях")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .padding(.bottom, 5)
                         }
                     }
-                    
-                    Divider()
-                    
-                    VStack (alignment: .leading) {
-                        Text("Участие в событиях")
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .padding(.bottom, 5)
-                    }
                 }
-                Spacer()
+                //                Spacer()
             }
             .padding(.horizontal, 20.0)
             .padding(.top, 10)
