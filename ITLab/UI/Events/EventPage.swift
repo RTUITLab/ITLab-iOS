@@ -181,13 +181,12 @@ extension EventPage {
                     if index == 0 {
                         Section(header: Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")) {
                             Place(place: shift.places![index], indexPlace: index + 1)
-                                .animation(.linear(duration: 0.1))
                                 .padding(.vertical, 2.0)
                         }
                     } else {
                         Section {
                             Place(place: shift.places![index], indexPlace: index + 1)
-                                .animation(.easeIn(duration: 0.3))
+                                
                                 .padding(.vertical, 2.0)
                         }
                     }
@@ -213,9 +212,11 @@ extension EventPage {
                 VStack(alignment: .leading) {
                     HStack {
                         if isUsers || isEquipment {
-                            Image(systemName: "chevron.right")
-                                
-                                .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
+                            VStack{
+                                Image(systemName: "chevron.right")
+                                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                                    .animation(.spring())
+                            }
                                 .padding(.trailing, 10)
                         }
                         VStack(alignment: .leading) {
@@ -291,6 +292,7 @@ extension EventPage {
                         }
                         .padding(.horizontal, 5.0)
                         .padding(.vertical, 10.0)
+                        .transition(AnyTransition.slide.animation(.linear(duration: 0.3)))
                     }
                 }
                 .onAppear() {
