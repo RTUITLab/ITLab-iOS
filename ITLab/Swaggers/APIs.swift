@@ -7,10 +7,40 @@
 import Foundation
 
 open class SwaggerClientAPI {
-    public static var basePath = "https://dev.rtuitlab.ru"
+    public static var basePath : String = getURL()
     public static var credential: URLCredential?
     public static var customHeaders: [String:String] = [:]
     public static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
+    
+    private static func getURL() -> String {
+        guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? Dictionary<String, String> else {
+            assertionFailure("Server parameters are not specified in info.plist")
+            return ""
+        }
+        
+        guard var serverURL = serverApi["ServerURL"] else {
+            assertionFailure("No parameter specifying the connection server")
+            return ""
+        }
+        
+        assert(serverURL != "",
+                "Server reference not specified in config file. Property: API_Issuer");
+        
+        guard let isSecure = serverApi["isSecure"] as NSString? else {
+            assertionFailure("No parameter specifying the connection server")
+            return ""
+        }
+        
+        serverURL = serverURL.replacingOccurrences(of: "identity.", with: "")
+        
+        if isSecure.boolValue {
+            serverURL = "https://" + serverURL
+        } else {
+            serverURL = "http://" + serverURL
+        }
+        
+        return serverURL
+    }
 }
 
 open class RequestBuilder<T> {
