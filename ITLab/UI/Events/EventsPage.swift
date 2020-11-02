@@ -10,16 +10,17 @@ import SwiftUI
 struct EventsPage: View {
     
     @State var events : [CompactEventView] = []
-    @State var isLoading: Bool = true;
-    
-    @State var isEditungRight = AuthorizeController.shared?.getUserInfo()?.getRole("CanEditEvent") ?? false
+    @State var isLoading: Bool = true
+    @State var isEditungRight : Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
     
     var body: some View {
         NavigationView {
             List {
                 if isLoading {
+                    GeometryReader() { g in
                     ProgressView()
-                        .frame(width: UIScreen.main.bounds.width)
+                        .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                    }
                 } else {
                     
                     ForEach(events, id: \.id) { event in
@@ -54,7 +55,15 @@ struct EventsPage: View {
         
         
         .onAppear{
+           
+            if AppAuthInteraction.shared.getUserInfo() == nil {
+                AppAuthInteraction.shared.getUserInfoReq {
+                    isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+                }
+            }
+            
             getEvents()
+            
         }
     }
     
@@ -66,9 +75,7 @@ struct EventsPage: View {
             self.isLoading = true
         }
         
-        AuthorizeController.shared!.performAction { (token, _, _) in
-            
-            SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
+        AppAuthInteraction.shared.performAction { (token, _) in
             
             let date = Date()
             var dateComponents = DateComponents()
@@ -109,23 +116,25 @@ extension EventsPage {
                             .fontWeight(.bold)
                             .padding(.top, 10)
                         Text(event.eventType?.title ?? "Not event type")
-                            .fontWeight(.light)
+                            .opacity(0.6)
                             .padding(.bottom, 5)
                         
                         ProgressView(value: Float(event.currentParticipantsCount ?? 4), total: Float((event.targetParticipantsCount ?? 10) >= (event.currentParticipantsCount ?? 4) ? event.targetParticipantsCount ?? 10 : event.currentParticipantsCount ?? 4 )).progressViewStyle(LinearProgressViewStyle(tint: .blue))
                         
                         HStack{
-                            HStack {
+                            HStack(alignment: .center) {
                                 Image(systemName: "clock")
+                                    .font(.callout)
+                                    .opacity(0.6)
                                 Text(dateFormate(event.beginTime ?? Date()))
-                                    .fontWeight(.light)
+                                    .opacity(0.6)
                             }
                             
                             Spacer()
                             
                             HStack {
                                 Text("Готовность \(event.currentParticipantsCount ?? 4)/\(event.targetParticipantsCount ?? 10)")
-                                    .fontWeight(.light)
+                                    .opacity(0.6)
                             }
                         }
                         .padding(.vertical, 5)

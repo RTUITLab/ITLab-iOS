@@ -16,7 +16,7 @@ struct MainMenu: View {
             EventsPage()
                 .tabItem {
                     VStack {
-                        Image(systemName: "newspaper.fill")
+                        Image(systemName: "calendar")
                         Text("События")
                     }
                 }
@@ -30,20 +30,26 @@ struct MainMenu: View {
                 .tabItem {
                     VStack {
                         Image(systemName: "person.2.fill")
-                        Text("Пользователи")
+                        Text("Сотрудники")
                     }
                 }
             
             TestPage()
                 .tabItem {
                     VStack {
-                        Image(systemName: "gearshape.2.fill")
-                        Text("Настройки")
+                        Image(systemName: "person.crop.circle")
+                        Text("Профиль")
                            
                     }
                 }
         }
+        .onAppear()
+        {
+            
+        }
     }
+    
+    
 }
 
 
