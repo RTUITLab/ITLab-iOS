@@ -13,7 +13,9 @@ typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?,
 class AppAuthInteraction: NSObject {
     private var authState: OIDAuthState?
     private var appAuthConfiguration : AppAuthConfiguration = AppAuthConfiguration()
-    private var viewController : AuthorizeController
+//    private var viewController : AuthorizeController
+    
+    private var delegate: AppDelegate?
     
     private struct AppAuthConfiguration {
         var kIssuer: String = ""
@@ -22,8 +24,8 @@ class AppAuthInteraction: NSObject {
         let kAppAuthAuthStateKey: String = "authState"
     }
     
-    init(view: AuthorizeController) {
-        self.viewController = view
+    override init() {
+//        self.viewController = view
         
         super.init()
         
@@ -31,6 +33,12 @@ class AppAuthInteraction: NSObject {
         
         self.loadState()
         self.stateChanged()
+    }
+    
+    convenience init(_ delegate: AppDelegate) {
+        
+        self.init()
+        self.delegate = delegate
     }
     
     public func getAuthState() -> OIDAuthState?
@@ -98,8 +106,8 @@ extension AppAuthInteraction {
         
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.viewController.isLoading(false)
+//            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
+//            self.viewController.isLoading(false)
             return
         }
 
@@ -110,8 +118,8 @@ extension AppAuthInteraction {
 
             guard let config = configuration else {
                 self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.isLoading(false)
+//                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+//                self.viewController.isLoading(false)
                 return
             }
             
@@ -125,7 +133,7 @@ extension AppAuthInteraction {
     {
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
+//            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
             self.closeApp()
             return
         }
@@ -137,7 +145,7 @@ extension AppAuthInteraction {
 
             guard let config = configuration else {
                 self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+//                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 self.closeApp()
                 return
             }
@@ -156,7 +164,7 @@ extension AppAuthInteraction {
     {
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+//            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
             self.closeApp()
             return
         }
@@ -164,14 +172,19 @@ extension AppAuthInteraction {
         let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: self.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
         
         
-        self.viewController.isLoading(false)
+//        self.viewController.isLoading(false)
 //        self.viewController.dismiss(animated: true, completion: nil)
+        
+        guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
+            print("Not View Controller")
+            return
+        }
         
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+        guard let appDelegate = self.delegate else {
             print("Not AppDelegate")
-            self.viewController.alertError("Not AppDelegate")
+//            self.viewController.alertError("Not AppDelegate")
             return
         }
 
@@ -182,7 +195,7 @@ extension AppAuthInteraction {
                 print(respon)
                 self.authState = nil
                 self.stateChanged()
-                self.viewController.dismiss(animated: true, completion: nil)
+//                self.viewController.dismiss(animated: true, completion: nil)
             }
             
             if let err = error
@@ -190,14 +203,14 @@ extension AppAuthInteraction {
                 print(err)
                 self.authState = nil
                 self.stateChanged()
-                self.viewController.dismiss(animated: true, completion: nil)
+//                self.viewController.dismiss(animated: true, completion: nil)
             }
         })
     }
     
     private func closeApp()
     {
-        self.viewController.isLoading(false)
+//        self.viewController.isLoading(false)
         
         self.authState = nil
         self.stateChanged()
@@ -207,8 +220,8 @@ extension AppAuthInteraction {
         
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.viewController.isLoading(false)
+//            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+//            self.viewController.isLoading(false)
             return
         }
         
@@ -224,14 +237,19 @@ extension AppAuthInteraction {
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+        guard let appDelegate = self.delegate else {
             print("Not AppDelegate")
-            self.viewController.alertError("Not AppDelegate")
-            self.viewController.isLoading(false)
+//            self.viewController.alertError("Not AppDelegate")
+//            self.viewController.isLoading(false)
             return
         }
         
-        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.viewController) { authState, error in
+        guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
+            print("Not View Controller")
+            return
+        }
+        
+        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController) { authState, error in
             
             
             
@@ -239,12 +257,12 @@ extension AppAuthInteraction {
                 self.setAuthState(authState)
                 self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
                 
-                self.viewController.logIn()
+//                self.viewController.logIn()
                 
                 
             } else {
                 self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.isLoading(false)
+//                self.viewController.isLoading(false)
                 self.setAuthState(nil)
             }
         }

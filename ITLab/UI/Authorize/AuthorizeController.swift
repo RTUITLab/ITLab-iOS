@@ -86,7 +86,7 @@ class AuthorizeController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AuthorizeController.shared = self
-        self.appAuthInteraction = AppAuthInteraction(view: self)
+//        self.appAuthInteraction = AppAuthInteraction(view: self)
         
         appAuthInteraction?.loadState()
         appAuthInteraction?.stateChanged()
