@@ -208,7 +208,7 @@ extension EventPage {
             
             var body: some View {
                 VStack(alignment: .leading) {
-                    HStack {
+                    HStack(alignment: .center) {
                         if isUsers || isEquipment {
                             VStack{
                                 Image(systemName: "chevron.right")
@@ -220,10 +220,18 @@ extension EventPage {
                         VStack(alignment: .leading) {
                             Text("Место #\(indexPlace)")
                                 .fontWeight(.bold)
+                                .padding(.bottom, 1)
                             
-                            Text(declinationOfNumberOfParticipants(indexPlace))
-                                .font(.callout)
-                                .foregroundColor(Color.gray)
+                            HStack {
+                                Image(systemName: "person.2.fill")
+                                    .font(.callout)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                Text(declinationOfNumberOfParticipants(indexPlace))
+                                    .font(.callout)
+                                    .foregroundColor(Color.gray)
+                            }
+                           
                         }
                         
                         Spacer()
@@ -255,40 +263,29 @@ extension EventPage {
                                 
                                 VStack(alignment: .leading) {
                                     
-                                    Text("Участники:")
-                                        .font(.callout)
-                                        .fontWeight(.bold)
+                                    if let participants = place.participants {
+                                        ForEach(participants, id: \.user!._id) { participant in
+                                            UserPlace(user: participant, userType: .participants)
+                                        }
+                                    }
                                     
-                                    ForEach(0..<place.participants!.count) { index in
-                                        UserPlace(user: place.participants![index])
+                                    if let invited = place.invited {
+                                        ForEach(invited, id: \.user!._id) { invite in
+                                            UserPlace(user: invite, userType: .invited)
+                                        }
                                     }
-                                    ForEach(0..<place.wishers!.count) { index in
-                                        UserPlace(user: place.wishers![index])
-                                    }
-                                    ForEach(0..<place.invited!.count) { index in
-                                        UserPlace(user: place.invited![index])
-                                    }
-                                }
-                            }
-                            
-                            if isUsers && isEquipment {
-                                Divider()
-                            }
-                            
-                            if isEquipment {
-                                
-                                VStack(alignment: .leading) {
                                     
-                                    Text("Оборудование:")
-                                        .font(.callout)
-                                        .fontWeight(.bold)
-                                    ForEach(0..<place.equipment!.count) { index in
-                                        EquipmentPlace(equipment: place.equipment![index])
+                                    if let wishers = place.wishers {
+                                        ForEach(wishers, id: \.user!._id) { wisher in
+                                            UserPlace(user: wisher, userType: .wishers)
+                                        }
                                     }
+                                    
+                                    
                                 }
                             }
                         }
-                        .padding(.horizontal, 5.0)
+                        .padding(.horizontal, 20.0)
                         .padding(.vertical, 10.0)
                         .transition(AnyTransition.slide.animation(.linear(duration: 0.3)))
                     }
@@ -302,51 +299,73 @@ extension EventPage {
             
             func declinationOfNumberOfParticipants(_ index: Int) -> String {
                 
-                var n = index
+//                var n = index
+//
+//                n -= place.participants!.count + place.wishers!.count + place.invited!.count
+//
+//                if n <= 0
+//                {
+//                    return "Участники не нужны"
+//                }
+//                n %= 100
+//
+//                if (n >= 5 && n <= 20) {
+//                    return "Нужно \(index) участников"
+//                }
+//
+//                n %= 10;
+//                if n == 1 {
+//                    return "Нужен \(index) участник";
+//                }
+//
+//                if (n >= 2 && n <= 4) {
+//                    return "Нужно \(index) участника";
+//                }
+//
+//                return "Нужно \(index) участников";
                 
-                n -= place.participants!.count + place.wishers!.count + place.invited!.count
-                
-                if n <= 0
-                {
-                    return "Участники не нужны"
-                }
-                n %= 100
-                
-                if (n >= 5 && n <= 20) {
-                    return "Нужно \(index) участников"
-                }
-                
-                n %= 10;
-                if n == 1 {
-                    return "Нужен \(index) участник";
-                }
-                
-                if (n >= 2 && n <= 4) {
-                    return "Нужно \(index) участника";
-                }
-                
-                return "Нужно \(index) участников";
-                
+                return "\(place.participants!.count + place.wishers!.count + place.invited!.count)/\(place.targetParticipantsCount!)"
             }
             
             private struct UserPlace: View {
+                enum UserType {
+                    case participants
+                    case wishers
+                    case invited
+                }
+                
                 let user: UserAndEventRole
+                let userType: UserType
                 
                 var body: some View {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
-                            Text("\(user.user!.lastName!) \(user.user!.firstName!) \(user.user!.middleName!)")
-                                .font(.footnote)
+                            
+                            switch userType {
+                            case .participants:
+                                Image(systemName: "checkmark.square.fill")
+                                    .foregroundColor(.green)
+                            case .invited:
+                                Image(systemName: "checkmark.square.fill")
+                                    .foregroundColor(.yellow)
+                            case .wishers:
+                                Image(systemName: "clock.fill")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                            }
+                            
+                            Text("\(user.user!.lastName!) \(user.user!.firstName!)")
+                                .font(.callout)
                                 .bold()
-                                .lineLimit(2)
                             
-                            Spacer()
+                            Text("—")
+                                .font(.callout)
                             
-                            Text(user.eventRole!.title!)
-                                .font(.caption)
+                            Text(user.eventRole!.title!.lowercased())
+                                .font(.callout)
                         }
                     }
-                    .padding(5.0)
+                    .padding(1.0)
                     
                 }
             }
