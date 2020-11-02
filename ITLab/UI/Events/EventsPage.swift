@@ -66,9 +66,7 @@ struct EventsPage: View {
             self.isLoading = true
         }
         
-        AppAuthInteraction.shared.performAction { (token, _, _) in
-            
-            SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
+        AppAuthInteraction.shared.performAction { (token, _) in
             
             let date = Date()
             var dateComponents = DateComponents()

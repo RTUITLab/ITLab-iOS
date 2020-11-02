@@ -9,17 +9,17 @@ import SwiftUI
 
 struct TestPage: View {
     
-    @State var accesToken : String?
-    @State var isAuthorize : Bool?
+    @State var accesToken : String = AppAuthInteraction.shared.getAccsesToken()
+    @State var isAuthorize : Bool = AppAuthInteraction.shared.isAuthorize()
     
     var body: some View {
         VStack{
-            Text(accesToken ?? "Not token")
+            Text(accesToken)
                 .font(.callout)
                 .padding()
             
             
-            Text(isAuthorize ?? false ? "Authorized" : "Not authorize")
+            Text(isAuthorize ? "Authorized" : "Not authorize")
                 .font(.title)
                 .bold()
             
@@ -28,7 +28,7 @@ struct TestPage: View {
                 
                 let currentAccesToken = appAuthInteractive.getAccsesToken()
                 
-                appAuthInteractive.performAction { (accesToken, idToken, error) in
+                appAuthInteractive.performAction { (accesToken, error) in
                     
                     if currentAccesToken == accesToken {
                         print("Current token valid")
@@ -36,9 +36,6 @@ struct TestPage: View {
                     }
                     
                     print("Update token")
-                    
-                    self.accesToken = accesToken
-                    self.isAuthorize = appAuthInteractive.isAuthorize()
                 }
             })
             {

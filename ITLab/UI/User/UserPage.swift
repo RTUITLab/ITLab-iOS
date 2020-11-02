@@ -170,9 +170,8 @@ struct UserPage: View {
     }
     
     func getEquimpment() {
-        AuthorizeController.shared!.performAction { (token, _, _) in
+        AppAuthInteraction.shared.performAction { (token, _) in
             
-            SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
             EquipmentUserAPI.apiEquipmentUserUserIdGet(userId: user._id!) { (equipments, error) in
                 
                 if let error = error {

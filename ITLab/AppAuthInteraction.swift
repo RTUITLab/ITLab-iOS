@@ -155,13 +155,16 @@ extension AppAuthInteraction {
         }
     }
     
-    public func performAction(freshTokens: @escaping OIDAuthStateAction) {
+    public func performAction(freshTokens: @escaping (String?, Error?) -> Void) {
         guard let authState = self.authState else {
             self.logMessage("Not authState")
             return
         }
         
-        authState.performAction(freshTokens: freshTokens)
+        authState.performAction { (token, _, error) in
+            SwaggerClientAPI.customHeaders.updateValue("Bearer \(token ?? "")", forKey: "Authorization")
+            freshTokens(token, error)
+        }
     }
     
     public func getAccsesToken() -> String {

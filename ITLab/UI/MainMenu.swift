@@ -10,8 +10,6 @@ import AppAuth
 
 struct MainMenu: View {
     
-    @EnvironmentObject var appAuth: AppAuthInteraction
-    
     var body: some View {
         TabView {
             
