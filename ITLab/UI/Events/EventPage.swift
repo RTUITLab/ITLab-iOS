@@ -39,46 +39,35 @@ struct EventPage: View {
                 }
                 
                 
-                HStack(alignment: .top) {
-                    Text("Начало")
-                        .padding(.trailing, 15.0)
+                HStack(alignment: .center) {
+                    Image(systemName: "clock.fill")
+                        .padding(.trailing, 10)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
                     
-                    Spacer()
-                    Text(beginDate ?? formateDateToString(compactEvent?.beginTime))
-                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
-                        .multilineTextAlignment(.trailing)
+                    Text("\(beginDate ?? formateDateToString(compactEvent?.beginTime)) — \(endDate ?? formateDateToString(compactEvent?.endTime))")
                 }
                 .padding(.vertical, 5)
                 
-                HStack(alignment: .top) {
-                    Text("Конец")
-                        .padding(.trailing, 15.0)
-                    Spacer()
-                    Text(endDate ?? formateDateToString(compactEvent?.endTime))
-                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
-                        
-                        .multilineTextAlignment(.trailing)
-                }
-                .padding(.vertical, 5)
-                
-                HStack(alignment: .top) {
-                    Text("Готовность")
-                        .padding(.trailing, 15.0)
+                HStack(alignment: .center) {
                     
-                    Spacer()
-                    Text("\(compactEvent?.currentParticipantsCount ?? 4)/\(compactEvent?.targetParticipantsCount ?? 10)")
-                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
-                        .multilineTextAlignment(.trailing)
+                    Image(systemName: "person.2.fill")
+                        .padding(.trailing, 4)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
+                    
+                    
+                    Text("\(compactEvent?.currentParticipantsCount ?? 3)/\(compactEvent?.targetParticipantsCount ?? 10)")
                 }
                 
-                HStack(alignment: .top) {
-                    Text("Адрес")
-                        .padding(.trailing, 15.0)
+                HStack(alignment: .center) {
+                    Image(systemName: "location.fill")
+                        .padding(.trailing, 10)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
                     
-                    Spacer()
-                    Text(event?.address ?? compactEvent?.address ?? "")
-                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
-                        .multilineTextAlignment(.trailing)
+                    Text(event?.address ?? compactEvent?.address ?? "Адрес")
+                        .lineLimit(2)
                 }
             }
             
@@ -94,8 +83,18 @@ struct EventPage: View {
             } else {
                 Section {
                     if self.event != nil && !self.event!._description!.isEmpty {
-                        NavigationLink("Описание события", destination: Markdown(markdown: (event?._description)!)
-                                        .environmentObject(markdownSize))
+                        NavigationLink(
+                            destination: Markdown(markdown: (event?._description)!)
+                                .environmentObject(markdownSize)) {
+                            HStack(alignment: .center) {
+                                Image(systemName: "info.circle.fill")
+                                    .padding(.trailing, 10)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                
+                                Text("Описание")
+                            }
+                        }
                     }
                 }
                 
@@ -150,7 +149,7 @@ struct EventPage: View {
     {
         let dateFormmat = DateFormatter()
         dateFormmat.locale = Locale(identifier: "ru")
-        dateFormmat.dateFormat = "d MMMM yyyy \nHH:mm"
+        dateFormmat.dateFormat = "d.MM.yy HH:mm"
         
         return dateFormmat.string(from: date ?? Date())
     }
@@ -209,14 +208,15 @@ extension EventPage {
             var body: some View {
                 VStack(alignment: .leading) {
                     HStack(alignment: .center) {
-                        if isUsers || isEquipment {
-                            VStack{
-                                Image(systemName: "chevron.right")
-                                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                                    .animation(.spring())
-                            }
-                                .padding(.trailing, 10)
+                        VStack{
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                                .opacity(0.5)
+                                .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                                .animation(.spring())
                         }
+                        .padding(.trailing, 10)
+                        
                         VStack(alignment: .leading) {
                             Text("Место #\(indexPlace)")
                                 .fontWeight(.bold)
@@ -227,11 +227,11 @@ extension EventPage {
                                     .font(.callout)
                                     .foregroundColor(.gray)
                                     .opacity(0.5)
-                                Text(declinationOfNumberOfParticipants(indexPlace))
+                                Text(declinationOfNumberOfParticipants())
                                     .font(.callout)
                                     .foregroundColor(Color.gray)
                             }
-                           
+                            
                         }
                         
                         Spacer()
@@ -242,16 +242,14 @@ extension EventPage {
                                 print("Пока не работает")
                             }
                         
-//                        Button(action: {
-//                            print("Пока не работает =)")
-//                        }, label: {
-//                            Text("Подать заявку")
-//                        })
+                        //                        Button(action: {
+                        //                            print("Пока не работает =)")
+                        //                        }, label: {
+                        //                            Text("Подать заявку")
+                        //                        })
                     }
                     . onTapGesture(){
-                        if isUsers || isEquipment {
-                            isExpanded.toggle()
-                        }
+                        isExpanded.toggle()
                     }
                     if isExpanded
                     {
@@ -283,6 +281,8 @@ extension EventPage {
                                     
                                     
                                 }
+                            } else {
+                                Text("Нет участников").padding(.top, 2)
                             }
                         }
                         .padding(.horizontal, 20.0)
@@ -297,32 +297,7 @@ extension EventPage {
                 
             }
             
-            func declinationOfNumberOfParticipants(_ index: Int) -> String {
-                
-//                var n = index
-//
-//                n -= place.participants!.count + place.wishers!.count + place.invited!.count
-//
-//                if n <= 0
-//                {
-//                    return "Участники не нужны"
-//                }
-//                n %= 100
-//
-//                if (n >= 5 && n <= 20) {
-//                    return "Нужно \(index) участников"
-//                }
-//
-//                n %= 10;
-//                if n == 1 {
-//                    return "Нужен \(index) участник";
-//                }
-//
-//                if (n >= 2 && n <= 4) {
-//                    return "Нужно \(index) участника";
-//                }
-//
-//                return "Нужно \(index) участников";
+            func declinationOfNumberOfParticipants() -> String {
                 
                 return "\(place.participants!.count + place.wishers!.count + place.invited!.count)/\(place.targetParticipantsCount!)"
             }
@@ -341,18 +316,21 @@ extension EventPage {
                     VStack(alignment: .leading) {
                         HStack(alignment: .center) {
                             
-                            switch userType {
-                            case .participants:
-                                Image(systemName: "checkmark.square.fill")
-                                    .foregroundColor(.green)
-                            case .invited:
-                                Image(systemName: "checkmark.square.fill")
-                                    .foregroundColor(.yellow)
-                            case .wishers:
-                                Image(systemName: "clock.fill")
-                                    .foregroundColor(.gray)
-                                    .opacity(0.5)
+                            VStack{
+                                switch userType {
+                                case .participants:
+                                    Image(systemName: "checkmark.square.fill")
+                                        .foregroundColor(.green)
+                                case .invited:
+                                    Image(systemName: "checkmark.square.fill")
+                                        .foregroundColor(.yellow)
+                                case .wishers:
+                                    Image(systemName: "clock.fill")
+                                        .foregroundColor(.gray)
+                                        .opacity(0.5)
+                                }
                             }
+                            .padding(.trailing, 5)
                             
                             Text("\(user.user!.lastName!) \(user.user!.firstName!)")
                                 .font(.callout)
