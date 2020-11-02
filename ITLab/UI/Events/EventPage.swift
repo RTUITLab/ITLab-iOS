@@ -114,9 +114,7 @@ struct EventPage: View {
         .listStyle(GroupedListStyle())
         .onAppear() {
             
-            AuthorizeController.shared!.performAction { (accesToken, _, _) in
-                
-                SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(accesToken ?? "")"]
+            AppAuthInteraction.shared.performAction { (accesToken, _) in
                 
                 EventAPI.apiEventIdGet(_id: compactEvent!.id!) { (event, _) in
                     

@@ -43,7 +43,13 @@ struct MainMenu: View {
                     }
                 }
         }
+        .onAppear()
+        {
+            
+        }
     }
+    
+    
 }
 
 
