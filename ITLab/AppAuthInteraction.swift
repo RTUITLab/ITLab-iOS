@@ -6,14 +6,74 @@
 //
 
 import Foundation
+import SwiftUI
 import AppAuth
 
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
-class AppAuthInteraction: NSObject {
-    private var authState: OIDAuthState?
+class AppAuthInteraction: NSObject, ObservableObject {
+    
+    struct UserInfo: Codable {
+        let userId: UUID
+        private var roles: [String:Bool] = ["CanEditEquipment": false,
+                                            "CanEditEvent": false,
+                                            "CanInviteToSystem": false,
+                                            "Participant": false,
+                                            "CanDeleteEventRole": false,
+                                            "CanEditEquipmentOwner": false,
+                                            "CanEditRoles": false,
+                                            "CanEditEquipmentType": false,
+                                            "CanEditEventType": false,
+                                            "CanEditUserPropertyTypes": false]
+        
+        func getRole(_ key: String) ->  Bool {
+            
+            guard let index = roles.index(forKey: key) else {
+                return false
+            }
+            
+            return roles[index].value
+        }
+        
+        public enum CodingKeys: String, CodingKey {
+            case userId = "sub"
+            case roles = "role"
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            userId = try container.decode(UUID.self, forKey: .userId)
+            let roles: [String]? = try? container.decode([String].self, forKey: .roles)
+            
+            if let roles = roles {
+                roles.forEach { (role) in
+                    self.roles.updateValue(true, forKey: role)
+                }
+            } else {
+                let role: String? = try? container.decode(String.self, forKey: .roles)
+                
+                if let role = role {
+                    self.roles.updateValue(true, forKey: role)
+                }
+            }
+        }
+    }
+    
+    private var userInfo: UserInfo?
+    
+    public func getUserInfo() -> UserInfo? {
+        return self.userInfo
+    }
+    
+    public static let shared: AppAuthInteraction = AppAuthInteraction()
+    
     private var appAuthConfiguration : AppAuthConfiguration = AppAuthConfiguration()
-    private var viewController : AuthorizeController
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
+    @Published private var authState: OIDAuthState?
+    
+    @Published public var isLoader : Bool = false
     
     private struct AppAuthConfiguration {
         var kIssuer: String = ""
@@ -22,9 +82,7 @@ class AppAuthInteraction: NSObject {
         let kAppAuthAuthStateKey: String = "authState"
     }
     
-    init(view: AuthorizeController) {
-        self.viewController = view
-        
+    override init() {
         super.init()
         
         self.configurationСheck()
@@ -39,7 +97,7 @@ class AppAuthInteraction: NSObject {
     }
     
     private func configurationСheck() {
-
+        
         guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? Dictionary<String, String> else {
             assertionFailure("Server parameters are not specified in info.plist")
             return
@@ -51,7 +109,7 @@ class AppAuthInteraction: NSObject {
         }
         
         assert(serverURL != "",
-                "Server reference not specified in config file. Property: API_Issuer");
+               "Server reference not specified in config file. Property: API_Issuer");
         
         guard let isSecure = serverApi["isSecure"] as NSString? else {
             assertionFailure("No parameter specifying the connection server")
@@ -71,9 +129,7 @@ class AppAuthInteraction: NSObject {
         }
         
         assert(clientName != "",
-                "Client name not specified in config file. Property: API_Client");
-        
-        
+               "Client name not specified in config file. Property: API_Client");
         
         guard let redirectURL = serverApi["RedirectURL"] else {
             assertionFailure("No parameter specifying the connection server")
@@ -81,7 +137,7 @@ class AppAuthInteraction: NSObject {
         }
         
         assert(redirectURL != "",
-                "RedirectURL not specified in config file. API_RedirectURL");
+               "RedirectURL not specified in config file. API_RedirectURL");
         
         self.appAuthConfiguration.kIssuer = serverURL
         self.appAuthConfiguration.kClientID = clientName
@@ -95,120 +151,145 @@ extension AppAuthInteraction {
     
     public func authorization() {
         
-        
+        self.isLoader = true
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
-            self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.viewController.isLoading(false)
+            self.errorApp("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
             return
         }
-
-        self.logMessage("Fetching configuration for issuer: \(issuer)")
-
+        
+        print("Fetching configuration for issuer: \(issuer)")
+        
         // discovers endpoints
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
-
+            
             guard let config = configuration else {
-                self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.isLoading(false)
+                self.errorApp("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 return
             }
             
-            self.logMessage("Got configuration: \(config)")
-        
+            print("Got configuration: \(config)")
+            
             self.doAuthWithAutoCodeExchange(configuration: config, clientID: self.appAuthConfiguration.kClientID, clientSecret: nil)
         }
     }
     
-   public func logOut()
+    public func logOut()
     {
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
-            self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
-            self.closeApp()
+            self.errorApp("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
             return
         }
-
-        self.logMessage("Fetching configuration for issuer: \(issuer)")
-
+        
+        print("Fetching configuration for issuer: \(issuer)")
+        
         // discovers endpoints
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
-
+            
             guard let config = configuration else {
-                self.logMessage("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.alertError("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.closeApp()
+                self.errorApp("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 return
             }
-
-            self.logMessage("Got configuration: \(config)")
+            
+            print("Got configuration: \(config)")
             
             self.endSession(configuration: config)
         }
+    }
+    
+    public func performAction(freshTokens: @escaping (String?, Error?) -> Void) {
+        
+        guard let authState = self.authState else {
+            self.errorApp("Not authState")
+            return
+        }
+        
+        authState.performAction { (token, _, error) in
+            guard let token = token else {
+                self.errorApp("not token")
+                return
+            }
+            
+            SwaggerClientAPI.customHeaders.updateValue("Bearer \(token)", forKey: "Authorization")
+            
+            freshTokens(token, error)
+        }
+    }
+    
+    public func getAccsesToken() -> String {
+        guard let authState = self.authState else {
+            self.errorApp("Not authState")
+            return "Not token"
+        }
+        
+        return authState.lastTokenResponse?.accessToken ?? "Not token"
+    }
+    
+    public func isAuthorize() -> Bool {
+        guard let authState = self.authState else {
+            self.errorApp("Not authState")
+            return false
+        }
+        
+        return authState.isAuthorized
     }
 }
 
 //MARK: AppAuth Methods
 extension AppAuthInteraction {
     
-    func endSession(configuration: OIDServiceConfiguration)
+    private func endSession(configuration: OIDServiceConfiguration)
     {
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
-            self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.closeApp()
+            self.errorApp("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
             return
         }
         
         let request: OIDEndSessionRequest = OIDEndSessionRequest(configuration: configuration, idTokenHint: self.getAuthState()?.lastTokenResponse?.idToken ?? "", postLogoutRedirectURL: redirectURI, additionalParameters: nil)
         
         
-        self.viewController.isLoading(false)
-//        self.viewController.dismiss(animated: true, completion: nil)
+        //        self.viewController.isLoading(false)
+        //        self.viewController.dismiss(animated: true, completion: nil)
+        
+        guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
+            self.errorApp("Not View Controller")
+            return
+        }
         
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            print("Not AppDelegate")
-            self.viewController.alertError("Not AppDelegate")
-            return
-        }
-
-        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
+        self.appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
             
             if let respon = response
             {
                 print(respon)
                 self.authState = nil
+                self.isLoader = false
                 self.stateChanged()
-                self.viewController.dismiss(animated: true, completion: nil)
             }
             
             if let err = error
             {
                 print(err)
                 self.authState = nil
+                self.isLoader = false
                 self.stateChanged()
-                self.viewController.dismiss(animated: true, completion: nil)
             }
         })
     }
     
-    private func closeApp()
+    private func errorApp(_ message: String)
     {
-        self.viewController.isLoading(false)
-        
-        self.authState = nil
-        self.stateChanged()
+        print(message)
+        self.isLoader = false
+        self.setAuthState(nil)
     }
     
-    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+    private func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
         
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
-            self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
-            self.viewController.isLoading(false)
+            self.errorApp("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+            //            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
+            //            self.viewController.isLoading(false)
             return
         }
         
@@ -222,52 +303,143 @@ extension AppAuthInteraction {
                                               additionalParameters: nil)
         
         // performs authentication request
-        logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
+        print("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            print("Not AppDelegate")
-            self.viewController.alertError("Not AppDelegate")
-            self.viewController.isLoading(false)
+        
+        guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
+            self.errorApp("Not View Controller")
             return
         }
         
-        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.viewController) { authState, error in
-            
-            
+        self.appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController) { authState, error in
             
             if let authState = authState {
                 self.setAuthState(authState)
-                self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
+                print("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
                 
-                self.viewController.logIn()
-                
+                //                self.viewController.logIn()
+                self.getUserInfoReq()
                 
             } else {
-                self.logMessage("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.viewController.isLoading(false)
+                self.errorApp("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+                //                self.viewController.isLoading(false)
                 self.setAuthState(nil)
             }
+            
+            
         }
     }
+    
+    public func getUserInfoReq(complited: @escaping () -> Void) {
+        self.performAction { (token, error) in
+            
+            if error != nil {
+                self.errorApp(error!.localizedDescription)
+                return
+            }
+            
+            guard let userinfoEndpoint = self.authState?.lastAuthorizationResponse.request.configuration.discoveryDocument?.userinfoEndpoint else {
+                self.errorApp("Userinfo endpoint not declared in discovery document")
+                return
+            }
+            
+            guard let accessToken = token else {
+                self.errorApp("Error getting accessToken")
+                return
+            }
+            
+            var urlRequest = URLRequest(url: userinfoEndpoint)
+            urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(accessToken)"]
+            
+            let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+                
+                DispatchQueue.main.async { [self] in
+                    
+                    guard error == nil else {
+                        self.errorApp("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
+                        return
+                    }
+                    
+                    guard let response = response as? HTTPURLResponse else {
+                        self.errorApp("Non-HTTP response")
+                        return
+                    }
+                    
+                    guard let data = data else {
+                        self.errorApp("HTTP response data is empty")
+                        return
+                    }
+                    
+                    var json: [AnyHashable: Any]?
+                    
+                    do {
+                        json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    } catch {
+                        self.errorApp("JSON Serialization Error")
+                        return
+                    }
+                    
+                    if response.statusCode != 200 {
+                        // server replied with an error
+                        let responseText: String? = String(data: data, encoding: String.Encoding.utf8)
+                        
+                        if response.statusCode == 401 {
+                            // "401 Unauthorized" generally indicates there is an issue with the authorization
+                            // grant. Puts OIDAuthState into an error state.
+                            let oauthError = OIDErrorUtilities.resourceServerAuthorizationError(withCode: 0,
+                                                                                                errorResponse: json,
+                                                                                                underlyingError: error)
+                            self.authState?.update(withAuthorizationError: oauthError)
+                            print("Authorization Error (\(oauthError)). Response: \(responseText ?? "RESPONSE_TEXT")")
+                        } else {
+                            print("HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
+                        }
+                        self.isLoader = false
+                        self.setAuthState(nil)
+                        return
+                    }
+                    
+                    guard let user: UserInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
+                        self.errorApp("JSON serialization error in UserInfo")
+                        return
+                    }
+                    self.userInfo = user
+                    self.isLoader = false
+                    complited()
+                    
+                    
+                }
+            }
+            
+            task.resume()
+        }
+    }
+    
+    public func getUserInfoReq() {
+        self.getUserInfoReq {
+            
+        }
+    }
+    
 }
 
 //MARK: OIDAuthState Delegate
 extension AppAuthInteraction: OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
-
+    
     func didChange(_ state: OIDAuthState) {
         self.stateChanged()
     }
-
+    
     func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
-        self.logMessage("Received authorization error: \(error)")
+        print("Received authorization error: \(error)")
     }
 }
 
 //MARK: Helper Methods
 extension AppAuthInteraction {
-
-    func saveState() {
-
+    
+    private func saveState() {
+        
         var data : Data? = nil
         
         if let authState = self.authState {
@@ -276,12 +448,12 @@ extension AppAuthInteraction {
         
         if let userDefaults = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab") {
             userDefaults.set(data, forKey: self.appAuthConfiguration.kAppAuthAuthStateKey)
-//            print(data)
+            //            print(data)
             userDefaults.synchronize()
         }
     }
-
-    func loadState() {
+    
+    private func loadState() {
         guard let data = UserDefaults (suiteName: "group.ru.RTUITLab.ITLab")?
                 .object(forKey: self.appAuthConfiguration.kAppAuthAuthStateKey) as? Data
         else {
@@ -292,8 +464,8 @@ extension AppAuthInteraction {
             self.setAuthState(authState)
         }
     }
-
-    func setAuthState(_ authState: OIDAuthState?) {
+    
+    private func setAuthState(_ authState: OIDAuthState?) {
         if (self.authState == authState) {
             return;
         }
@@ -301,16 +473,8 @@ extension AppAuthInteraction {
         self.authState?.stateChangeDelegate = self;
         self.stateChanged()
     }
-
-    func stateChanged() {
+    
+    private func stateChanged() {
         self.saveState()
-    }
-
-    func logMessage(_ message: String?) {
-
-        guard let message = message else {
-            return
-        }
-        print(message);
     }
 }

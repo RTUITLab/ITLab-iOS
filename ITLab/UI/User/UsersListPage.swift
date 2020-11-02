@@ -107,9 +107,7 @@ struct UsersListPage: View {
     }
     
     func getUsers() {
-        AuthorizeController.shared!.performAction { (token, _, _) in
-            
-            SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
+        AppAuthInteraction.shared.performAction { (token, _) in
             
             UserAPI.apiUserGet(count: -1) { (users, error) in
                 if let error = error {
