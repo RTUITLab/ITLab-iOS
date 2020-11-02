@@ -75,10 +75,12 @@ struct EventPage: View {
             if event == nil {
                 
                 VStack(alignment: .center){
+                    GeometryReader { g in
                     ProgressView()
-                        .padding(.vertical)
-                        .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
-                }.listRowBackground(Color.clear)
+                        .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                    }.padding(.vertical, 20)
+                        
+                }
                 
             } else {
                 Section {

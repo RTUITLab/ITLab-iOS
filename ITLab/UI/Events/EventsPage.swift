@@ -17,8 +17,10 @@ struct EventsPage: View {
         NavigationView {
             List {
                 if isLoading {
+                    GeometryReader() { g in
                     ProgressView()
-                        .frame(width: UIScreen.main.bounds.width)
+                        .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                    }
                 } else {
                     
                     ForEach(events, id: \.id) { event in
