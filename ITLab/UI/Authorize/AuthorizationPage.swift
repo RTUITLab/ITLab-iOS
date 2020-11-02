@@ -14,7 +14,7 @@ struct AuthorizationPage: View {
     
     var body: some View {
         VStack{
-            if appAuth.getAuthState()?.isAuthorized ?? false {
+            if appAuth.getAuthState()?.isAuthorized ?? false && !appAuth.isLoader {
                 MainMenu()
             } else {
                 VStack{

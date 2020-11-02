@@ -10,9 +10,8 @@ import SwiftUI
 struct EventsPage: View {
     
     @State var events : [CompactEventView] = []
-    @State var isLoading: Bool = true;
-    
-    @State var isEditungRight = AuthorizeController.shared?.getUserInfo()?.getRole("CanEditEvent") ?? false
+    @State var isLoading: Bool = true
+    @State var isEditungRight : Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
     
     var body: some View {
         NavigationView {
@@ -54,7 +53,15 @@ struct EventsPage: View {
         
         
         .onAppear{
+           
+            if AppAuthInteraction.shared.getUserInfo() == nil {
+                AppAuthInteraction.shared.getUserInfoReq {
+                    isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+                }
+            }
+            
             getEvents()
+            
         }
     }
     
