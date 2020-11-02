@@ -24,7 +24,7 @@ struct TestPage: View {
                 .bold()
             
             Button(action: {
-                let appAuthInteractive = AuthorizeController.shared!
+                let appAuthInteractive = AppAuthInteraction.shared
                 
                 let currentAccesToken = appAuthInteractive.getAccsesToken()
                 
@@ -38,7 +38,7 @@ struct TestPage: View {
                     print("Update token")
                     
                     self.accesToken = accesToken
-                    self.isAuthorize = AuthorizeController.shared!.isAuthorize()
+                    self.isAuthorize = appAuthInteractive.isAuthorize()
                 }
             })
             {
@@ -48,7 +48,7 @@ struct TestPage: View {
             .padding(.top, 10)
             
             Button(action: {
-                let appAuthInteractive = AuthorizeController.shared!
+                let appAuthInteractive = AppAuthInteraction.shared
                 
                 appAuthInteractive.logOut()
             })
@@ -59,10 +59,10 @@ struct TestPage: View {
             .padding(.top, 50)
         }
         .onAppear(){
-            let appAuthInteractive = AuthorizeController.shared!
+            let appAuthInteractive = AppAuthInteraction.shared
             
             self.accesToken = appAuthInteractive.getAccsesToken()
-            self.isAuthorize =  appAuthInteractive.isAuthorize()
+            self.isAuthorize = appAuthInteractive.isAuthorize()
         }
     }
     

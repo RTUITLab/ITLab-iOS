@@ -66,7 +66,7 @@ struct EventsPage: View {
             self.isLoading = true
         }
         
-        AuthorizeController.shared!.performAction { (token, _, _) in
+        AppAuthInteraction.shared.performAction { (token, _, _) in
             
             SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(token ?? "")"]
             

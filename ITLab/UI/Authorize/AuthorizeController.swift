@@ -88,8 +88,8 @@ class AuthorizeController : UIViewController {
         AuthorizeController.shared = self
 //        self.appAuthInteraction = AppAuthInteraction(view: self)
         
-        appAuthInteraction?.loadState()
-        appAuthInteraction?.stateChanged()
+//        appAuthInteraction?.loadState()
+//        appAuthInteraction?.stateChanged()
        
     }
     

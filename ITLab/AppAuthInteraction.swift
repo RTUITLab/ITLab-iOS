@@ -6,16 +6,21 @@
 //
 
 import Foundation
+import SwiftUI
 import AppAuth
 
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
-class AppAuthInteraction: NSObject {
-    private var authState: OIDAuthState?
-    private var appAuthConfiguration : AppAuthConfiguration = AppAuthConfiguration()
-//    private var viewController : AuthorizeController
+class AppAuthInteraction: NSObject, ObservableObject {
     
-    private var delegate: AppDelegate?
+    public static let shared: AppAuthInteraction = AppAuthInteraction()
+    
+    private var appAuthConfiguration : AppAuthConfiguration = AppAuthConfiguration()
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
+    @Published private var authState: OIDAuthState?
+    @Published public var isLoader : Bool = false
     
     private struct AppAuthConfiguration {
         var kIssuer: String = ""
@@ -25,20 +30,12 @@ class AppAuthInteraction: NSObject {
     }
     
     override init() {
-//        self.viewController = view
-        
         super.init()
         
         self.configurationСheck()
         
         self.loadState()
         self.stateChanged()
-    }
-    
-    convenience init(_ delegate: AppDelegate) {
-        
-        self.init()
-        self.delegate = delegate
     }
     
     public func getAuthState() -> OIDAuthState?
@@ -103,11 +100,13 @@ extension AppAuthInteraction {
     
     public func authorization() {
         
-        
+        self.isLoader = true
         guard let issuer = URL(string: self.appAuthConfiguration.kIssuer) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
 //            self.viewController.alertError("Error creating URL for : \(self.appAuthConfiguration.kIssuer)")
 //            self.viewController.isLoading(false)
+            
+            self.isLoader = false
             return
         }
 
@@ -155,12 +154,39 @@ extension AppAuthInteraction {
             self.endSession(configuration: config)
         }
     }
+    
+    public func performAction(freshTokens: @escaping OIDAuthStateAction) {
+        guard let authState = self.authState else {
+            self.logMessage("Not authState")
+            return
+        }
+        
+        authState.performAction(freshTokens: freshTokens)
+    }
+    
+    public func getAccsesToken() -> String {
+        guard let authState = self.authState else {
+            self.logMessage("Not authState")
+            return "Not token"
+        }
+        
+        return authState.lastTokenResponse?.accessToken ?? "Not token"
+    }
+    
+    public func isAuthorize() -> Bool {
+        guard let authState = self.authState else {
+            self.logMessage("Not authState")
+            return false
+        }
+        
+        return authState.isAuthorized
+    }
 }
 
 //MARK: AppAuth Methods
 extension AppAuthInteraction {
     
-    func endSession(configuration: OIDServiceConfiguration)
+    private func endSession(configuration: OIDServiceConfiguration)
     {
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
@@ -181,14 +207,8 @@ extension AppAuthInteraction {
         }
         
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
-        
-        guard let appDelegate = self.delegate else {
-            print("Not AppDelegate")
-//            self.viewController.alertError("Not AppDelegate")
-            return
-        }
 
-        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
+        self.appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
             
             if let respon = response
             {
@@ -216,7 +236,7 @@ extension AppAuthInteraction {
         self.stateChanged()
     }
     
-    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+    private func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
         
         guard let redirectURI = URL(string: self.appAuthConfiguration.kRedirectURL) else {
             self.logMessage("Error creating URL for : \(self.appAuthConfiguration.kRedirectURL)")
@@ -236,20 +256,14 @@ extension AppAuthInteraction {
         
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
-        
-        guard let appDelegate = self.delegate else {
-            print("Not AppDelegate")
-//            self.viewController.alertError("Not AppDelegate")
-//            self.viewController.isLoading(false)
-            return
-        }
+
         
         guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
             print("Not View Controller")
             return
         }
         
-        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController) { authState, error in
+        self.appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController) { authState, error in
             
             
             
@@ -265,6 +279,8 @@ extension AppAuthInteraction {
 //                self.viewController.isLoading(false)
                 self.setAuthState(nil)
             }
+            
+            self.isLoader = false
         }
     }
 }
@@ -284,7 +300,7 @@ extension AppAuthInteraction: OIDAuthStateChangeDelegate, OIDAuthStateErrorDeleg
 //MARK: Helper Methods
 extension AppAuthInteraction {
 
-    func saveState() {
+    private func saveState() {
 
         var data : Data? = nil
         
@@ -299,7 +315,7 @@ extension AppAuthInteraction {
         }
     }
 
-    func loadState() {
+    private func loadState() {
         guard let data = UserDefaults (suiteName: "group.ru.RTUITLab.ITLab")?
                 .object(forKey: self.appAuthConfiguration.kAppAuthAuthStateKey) as? Data
         else {
@@ -311,7 +327,7 @@ extension AppAuthInteraction {
         }
     }
 
-    func setAuthState(_ authState: OIDAuthState?) {
+    private func setAuthState(_ authState: OIDAuthState?) {
         if (self.authState == authState) {
             return;
         }
@@ -320,11 +336,11 @@ extension AppAuthInteraction {
         self.stateChanged()
     }
 
-    func stateChanged() {
+    private func stateChanged() {
         self.saveState()
     }
 
-    func logMessage(_ message: String?) {
+    private func logMessage(_ message: String?) {
 
         guard let message = message else {
             return
