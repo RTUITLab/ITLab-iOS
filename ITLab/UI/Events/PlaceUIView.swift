@@ -65,7 +65,7 @@ struct PlaceUIView: View {
                 isExpanded.toggle()
             }
             .actionSheet(isPresented: $showingActionSheet) {
-                ActionSheet(title: Text("Подать заявку"), message: Text("Выберите роль участия"), buttons: self.actionSheetButtons)
+                ActionSheet(title: Text("Подать заявку"), message: Text("Выберите степень участия"), buttons: self.actionSheetButtons)
             }
             if isExpanded
             {
