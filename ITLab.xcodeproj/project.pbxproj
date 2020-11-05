@@ -102,6 +102,8 @@
 		6DDD8215252DF78B008CE80A /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD81C7252DF78B008CE80A /* Configuration.swift */; };
 		6DDD8223252E0726008CE80A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6DDD8222252E0726008CE80A /* Alamofire */; };
 		6DE117C22549A12E002D500E /* UserPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE117C12549A12E002D500E /* UserPage.swift */; };
+		6DEE2DE62554B00A0087D656 /* ShiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEE2DE52554B00A0087D656 /* ShiftUIView.swift */; };
+		6DEE2DE92554B0C90087D656 /* PlaceUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */; };
 		6DF0E0FF25496023007D8BC6 /* UsersListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */; };
 		6DF46361251EC364007149F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF46360251EC364007149F6 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -202,6 +204,8 @@
 		6DDD81C6252DF78B008CE80A /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		6DDD81C7252DF78B008CE80A /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		6DE117C12549A12E002D500E /* UserPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPage.swift; sourceTree = "<group>"; };
+		6DEE2DE52554B00A0087D656 /* ShiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftUIView.swift; sourceTree = "<group>"; };
+		6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUIView.swift; sourceTree = "<group>"; };
 		6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListPage.swift; sourceTree = "<group>"; };
 		6DF46360251EC364007149F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -226,6 +230,8 @@
 			children = (
 				6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */,
 				6D77A1BF252F5EE60086A360 /* EventPage.swift */,
+				6DEE2DE52554B00A0087D656 /* ShiftUIView.swift */,
+				6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -517,6 +523,7 @@
 				6DDD81EE252DF78B008CE80A /* EventTypeEditRequest.swift in Sources */,
 				6DDD81E6252DF78B008CE80A /* CompactEquipmentView.swift in Sources */,
 				6DDD8213252DF78B008CE80A /* JSONEncodingHelper.swift in Sources */,
+				6DEE2DE62554B00A0087D656 /* ShiftUIView.swift in Sources */,
 				6DDD81DD252DF78B008CE80A /* APIs.swift in Sources */,
 				6DDD81CB252DF78B008CE80A /* UserAPI.swift in Sources */,
 				6DF0E0FF25496023007D8BC6 /* UsersListPage.swift in Sources */,
@@ -537,6 +544,7 @@
 				6DDD8203252DF78B008CE80A /* ResetPasswordRequest.swift in Sources */,
 				6DDD8210252DF78B008CE80A /* PlaceCreateRequest.swift in Sources */,
 				6DDD81E5252DF78B008CE80A /* EquipmentCreateRequest.swift in Sources */,
+				6DEE2DE92554B0C90087D656 /* PlaceUIView.swift in Sources */,
 				6DDD8207252DF78B008CE80A /* WisherEventView.swift in Sources */,
 				6DDD81E3252DF78B008CE80A /* DeletableRequest.swift in Sources */,
 				6DDD81FE252DF78B008CE80A /* AccountEditRequest.swift in Sources */,
@@ -714,7 +722,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
@@ -740,7 +748,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
