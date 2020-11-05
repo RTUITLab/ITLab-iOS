@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+class EventRole: ObservableObject {
+    static var data : [EventRoleView] = []
+}
+
+
 struct EventsPage: View {
     
     @State var events : [CompactEventView] = []
@@ -96,6 +101,15 @@ struct EventsPage: View {
                 } ?? []
                 self.isLoading = false
                 
+            }
+            
+            EventRoleAPI.apiEventRoleGet { (eventsRole, error) in
+                guard let eventsRole = eventsRole else {
+                    print("Not get events role")
+                    return
+                }
+                
+                EventRole.data = eventsRole
             }
         }
     }
