@@ -178,13 +178,13 @@ struct PlaceUIView: View {
                     VStack{
                         switch userType {
                         case .participants:
-                            Image(systemName: "checkmark.square.fill")
+                            Image(systemName: "person.fill")
                                 .foregroundColor(.green)
                         case .invited:
-                            Image(systemName: "checkmark.square.fill")
-                                .foregroundColor(.yellow)
+                            Image(systemName: "person.fill")
+                                .foregroundColor(.orange)
                         case .wishers:
-                            Image(systemName: "clock.fill")
+                            Image(systemName: "person.fill")
                                 .foregroundColor(.gray)
                                 .opacity(0.5)
                         }
