@@ -204,7 +204,7 @@ extension EventPage {
             
             @State var isUsers: Bool = false
             @State var isEquipment: Bool = false
-            
+            @State var isEnableButton: Bool = false
             @State var isExpanded: Bool = false
             
             var body: some View {
@@ -238,17 +238,14 @@ extension EventPage {
                         
                         Spacer()
                         
-                        Text("Подать заявку")
-                            .foregroundColor(Color.blue)
-                            .onTapGesture(){
-                                print("Пока не работает")
-                            }
                         
-                        //                        Button(action: {
-                        //                            print("Пока не работает =)")
-                        //                        }, label: {
-                        //                            Text("Подать заявку")
-                        //                        })
+                        Button(action: {
+                            print("Пока не работает =)")
+                        }, label: {
+                            Text("Подать заявку")
+                        })
+                        .buttonStyle(BorderlessButtonStyle())
+                        .disabled(self.isEnableButton)
                     }
                     . onTapGesture(){
                         isExpanded.toggle()
@@ -293,8 +290,37 @@ extension EventPage {
                     }
                 }
                 .onAppear() {
-                    self.isUsers = place.participants!.count + place.wishers!.count + place.invited!.count != 0
-                    self.isEquipment = place.equipment!.count != 0
+                    
+                    var usersCount = 0
+                    
+                    var isParticipant = false, isWisher = false, isInvite = false
+                    
+                    
+                    if let participants = place.participants {
+                        usersCount += participants.count
+                        isParticipant = participants.contains(where: { (user) -> Bool in
+                            return user.user!._id == AppAuthInteraction.shared.getUserInfo()!.userId
+                        })
+                    }
+                    
+                    if let wishers = place.wishers {
+                        usersCount += wishers.count
+                        isWisher = wishers.contains(where: { (user) -> Bool in
+                            return user.user!._id == AppAuthInteraction.shared.getUserInfo()!.userId
+                        })
+                    }
+                    
+                    if let invited = place.invited {
+                        usersCount += invited.count
+                        isInvite = invited.contains(where: { (user) -> Bool in
+                            return user.user!._id == AppAuthInteraction.shared.getUserInfo()!.userId
+                        })
+                    }
+
+                    self.isEnableButton = isParticipant || isWisher || isInvite
+                    self.isUsers = usersCount != 0
+                    self.isEquipment = place.equipment?.count ?? 0 != 0
+
                 }
                 
             }
