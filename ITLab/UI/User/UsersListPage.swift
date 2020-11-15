@@ -73,29 +73,26 @@ struct UsersListPage: View {
     var body: some View {
         NavigationView {
             VStack {
-                if isLoading {
-                    ProgressView()
-                } else {
-                    VStack {
-                        SearchBar(text: $userSearch)
-                            .padding(.horizontal, 10)
-                    }
-                    ScrollView{
-                        VStack(alignment: .leading) {
-                            ForEach(self.users.filter {
-                                self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
-                            }, id: \._id) { user in
-                                
-                                UserStack(user: user)
-                                
-                                Divider()
-                                    .padding(.vertical, 10.0)
-                                
-                            }
-                            .padding([.leading, .trailing], 10)
+                SearchBar(text: $userSearch)
+                    .padding(.horizontal, 10)
+                
+                List {
+                    if isLoading {
+                        GeometryReader() { g in
+                            ProgressView()
+                                .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                        }
+                    } else {
+                        ForEach(self.users.filter {
+                            self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
+                        }, id: \._id) { user in
+                            
+                            UserStack(user: user)
                         }
                     }
                 }
+                .listStyle(GroupedListStyle())
+                
             }
             .navigationTitle("Пользователи")
             .navigationBarTitleDisplayMode(.automatic)
@@ -139,21 +136,52 @@ extension UsersListPage {
         
         var body: some View {
             NavigationLink(destination: UserPage(user: self.user)) {
-                HStack {
+                VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
-                        Text("\(user.lastName ?? "") \(user.firstName ?? "") \(user.middleName ?? "")")
+                        Text("\(user.lastName ?? "") \(user.firstName ?? "")")
                             .font(.title3)
                             .fontWeight(.bold)
-                            .padding(.bottom, 3.0)
-                        
-                        Text("Email: \(user.email ?? "")")
-                        Text("Телефон: \(user.phoneNumber ?? "")")
+                        if let middleName = user.middleName {
+                            if !middleName.isEmpty {
+                                Text(middleName)
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                            }
+                        }
                     }
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .padding(.leading, 15.0)
+                    .padding(.top, 10)
+                    .padding(.bottom, 5)
+                    
+                    
+                    HStack (alignment: .center) {
+                        VStack(alignment: .center, spacing: 10) {
+                            if user.email != nil {
+                                Image(systemName: "envelope.fill")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                    .padding(.top, 3)
+                            }
+                            
+                            if user.phoneNumber != nil {
+                                Image(systemName: "phone.circle.fill")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                    .padding(.top, 1)
+                            }
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            if let email = user.email {
+                                Text(email)
+                            }
+                            
+                            if let phone = user.phoneNumber {
+                                Text(phone)
+                            }
+                        }
+                    }
+                    .padding(.bottom, 10)
                 }
-                .padding(.horizontal, 10.0)
             }
             .buttonStyle(PlainButtonStyle())
         }
