@@ -10,21 +10,18 @@ import AppAuth
 
 struct MainMenu: View {
     
+    let eventPage = EventsPage()
+    
     var body: some View {
         TabView {
             
-            EventsPage()
+            eventPage
                 .tabItem {
                     VStack {
                         Image(systemName: "calendar")
                         Text("События")
                     }
                 }
-            
-            //            Text("Equipment")
-            //                .tabItem {
-            //                    Text("Оборудование")
-            //                }
             
             UsersListPage()
                 .tabItem {
@@ -39,13 +36,14 @@ struct MainMenu: View {
                     VStack {
                         Image(systemName: "person.crop.circle")
                         Text("Профиль")
-                           
+                        
                     }
                 }
         }
-        .onAppear()
-        {
-            
+        .onAppear() {
+            AppAuthInteraction.shared.getUserInfoReq {
+                eventPage.isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+            }
         }
     }
     

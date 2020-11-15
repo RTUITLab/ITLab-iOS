@@ -56,14 +56,7 @@ struct EventsPage: View {
                 })
         }
         .onAppear{
-            if AppAuthInteraction.shared.getUserInfo() == nil {
-                AppAuthInteraction.shared.getUserInfoReq {
-                    isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
-                }
-            }
-            
             getEvents()
-            
         }
     }
     

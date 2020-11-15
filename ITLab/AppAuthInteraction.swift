@@ -43,18 +43,15 @@ class AppAuthInteraction: NSObject, ObservableObject {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             userId = try container.decode(UUID.self, forKey: .userId)
-            let roles: [String]? = try? container.decode([String].self, forKey: .roles)
             
-            if let roles = roles {
+            if let roles = try? container.decode([String].self, forKey: .roles) {
                 roles.forEach { (role) in
                     self.roles.updateValue(true, forKey: role)
                 }
-            } else {
-                let role: String? = try? container.decode(String.self, forKey: .roles)
-                
-                if let role = role {
-                    self.roles.updateValue(true, forKey: role)
-                }
+            } else if let role = try? container.decode(String.self, forKey: .roles)  {
+                self.roles.updateValue(true, forKey: role)
+            } else if let roles = try? container.decode([String:Bool].self, forKey: .roles) {
+                self.roles = roles
             }
         }
     }
@@ -88,6 +85,11 @@ class AppAuthInteraction: NSObject, ObservableObject {
         self.configurationСheck()
         
         self.loadState()
+        
+        if authState?.isAuthorized ?? false {
+            self.loadUserInfo()
+        }
+        
         self.stateChanged()
     }
     
@@ -404,10 +406,10 @@ extension AppAuthInteraction {
                         return
                     }
                     self.userInfo = user
+                    self.saveUserInfo()
                     self.isLoader = false
+                    
                     complited()
-                    
-                    
                 }
             }
             
@@ -437,6 +439,25 @@ extension AppAuthInteraction: OIDAuthStateChangeDelegate, OIDAuthStateErrorDeleg
 
 //MARK: Helper Methods
 extension AppAuthInteraction {
+    
+    private func saveUserInfo() {
+        let encoder = JSONEncoder()
+        
+        if let data = try? encoder.encode(self.userInfo ) {
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(data, forKey: "userInfo")
+            userDefaults.synchronize()
+        }
+    }
+    
+    public func loadUserInfo() {
+        if let data = UserDefaults.standard.object(forKey: "userInfo") as? Data {
+            let decoder = JSONDecoder()
+            if let userInfo = try? decoder.decode(UserInfo.self, from: data) {
+                self.userInfo = userInfo
+            }
+        }
+    }
     
     private func saveState() {
         
