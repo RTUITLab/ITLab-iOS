@@ -201,7 +201,7 @@ open class AlamofireRequestBuilder<T>: RequestBuilder<T> {
                         ErrorResponse.error(voidResponse.response?.statusCode ?? 500, voidResponse.data, error)
                     )
                     return
-                case let .success(data):
+                case .success(_):
                     completion(
                         Response(
                             response: voidResponse.response!,

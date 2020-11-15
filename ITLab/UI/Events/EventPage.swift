@@ -25,101 +25,97 @@ struct EventPage: View {
     
     
     var body: some View {
-        ScrollView{
-            VStack (alignment: .leading) {
+        List {
+            Section {
                 
-                Text(event?.eventType?.title ?? compactEvent?.eventType?.title ?? "Лекция")
-                    .font(.title3)
-                
-                Divider()
-                
-                VStack(alignment: .leading) {
-                    HStack(spacing: 20) {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Начало:")
-                                .bold()
-                            
-                            Text("Конец:")
-                                .bold()
-                            
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text(beginDate ?? formateDateToString(compactEvent?.beginTime))
-                            Text(endDate ?? formateDateToString(compactEvent?.endTime))
-                        }
-                    }
+                HStack(alignment: .top) {
+                    Text("Тип события")
+                        .padding(.trailing, 15.0)
                     
-                    VStack(alignment: .leading) {
-                        Text("Адрес:")
-                            .bold()
-                        
-                        Text(event?.address ?? compactEvent?.address ?? "")
-                    } .padding(.top, 10)
+                    Spacer()
+                    Text(event?.eventType?.title ?? compactEvent?.eventType?.title ?? "Лекция")
+                        .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.trailing)
                 }
-                .padding(.vertical, 5.0)
                 
-                Divider()
                 
-                if event == nil {
+                HStack(alignment: .center) {
+                    Image(systemName: "clock.fill")
+                        .padding(.trailing, 10)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
                     
-                    VStack(alignment: .center){
-                        ProgressView()
-                            .padding(.top, 20.0)
-                            .padding(.horizontal, (UIScreen.main.bounds.width / 2) - 30)
-                    }} else {
+                    Text("\(beginDate ?? formateDateToString(compactEvent?.beginTime)) — \(endDate ?? formateDateToString(compactEvent?.endTime))")
+                }
+                .padding(.vertical, 5)
+                
+                HStack(alignment: .center) {
                     
-                    if self.event != nil && !self.event!._description!.isEmpty {
-                        VStack(alignment: .leading) {
-                            HStack{
-                                Image(systemName: "chevron.right")
-                                    .rotationEffect(Angle(degrees: isExpandedDescription ? 90 : 0))
-                                Text("Описание")
-                                    .bold()
-                                    .padding(.bottom, 1)
-                                    .padding(.trailing, 20.0)
-                                    .padding(.leading, 10.0)
-                            }
-                            .onTapGesture{
-                                isExpandedDescription.toggle()
-                            }
-                            
-                            if isExpandedDescription {
-                                Markdown(markdown: (event?._description)!)
-                                    .environmentObject(markdownSize)
-                                    .onDisappear() {
-                                        if !isExpandedDescription {
-                                            markdownSize.height = 0
-                                        }
-                                    }
-                            }
-                        }
-                        .padding(.vertical, 5.0)
-                        
-                        Divider()
-                    }
+                    Image(systemName: "person.2.fill")
+                        .padding(.trailing, 4)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
                     
-                    if event != nil {
-                        VStack (alignment: .leading, spacing: 10) {
-                            ForEach (0..<event!.shifts!.count){ index in
-                                Shifts(shift: event!.shifts![index])
-                                    .animation(.linear(duration: 0.3))
-                            }
-                        }
-                    }
                     
-                    Spacer(minLength: 20)
+                    Text("\(compactEvent?.currentParticipantsCount ?? 3)/\(compactEvent?.targetParticipantsCount ?? 10)")
+                }
+                
+                HStack(alignment: .center) {
+                    Image(systemName: "location.fill")
+                        .padding(.trailing, 10)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
                     
+                    Text(event?.address ?? compactEvent?.address ?? "Адрес")
+                        .lineLimit(2)
                 }
             }
-            .padding(.horizontal, 20)
+            
+            
+            if event == nil {
+                
+                VStack(alignment: .center){
+                    GeometryReader { g in
+                        ProgressView()
+                            .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                    }.padding(.vertical, 20)
+                    
+                }
+                
+            } else {
+                Section {
+                    if self.event != nil && !self.event!._description!.isEmpty {
+                        NavigationLink(
+                            destination: Markdown(markdown: (event?._description)!)
+                                .environmentObject(markdownSize)) {
+                            HStack(alignment: .center) {
+                                Image(systemName: "info.circle.fill")
+                                    .padding(.trailing, 10)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                
+                                Text("Описание")
+                            }
+                        }
+                    }
+                }
+                
+                Section(header: Text("Смены")) {
+                    if event != nil {
+                        ForEach (event!.shifts!, id: \._id){ shift in
+                            
+                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift))
+                        }
+                        
+                    }
+                }
+            }
             
         }
+        .listStyle(GroupedListStyle())
         .onAppear() {
             
-            AuthorizeController.shared!.performAction { (accesToken, _, _) in
-                
-                SwaggerClientAPI.customHeaders = ["Authorization" : "Bearer \(accesToken ?? "")"]
+            AppAuthInteraction.shared.performAction { (accesToken, _) in
                 
                 EventAPI.apiEventIdGet(_id: compactEvent!.id!) { (event, _) in
                     
@@ -129,7 +125,8 @@ struct EventPage: View {
                 }
             }
         }
-        .navigationBarTitle(Text(event?.title ?? compactEvent?.title ?? "Название события"), displayMode: .automatic)
+        .navigationBarTitle(Text(event?.title ?? compactEvent?.title ?? "Название события"), displayMode: .large)
+        
     }
     
     func countingDate()
@@ -154,208 +151,19 @@ struct EventPage: View {
     {
         let dateFormmat = DateFormatter()
         dateFormmat.locale = Locale(identifier: "ru")
-        dateFormmat.dateFormat = "d MMMM yyyy HH:mm"
+        dateFormmat.dateFormat = "d.MM.yy HH:mm"
         
         return dateFormmat.string(from: date ?? Date())
     }
-}
-
-extension EventPage {
-    private struct Shifts: View {
-        
-        let shift: ShiftView
-        
-        @State var isExpanded: Bool = false
-        
-        var body : some View {
-            VStack (alignment: .leading){
-                HStack {
-                    Image(systemName: "chevron.right")
-                        .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
-                    
-                    Text("\(localizedDate(shift.beginTime!).lowercased()) - \(localizedDate(shift.endTime!).lowercased())")
-                        .fontWeight(.bold)
-                        .padding(.trailing, 20.0)
-                        .padding(.leading, 10.0)
-                }
-                . onTapGesture(){
-                    isExpanded.toggle()
-                }
-                
-                
-                if isExpanded {
-                    VStack(alignment: .leading) {
-                        
-                        ForEach (0..<shift.places!.count){ index in
-                            Place(place: shift.places![index], indexPlace: index + 1)
-                                .animation(.linear(duration: 0.3))
-                                .padding(.vertical, 2.0)
-                        }
-                    }.padding([.top, .leading, .trailing], 15.0)
-                }
-            }
-            .padding(.vertical, 10.0)
-        }
-        
-        func localizedDate(_ date: Date) -> String
-        {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E, dd.MM.yy HH:mm"
-            dateFormatter.locale = Locale(identifier: "ru_RU")
-            return dateFormatter.string(from: date)
-        }
-        
-        private struct Place: View {
-            let place: PlaceView
-            let indexPlace: Int
-            
-            @State var isUsers: Bool = false
-            @State var isEquipment: Bool = false
-            
-            @State var isExpanded: Bool = false
-            
-            var body: some View {
-                VStack(alignment: .leading) {
-                    HStack {
-                        if isUsers || isEquipment {
-                            Image(systemName: "chevron.right")
-                                .rotationEffect(Angle(degrees: isExpanded ? 90 : 0))
-                        }
-                        
-                        Text("Место #\(indexPlace) | \(declinationOfNumberOfParticipants(indexPlace))")
-                    }
-                    . onTapGesture(){
-                        if isUsers || isEquipment {
-                            isExpanded.toggle()
-                        }
-                    }
-                    if isExpanded
-                    {
-                        VStack(alignment: .leading) {
-                            
-                            if isUsers {
-                                
-                                VStack(alignment: .leading) {
-                                    
-                                    Text("Участники:")
-                                        .font(.callout)
-                                        .fontWeight(.bold)
-                                    
-                                    ForEach(0..<place.participants!.count) { index in
-                                        UserPlace(user: place.participants![index])
-                                    }
-                                    ForEach(0..<place.wishers!.count) { index in
-                                        UserPlace(user: place.wishers![index])
-                                    }
-                                    ForEach(0..<place.invited!.count) { index in
-                                        UserPlace(user: place.invited![index])
-                                    }
-                                }
-                            }
-                            
-                            if isUsers && isEquipment {
-                                Divider()
-                            }
-                            
-                            if isEquipment {
-                                
-                                VStack(alignment: .leading) {
-                                    
-                                    Text("Оборудование:")
-                                        .font(.callout)
-                                        .fontWeight(.bold)
-                                    ForEach(0..<place.equipment!.count) { index in
-                                        EquipmentPlace(equipment: place.equipment![index])
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 5.0)
-                        .padding(.vertical, 10.0)
-                    }
-                }
-                .onAppear() {
-                    self.isUsers = place.participants!.count + place.wishers!.count + place.invited!.count != 0
-                    self.isEquipment = place.equipment!.count != 0
-                }
-                
-            }
-            
-            func declinationOfNumberOfParticipants(_ index: Int) -> String {
-                
-                var n = index
-                
-                n -= place.participants!.count + place.wishers!.count + place.invited!.count
-                
-                if n <= 0
-                {
-                    return "Участники не нужны"
-                }
-                n %= 100
-                
-                if (n >= 5 && n <= 20) {
-                    return "Нужно \(index) участников"
-                }
-                
-                n %= 10;
-                if n == 1 {
-                    return "Нужен \(index) участник";
-                }
-                
-                if (n >= 2 && n <= 4) {
-                    return "Нужно \(index) участника";
-                }
-                
-                return "Нужно \(index) участников";
-                
-            }
-            
-            private struct UserPlace: View {
-                let user: UserAndEventRole
-                
-                var body: some View {
-                    VStack(alignment: .leading) {
-                        HStack(alignment: .center) {
-                            Text("\(user.user!.lastName!) \(user.user!.firstName!) \(user.user!.middleName!)")
-                                .font(.footnote)
-                                .bold()
-                                .lineLimit(2)
-                            
-                            Spacer()
-                            
-                            Text(user.eventRole!.title!)
-                                .font(.caption)
-                        }
-                    }
-                    .padding(5.0)
-                    
-                }
-            }
-            
-            private struct EquipmentPlace: View {
-                let equipment: EquipmentView
-                
-                var body: some View {
-                    VStack(alignment: .leading) {
-                        
-                        Text("\(equipment.equipmentType!.title!)")
-                            .font(.footnote)
-                            .bold()
-                            .lineLimit(2)
-                        
-                        Text(equipment.serialNumber!)
-                            .font(.caption)
-                        
-                    }
-                    .padding(5.0)
-                }
-            }
-        }
-        
+    
+    static func localizedDate(_ date: Date) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E, dd.MM.yy HH:mm"
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        return dateFormatter.string(from: date)
     }
 }
-
-
 
 struct EventPage_Previews: PreviewProvider {
     
