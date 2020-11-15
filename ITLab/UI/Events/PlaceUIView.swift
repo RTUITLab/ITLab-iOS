@@ -191,7 +191,7 @@ struct PlaceUIView: View {
                     }
                     .padding(.trailing, 5)
                     
-                    Text("\(user.user!.lastName!) \(user.user!.firstName!)")
+                    Text("\(user.user!.lastName ?? "") \(user.user!.firstName ?? "")")
                         .font(.callout)
                         .bold()
                     

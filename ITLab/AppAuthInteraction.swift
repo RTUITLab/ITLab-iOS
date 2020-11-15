@@ -443,12 +443,15 @@ extension AppAuthInteraction {
         var data : Data? = nil
         
         if let authState = self.authState {
-            data = NSKeyedArchiver.archivedData(withRootObject: authState)
+            do {
+                data = try NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: true)
+            } catch {
+                print("Not save data")
+            }
         }
         
         if let userDefaults = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab") {
             userDefaults.set(data, forKey: self.appAuthConfiguration.kAppAuthAuthStateKey)
-            //            print(data)
             userDefaults.synchronize()
         }
     }
@@ -460,8 +463,12 @@ extension AppAuthInteraction {
             return
         }
         
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+        do {
+            let authState = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? OIDAuthState
             self.setAuthState(authState)
+        }
+        catch {
+            print("Not load data")
         }
     }
     
