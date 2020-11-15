@@ -73,9 +73,6 @@ struct UsersListPage: View {
     var body: some View {
         NavigationView {
             VStack {
-                SearchBar(text: $userSearch)
-                    .padding(.horizontal, 10)
-                
                 List {
                     if isLoading {
                         GeometryReader() { g in
@@ -83,11 +80,12 @@ struct UsersListPage: View {
                                 .frame(width: g.size.width, height: g.size.height, alignment: .center)
                         }
                     } else {
-                        ForEach(self.users.filter {
-                            self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
-                        }, id: \._id) { user in
-                            
-                            UserStack(user: user)
+                        Section(header: SearchBar(text: $userSearch)) {
+                            ForEach(self.users.filter {
+                                self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
+                            }, id: \._id) { user in
+                                UserStack(user: user)
+                            }
                         }
                     }
                 }
