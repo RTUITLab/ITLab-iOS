@@ -13,6 +13,10 @@ struct UserPage: View {
     @State var equipments: [EquipmentView] = []
     @State var isLoadingEquipments: Bool = true
     
+    @State var events: [UsersEventsView] = []
+    @State private var fromDateEvent = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+    @State private var beforeDateEvent = Date()
+    @State var isLoadingEvents: Bool = true
     
     var body: some View {
         List {
@@ -154,28 +158,59 @@ struct UserPage: View {
                     GeometryReader() { g in
                         ProgressView()
                             .frame(width: g.size.width, height: g.size.height, alignment: .center)
-                        
                     }
                 } else {
                     if equipments.count > 0 {
-                        VStack (alignment: .leading) {
-                            ForEach(equipments, id: \._id) {
-                                equipment in
-                                
+                            ForEach(equipments, id: \._id) { equipment in
                                 EquipmentStack(equipment: equipment)
-                            }
                         }
                     } else {
                         Text("Оборудование на руках нет")
                     }
                 }
             }
-            .onAppear() {
-                getEquimpment()
+            
+            
+            Section(header: Text("Участие в событии")) {
+                VStack {
+                    DatePicker("От", selection: $fromDateEvent, displayedComponents: .date)
+                        .environment(\.locale, Locale.init(identifier: "ru"))
+                        .onChange(of: fromDateEvent) { (_) in
+                            isLoadingEvents = true
+                            getEvents()
+                        }
+                    
+                    Spacer()
+                    
+                    DatePicker("До", selection: $beforeDateEvent, displayedComponents: .date)
+                        .environment(\.locale, Locale.init(identifier: "ru"))
+                        .onChange(of: beforeDateEvent) { (_) in
+                            isLoadingEvents = true
+                            getEvents()
+                        }
+                }
+                if isLoadingEvents {
+                    GeometryReader() { g in
+                        ProgressView()
+                            .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                    }
+                } else {
+                    if events.count > 0 {
+                        ForEach(events, id: \._id) { event in
+                            Text(event.title!)
+                        }
+                    } else {
+                        Text("Нет событий за данный период")
+                    }
+                }
             }
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear() {
+            getEquimpment()
+            getEvents()
+        }
     }
     
     func getEquimpment() {
@@ -193,6 +228,20 @@ struct UserPage: View {
                 self.isLoadingEquipments = false
             }
             
+        }
+    }
+    
+    func getEvents() {
+        AppAuthInteraction.shared.performAction { (_, _) in
+            EventAPI.apiEventUserUserIdGet(userId: user._id!, begin: fromDateEvent, end: beforeDateEvent) { (events, error) in
+                if let error = error {
+                    print(error)
+                    self.isLoadingEvents = false
+                    return
+                }
+                self.events = events ?? []
+                self.isLoadingEvents = false
+            }
         }
     }
 }
