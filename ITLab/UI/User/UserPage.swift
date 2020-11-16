@@ -115,7 +115,7 @@ struct UserPage: View {
                     return property.userPropertyType?.title == "VKID"
                 })?.value {
                     HStack(alignment: .center) {
-                        Image(systemName: "questionmark.square.fill")
+                        Image("vk.logo.fill")
                             .foregroundColor(.gray)
                             .opacity(0.5)
                         
@@ -129,7 +129,7 @@ struct UserPage: View {
                                 UIApplication.shared.open(URL(string: "vk://vk.com/id\(vkId)")!)
                             }) {
                                 Text("Открыть VK")
-                                Image(systemName: "questionmark.square.fill")
+                                Image("vk.logo.fill")
                             }
                             
                             Button(action: {
