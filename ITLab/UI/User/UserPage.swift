@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Contacts
 
 struct UserPage: View {
     @State var user: UserView
@@ -150,6 +151,30 @@ struct UserPage: View {
                             .opacity(0.5)
                         Text(group)
                     }
+                }
+            }
+           
+            Section {
+                Button(action: {
+                    let store = CNContactStore()
+                    let contact = CNMutableContact()
+                    
+                    contact.givenName = user.firstName ?? ""
+                    contact.familyName = user.lastName ?? ""
+                    
+                    if let email = user.email {
+                        contact.emailAddresses.append(CNLabeledValue(label: "email", value: NSString(string: email)))
+                    }
+                    
+                    if let phone = user.phoneNumber {
+                        contact.phoneNumbers.append(CNLabeledValue(label: "мобильный", value: CNPhoneNumber(stringValue: phone)))
+                    }
+                    
+                    let saveRequest = CNSaveRequest()
+                    saveRequest.add(contact, toContainerWithIdentifier: nil)
+                    try? store.execute(saveRequest)
+                }) {
+                    Text("Добавить в контакты")
                 }
             }
             
