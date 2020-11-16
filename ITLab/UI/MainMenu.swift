@@ -41,6 +41,8 @@ struct MainMenu: View {
                 }
         }
         .onAppear() {
+            Contact.requestAccess()
+            
             AppAuthInteraction.shared.getUserInfoReq {
                 eventPage.isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
             }
