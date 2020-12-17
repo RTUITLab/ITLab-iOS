@@ -27,10 +27,17 @@ struct EventsPage: View {
                             .frame(width: g.size.width, height: g.size.height, alignment: .center)
                     }
                 } else {
-                    
-                    ForEach(events, id: \.id) { event in
-                        EventStack(event: event)
-                            .padding(.vertical, 10)
+
+                    if events.count == 0 {
+                        GeometryReader() { g in
+                           Text("На данный момент событий нет!")
+                                    .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                        }
+                    } else {
+                        ForEach(events, id: \.id) { event in
+                            EventStack(event: event)
+                                    .padding(.vertical, 10)
+                        }
                     }
                 }
             }
