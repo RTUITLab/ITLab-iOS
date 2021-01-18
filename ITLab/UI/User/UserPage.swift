@@ -19,6 +19,9 @@ struct UserPage: View {
     @State private var beforeDateEvent = Date()
     @State var isLoadingEvents: Bool = true
     
+    @State var contactAlert: Bool = false
+    @State var isEnableButton: Bool = false
+    
     var body: some View {
         List {
             Section(header: VStack(alignment: .leading) {
@@ -157,27 +160,36 @@ struct UserPage: View {
             if Contact.isAccessContacts {
                 Section {
                     Button(action: {
-                        let store = CNContactStore()
-                        let contact = CNMutableContact()
-                        
-                        contact.givenName = user.firstName ?? ""
-                        contact.familyName = user.lastName ?? ""
-                        
-                        if let email = user.email {
-                            contact.emailAddresses.append(CNLabeledValue(label: "email", value: NSString(string: email)))
-                        }
-                        
-                        if let phone = user.phoneNumber {
-                            contact.phoneNumbers.append(CNLabeledValue(label: "мобильный", value: CNPhoneNumber(stringValue: phone)))
-                        }
-                        
-                        let saveRequest = CNSaveRequest()
-                        saveRequest.add(contact, toContainerWithIdentifier: nil)
-                        try? store.execute(saveRequest)
+                        contactAlert = true
                     }) {
                         Text("Добавить в контакты")
                     }
+                    .alert(isPresented: $contactAlert) {
+                        Alert(title: Text("Вы точно хотите добавить контакт?"), primaryButton: .cancel(Text("Нет")), secondaryButton: .default(Text("Да")) {
+                            let store = CNContactStore()
+                            let contact = CNMutableContact()
+
+                            contact.givenName = user.firstName ?? ""
+                            contact.familyName = user.lastName ?? ""
+
+                            if let email = user.email {
+                                contact.emailAddresses.append(CNLabeledValue(label: "email", value: NSString(string: email)))
+                            }
+
+                            if let phone = user.phoneNumber {
+                                contact.phoneNumbers.append(CNLabeledValue(label: "мобильный", value: CNPhoneNumber(stringValue: phone)))
+                            }
+
+                            let saveRequest = CNSaveRequest()
+                            saveRequest.add(contact, toContainerWithIdentifier: nil)
+                            try? store.execute(saveRequest)
+                            isEnableButton = true
+                        } )
+                    }
+                    .disabled(self.isEnableButton)
+                    
                 }
+                
             }
             
             Section(header: Text("Техника на руках")) {
