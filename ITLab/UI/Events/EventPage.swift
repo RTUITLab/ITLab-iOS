@@ -130,7 +130,7 @@ struct EventPage: View {
                     if event != nil {
                         ForEach (event!.shifts!, id: \._id){ shift in
                             
-                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift, compactEventInfo: $compactEvent))
+                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift))
                         }
                         
                     }
@@ -140,7 +140,6 @@ struct EventPage: View {
         }
         .listStyle(GroupedListStyle())
         .onAppear() {
-            
             AppAuthInteraction.shared.performAction { (accesToken, _) in
                 
                 EventAPI.apiEventIdGet(_id: compactEvent!.id!) { (event, _) in
