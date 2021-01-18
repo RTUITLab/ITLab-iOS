@@ -66,9 +66,10 @@ struct EventPage: View {
                         .foregroundColor(.gray)
                         .opacity(0.5)
                     
+                    
                     Button(action: {
                         if UIApplication.shared.canOpenURL(URL(string: "yandexmaps://")!) {
-                            UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)")!)
+                            UIApplication.shared.open(URL(string: ("yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!)
                         } else {
                             UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
                         }
@@ -78,12 +79,12 @@ struct EventPage: View {
                     .contextMenu() {
                         Button(action: {
                             if UIApplication.shared.canOpenURL(URL(string: "yandexmaps://")!) {
-                                UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)")!)
+                                UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!)
                             } else {
                                 UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
                             }
                         }) {
-                            Text("Перейти в карты")
+                            Text("Открыть карты")
                             Image("location.fill")
                         }
                         
@@ -140,6 +141,8 @@ struct EventPage: View {
         }
         .listStyle(GroupedListStyle())
         .onAppear() {
+//            print(("yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+            
             AppAuthInteraction.shared.performAction { (accesToken, _) in
                 
                 EventAPI.apiEventIdGet(_id: compactEvent!.id!) { (event, _) in
