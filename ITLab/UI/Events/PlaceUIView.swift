@@ -13,6 +13,8 @@ struct PlaceUIView: View {
     let place: PlaceView
     let indexPlace: Int
     
+    @Binding var compactEventInfo: CompactEventView?
+    
     @State var isUsers: Bool = false
     @State var isEquipment: Bool = false
     @State var isEnableButton: Bool = false
@@ -140,7 +142,11 @@ struct PlaceUIView: View {
             
             var kek: [ActionSheet.Button] = []
             for i in EventRole.data {
-                kek.append(.default(Text(i.title ?? "nil")) { registrationEvent(event: i._id!) })
+                kek.append(.default(Text(i.title ?? "nil")) {
+                    registrationEvent(event: i._id!)
+                    
+                    compactEventInfo?.currentParticipantsCount! += 1
+                })
             }
             kek.append(.cancel(Text("Отмена")))
             

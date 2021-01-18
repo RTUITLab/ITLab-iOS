@@ -66,8 +66,34 @@ struct EventPage: View {
                         .foregroundColor(.gray)
                         .opacity(0.5)
                     
-                    Text(event?.address ?? compactEvent?.address ?? "Адрес")
-                        .lineLimit(2)
+                    Button(action: {
+                        if UIApplication.shared.canOpenURL(URL(string: "yandexmaps://")!) {
+                            UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)")!)
+                        } else {
+                            UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
+                        }
+                    }) {
+                        Text(compactEvent!.address!)
+                    }
+                    .contextMenu() {
+                        Button(action: {
+                            if UIApplication.shared.canOpenURL(URL(string: "yandexmaps://")!) {
+                                UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)")!)
+                            } else {
+                                UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
+                            }
+                        }) {
+                            Text("Перейти в карты")
+                            Image("location.fill")
+                        }
+                        
+                        Button(action: {
+                            UIPasteboard.general.string = event?.address ?? compactEvent?.address
+                        }) {
+                            Text("Копировать")
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
                 }
             }
             
@@ -104,7 +130,7 @@ struct EventPage: View {
                     if event != nil {
                         ForEach (event!.shifts!, id: \._id){ shift in
                             
-                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift))
+                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift, compactEventInfo: $compactEvent))
                         }
                         
                     }
@@ -162,12 +188,5 @@ struct EventPage: View {
         dateFormatter.dateFormat = "E, dd.MM.yy HH:mm"
         dateFormatter.locale = Locale(identifier: "ru_RU")
         return dateFormatter.string(from: date)
-    }
-}
-
-struct EventPage_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        EventPage()
     }
 }

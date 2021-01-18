@@ -11,6 +11,8 @@ struct ShiftUIView: View {
     
     let shift: ShiftView
     
+    @Binding var compactEventInfo: CompactEventView?
+    
     @State var isExpanded: Bool = false
     
     var body : some View {
@@ -20,12 +22,12 @@ struct ShiftUIView: View {
                 
                 if index == 0 {
                     Section(header: Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")) {
-                        PlaceUIView(place: shift.places![index], indexPlace: index + 1)
+                        PlaceUIView(place: shift.places![index], indexPlace: index + 1, compactEventInfo: $compactEventInfo)
                             .padding(.vertical, 2.0)
                     }
                 } else {
                     Section {
-                        PlaceUIView(place: shift.places![index], indexPlace: index + 1)
+                        PlaceUIView(place: shift.places![index], indexPlace: index + 1, compactEventInfo: $compactEventInfo)
                             
                             .padding(.vertical, 2.0)
                     }
