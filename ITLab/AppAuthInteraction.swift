@@ -15,6 +15,7 @@ class AppAuthInteraction: NSObject, ObservableObject {
     
     struct UserInfo: Codable {
         let userId: UUID
+        var profile: UserView?
         private var roles: [String:Bool] = ["CanEditEquipment": false,
                                             "CanEditEvent": false,
                                             "CanInviteToSystem": false,
@@ -38,12 +39,13 @@ class AppAuthInteraction: NSObject, ObservableObject {
         public enum CodingKeys: String, CodingKey {
             case userId = "sub"
             case roles = "role"
+            case profile
         }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             userId = try container.decode(UUID.self, forKey: .userId)
-            
+            profile = try? container.decode(UserView.self, forKey: .profile)
             if let roles = try? container.decode([String].self, forKey: .roles) {
                 roles.forEach { (role) in
                     self.roles.updateValue(true, forKey: role)
@@ -265,16 +267,20 @@ extension AppAuthInteraction {
             {
                 print(respon)
                 self.authState = nil
+                self.userInfo = nil
                 self.isLoader = false
                 self.stateChanged()
+                self.saveUserInfo()
             }
             
             if let err = error
             {
                 print(err)
                 self.authState = nil
+                self.userInfo = nil
                 self.isLoader = false
                 self.stateChanged()
+                self.saveUserInfo()
             }
         })
     }
@@ -406,10 +412,23 @@ extension AppAuthInteraction {
                         return
                     }
                     self.userInfo = user
-                    self.saveUserInfo()
-                    self.isLoader = false
                     
-                    complited()
+                    
+                    
+                    UserAPI.apiUserIdGet(_id: user.userId) { (profile, error) in
+                        if let error = error {
+                            print(error)
+                            return
+                        }
+                        
+                        self.userInfo?.profile = profile
+                        self.saveUserInfo()
+                        
+                        self.isLoader = false
+                        complited()
+                    }
+                    
+                    
                 }
             }
             
@@ -483,7 +502,6 @@ extension AppAuthInteraction {
         else {
             return
         }
-        
         do {
             let authState = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? OIDAuthState
             self.setAuthState(authState)

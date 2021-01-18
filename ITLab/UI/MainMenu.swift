@@ -11,6 +11,7 @@ import AppAuth
 struct MainMenu: View {
     
     let eventPage = EventsPage()
+    @State var user: UserView?
     
     var body: some View {
         TabView {
@@ -31,7 +32,7 @@ struct MainMenu: View {
                     }
                 }
             
-            TestPage()
+            ProfilePage(user: $user)
                 .tabItem {
                     VStack {
                         Image(systemName: "person.crop.circle")
@@ -43,19 +44,19 @@ struct MainMenu: View {
         .onAppear() {
             Contact.requestAccess()
             
+            if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
+                user = profile
+            }
+            
             AppAuthInteraction.shared.getUserInfoReq {
                 eventPage.isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+                
+                user = AppAuthInteraction.shared.getUserInfo()?.profile
             }
+            
+            
         }
     }
     
     
-}
-
-
-struct MainMenu_Previews: PreviewProvider {
-    static var previews: some View {
-        MainMenu()
-        
-    }
 }
