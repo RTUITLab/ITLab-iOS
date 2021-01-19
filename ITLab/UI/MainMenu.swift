@@ -62,32 +62,74 @@ struct MainMenu: View {
 }
 
 struct СolorPaletteView: View {
+    
+    @State var mainColor: Color = Color.blue
+    @State var oneButtonColor: Color = Color.green
+    @State var twoButtonColor: Color = Color.green
+    @State var threeButtonColor: Color = Color.green
+    
+    @State private var totalHeight = CGFloat(100)
+    
+    @State var scope: Int = 0
+    
     var body: some View {
         VStack {
             Rectangle()
                 .frame(width: 300, height: 300, alignment: .center)
+                .foregroundColor(mainColor)
                 .padding(.top, 20.0)
             
             Spacer()
             
-            Text("-1")
+            Text("\(scope)")
+                .font(.title)
+                .fontWeight(.bold)
             
             Spacer()
             
-            HStack {
-                Rectangle()
-                    .frame(width: 100, height: 100, alignment: .center)
-                    .padding(.horizontal)
+            VStack {
+                GeometryReader { g in
+                    HStack {
+                        Spacer()
+                        
+                        Text("1")
+                            .frame(width: g.size.width / 4, height: g.size.width / 4)
+                            .background(Rectangle()
+                                            .foregroundColor(oneButtonColor))
+                        
+                        Text("2")
+                            .frame(width: g.size.width / 4, height: g.size.width / 4)
+                            .background(Rectangle()
+                                            .foregroundColor(twoButtonColor))
+                            .padding(.horizontal)
+                        
+                        Text("3")
+                            .frame(width: g.size.width / 4, height: g.size.width / 4)
+                            .background(Rectangle()
+                                            .foregroundColor(threeButtonColor))
+                        
+                        Spacer()
+                    }
+                    .frame(width: g.size.width, height: g.size.width / 4, alignment: .center)
+                    .background(GeometryReader {gp -> Color in
+                                        DispatchQueue.main.async {
+                                            self.totalHeight = gp.size.height
+                                        }
+                                        return Color.clear
+                                    })
+                }
                 
-                Rectangle()
-                    .frame(width: 100, height: 100, alignment: .center)
-                    .padding(.horizontal)
-                
-                Rectangle()
-                    .frame(width: 100, height: 100, alignment: .center)
-                    .padding(.horizontal)
             }
-            .padding(.bottom, 15.0)
+            .frame(height: totalHeight)
+            .padding(.bottom, 20.0)
         }
+    }
+    
+    func generateRandomColor() -> UIColor {
+        let hue : CGFloat = CGFloat(arc4random() % 256) / 256 // use 256 to get full range from 0.0 to 1.0
+        let saturation : CGFloat = CGFloat(arc4random() % 128) / 256 + 0.5 // from 0.5 to 1.0 to stay away from white
+        let brightness : CGFloat = CGFloat(arc4random() % 128) / 256 + 0.5 // from 0.5 to 1.0 to stay away from black
+        
+        return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
     }
 }
