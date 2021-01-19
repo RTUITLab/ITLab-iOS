@@ -34,7 +34,7 @@ struct ProfilePage: View {
                         Text(user?.lastName ?? "Фамилия")
                             
                     }
-                    .onTapGesture(count: 10) {
+                    .onTapGesture(count: 6) {
                         self.isSheet = true
                     }
                     .sheet(isPresented: $isSheet) {
