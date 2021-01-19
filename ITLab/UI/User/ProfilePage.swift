@@ -18,6 +18,7 @@ struct ProfilePage: View {
     @State private var fromDateEvent = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
     @State private var beforeDateEvent = Date()
     @State var isLoadingEvents: Bool = true
+    @State var isSheet: Bool = false
     
     var body: some View {
         NavigationView {
@@ -31,7 +32,15 @@ struct ProfilePage: View {
                             .opacity(0.5)
                         
                         Text(user?.lastName ?? "Фамилия")
+                            
                     }
+                    .onTapGesture(count: 10) {
+                        self.isSheet = true
+                    }
+                    .sheet(isPresented: $isSheet) {
+                        СolorPaletteView()
+                    }
+                    
                     HStack(alignment: .center) {
                         Text("И")
                             .foregroundColor(.gray)

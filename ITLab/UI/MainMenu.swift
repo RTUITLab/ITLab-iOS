@@ -60,3 +60,34 @@ struct MainMenu: View {
     
     
 }
+
+struct СolorPaletteView: View {
+    var body: some View {
+        VStack {
+            Rectangle()
+                .frame(width: 300, height: 300, alignment: .center)
+                .padding(.top, 20.0)
+            
+            Spacer()
+            
+            Text("-1")
+            
+            Spacer()
+            
+            HStack {
+                Rectangle()
+                    .frame(width: 100, height: 100, alignment: .center)
+                    .padding(.horizontal)
+                
+                Rectangle()
+                    .frame(width: 100, height: 100, alignment: .center)
+                    .padding(.horizontal)
+                
+                Rectangle()
+                    .frame(width: 100, height: 100, alignment: .center)
+                    .padding(.horizontal)
+            }
+            .padding(.bottom, 15.0)
+        }
+    }
+}
