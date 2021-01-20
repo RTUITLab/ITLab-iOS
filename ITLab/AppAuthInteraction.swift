@@ -305,7 +305,7 @@ extension AppAuthInteraction {
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
                                               clientSecret: clientSecret,
-                                              scopes: [OIDScopeOpenID, OIDScopeProfile, "itlab.events", "roles", "offline_access"],
+                                              scopes: [OIDScopeOpenID, OIDScopeProfile, "itlab.events", "itlab.salary", "roles", "offline_access"],
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
                                               additionalParameters: nil)

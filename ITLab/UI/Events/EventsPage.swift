@@ -168,9 +168,3 @@ extension EventsPage {
         }
     }
 }
-
-struct EventsPage_Previews: PreviewProvider {
-    static var previews: some View {
-        EventsPage()
-    }
-}
