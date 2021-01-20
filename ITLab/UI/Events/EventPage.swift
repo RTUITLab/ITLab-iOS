@@ -143,7 +143,24 @@ struct EventPage: View {
                     if event != nil {
                         ForEach (event!.shifts!, id: \._id){ shift in
                             
-                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift, salary: $salary))
+                            NavigationLink(destination:  ShiftUIView(shift: shift, salary: $salary)) {
+                                VStack(alignment: .leading) {
+                                    Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")
+                                    
+                                    if let salary = self.salary?.shiftSalaries?.first(where: {$0.shiftId == shift._id})?.count {
+                                        HStack(alignment: .center) {
+                                            Image(systemName: "creditcard.fill")
+                                                .font(.callout)
+                                                .foregroundColor(.gray)
+                                                .opacity(0.5)
+                                            Text("\(salary) \u{20BD}")
+                                                .font(.callout)
+                                                .foregroundColor(Color.gray)
+                                        }
+                                        .padding(.top, 1)
+                                    }
+                                }
+                            }
                         }
                         
                     }

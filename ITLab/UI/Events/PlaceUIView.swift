@@ -48,7 +48,6 @@ struct PlaceUIView: View {
                             .font(.callout)
                             .foregroundColor(Color.gray)
                     }
-                    .padding(.bottom, 1.0)
                     
                     if let salary = self.salary {
                         HStack(alignment: .center) {
@@ -60,6 +59,7 @@ struct PlaceUIView: View {
                                 .font(.callout)
                                 .foregroundColor(Color.gray)
                         }
+                        .padding(.top, 1.0)
                     }
                 }
                 
