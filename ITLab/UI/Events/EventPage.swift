@@ -13,15 +13,16 @@ struct EventPage: View {
         @Published var height: CGFloat = 0
     }
     
-    @ObservedObject var markdownSize = MarkdownSize()
+    @ObservedObject private var markdownSize = MarkdownSize()
     
-    @State var compactEvent : CompactEventView?
-    @State var event : EventView?
+    @State var compactEvent : CompactEventView
+    @State private var event : EventView?
+    @State private var salary: EventSalaryFullView?
     
-    @State var beginDate: String?
-    @State var endDate: String?
+    @State private var beginDate: String?
+    @State private var endDate: String?
     
-    @State var isExpandedDescription: Bool = false
+    @State private var isExpandedDescription: Bool = false
     
     
     var body: some View {
@@ -33,7 +34,7 @@ struct EventPage: View {
                         .padding(.trailing, 15.0)
                     
                     Spacer()
-                    Text(event?.eventType?.title ?? compactEvent?.eventType?.title ?? "Лекция")
+                    Text(event?.eventType?.title ?? compactEvent.eventType?.title ?? "Лекция")
                         .foregroundColor(/*@START_MENU_TOKEN@*/.gray/*@END_MENU_TOKEN@*/)
                         .multilineTextAlignment(.trailing)
                 }
@@ -45,7 +46,7 @@ struct EventPage: View {
                         .foregroundColor(.gray)
                         .opacity(0.5)
                     
-                    Text("\(beginDate ?? formateDateToString(compactEvent?.beginTime)) — \(endDate ?? formateDateToString(compactEvent?.endTime))")
+                    Text("\(beginDate ?? formateDateToString(compactEvent.beginTime)) — \(endDate ?? formateDateToString(compactEvent.endTime))")
                 }
                 .padding(.vertical, 5)
                 
@@ -57,7 +58,18 @@ struct EventPage: View {
                         .opacity(0.5)
                     
                     
-                    Text("\(compactEvent?.currentParticipantsCount ?? 3)/\(compactEvent?.targetParticipantsCount ?? 10)")
+                    Text("\(compactEvent.currentParticipantsCount ?? 3)/\(compactEvent.targetParticipantsCount ?? 10)")
+                }
+                
+                HStack(alignment: .center) {
+                    
+                    Image(systemName: "creditcard.fill")
+                        .padding(.trailing, 4)
+                        .foregroundColor(.gray)
+                        .opacity(0.5)
+                    
+                    
+                    Text(salary != nil ? "\(salary!.count!) \u{20BD}" : "Оплата не назначена")
                 }
                 
                 HStack(alignment: .center) {
@@ -69,17 +81,17 @@ struct EventPage: View {
                     
                     Button(action: {
                         if UIApplication.shared.canOpenURL(URL(string: "yandexmaps://")!) {
-                            UIApplication.shared.open(URL(string: ("yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!)
+                            UIApplication.shared.open(URL(string: ("yandexmaps://maps.yandex.ru/?text=\(compactEvent.address!)").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!)
                         } else {
                             UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
                         }
                     }) {
-                        Text(compactEvent!.address!)
+                        Text(event?.address ?? compactEvent.address!)
                     }
                     .contextMenu() {
                         Button(action: {
                             if UIApplication.shared.canOpenURL(URL(string: "yandexmaps://")!) {
-                                UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!)
+                                UIApplication.shared.open(URL(string: "yandexmaps://maps.yandex.ru/?text=\(compactEvent.address!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!)
                             } else {
                                 UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
                             }
@@ -89,7 +101,7 @@ struct EventPage: View {
                         }
                         
                         Button(action: {
-                            UIPasteboard.general.string = event?.address ?? compactEvent?.address
+                            UIPasteboard.general.string = event?.address ?? compactEvent.address
                         }) {
                             Text("Копировать")
                             Image(systemName: "doc.on.doc")
@@ -131,7 +143,24 @@ struct EventPage: View {
                     if event != nil {
                         ForEach (event!.shifts!, id: \._id){ shift in
                             
-                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift))
+                            NavigationLink(destination:  ShiftUIView(shift: shift, salary: $salary)) {
+                                VStack(alignment: .leading) {
+                                    Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")
+                                    
+                                    if let salary = self.salary?.shiftSalaries?.first(where: {$0.shiftId == shift._id})?.count {
+                                        HStack(alignment: .center) {
+                                            Image(systemName: "creditcard.fill")
+                                                .font(.callout)
+                                                .foregroundColor(.gray)
+                                                .opacity(0.5)
+                                            Text("\(salary) \u{20BD}")
+                                                .font(.callout)
+                                                .foregroundColor(Color.gray)
+                                        }
+                                        .padding(.top, 1)
+                                    }
+                                }
+                            }
                         }
                         
                     }
@@ -141,19 +170,23 @@ struct EventPage: View {
         }
         .listStyle(GroupedListStyle())
         .onAppear() {
-//            print(("yandexmaps://maps.yandex.ru/?text=\(compactEvent!.address!)").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
             
             AppAuthInteraction.shared.performAction { (accesToken, _) in
                 
-                EventAPI.apiEventIdGet(_id: compactEvent!.id!) { (event, _) in
+                EventSalaryAPI.apiSalaryV1EventEventIdGet(eventId: self.compactEvent.id!) { salary, _ in
+                    self.salary = salary
+                }
+                
+                EventAPI.apiEventIdGet(_id: self.compactEvent.id!) { (event, _) in
                     
                     self.event = event
                     
                     countingDate()
                 }
+                
             }
         }
-        .navigationBarTitle(Text(event?.title ?? compactEvent?.title ?? "Название события"), displayMode: .large)
+        .navigationBarTitle(Text(event?.title ?? compactEvent.title ?? "Название события"), displayMode: .large)
         
     }
     

@@ -107,6 +107,17 @@
 		6DEE2DE92554B0C90087D656 /* PlaceUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */; };
 		6DF0E0FF25496023007D8BC6 /* UsersListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */; };
 		6DF46361251EC364007149F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF46360251EC364007149F6 /* AppDelegate.swift */; };
+		6DF717AF25B81AA400F57D2D /* EventSalaryCreateEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717A625B81AA300F57D2D /* EventSalaryCreateEdit.swift */; };
+		6DF717B025B81AA400F57D2D /* ShiftSalaryEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717A725B81AA300F57D2D /* ShiftSalaryEdit.swift */; };
+		6DF717B125B81AA400F57D2D /* ReportUserSalaryEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717A825B81AA300F57D2D /* ReportUserSalaryEdit.swift */; };
+		6DF717B225B81AA400F57D2D /* ReportUserSalaryFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717A925B81AA300F57D2D /* ReportUserSalaryFullView.swift */; };
+		6DF717B325B81AA400F57D2D /* EventSalaryCompactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717AA25B81AA400F57D2D /* EventSalaryCompactView.swift */; };
+		6DF717B425B81AA400F57D2D /* ShiftSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717AB25B81AA400F57D2D /* ShiftSalaryView.swift */; };
+		6DF717B525B81AA400F57D2D /* PlaceSalaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717AC25B81AA400F57D2D /* PlaceSalaryView.swift */; };
+		6DF717B625B81AA400F57D2D /* PlaceSalaryEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717AD25B81AA400F57D2D /* PlaceSalaryEdit.swift */; };
+		6DF717B725B81AA400F57D2D /* EventSalaryFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717AE25B81AA400F57D2D /* EventSalaryFullView.swift */; };
+		6DF717BC25B81ABE00F57D2D /* EventSalaryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717BA25B81ABE00F57D2D /* EventSalaryAPI.swift */; };
+		6DF717BD25B81ABE00F57D2D /* ReportSalaryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717BB25B81ABE00F57D2D /* ReportSalaryAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -210,6 +221,17 @@
 		6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUIView.swift; sourceTree = "<group>"; };
 		6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListPage.swift; sourceTree = "<group>"; };
 		6DF46360251EC364007149F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6DF717A625B81AA300F57D2D /* EventSalaryCreateEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSalaryCreateEdit.swift; sourceTree = "<group>"; };
+		6DF717A725B81AA300F57D2D /* ShiftSalaryEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftSalaryEdit.swift; sourceTree = "<group>"; };
+		6DF717A825B81AA300F57D2D /* ReportUserSalaryEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportUserSalaryEdit.swift; sourceTree = "<group>"; };
+		6DF717A925B81AA300F57D2D /* ReportUserSalaryFullView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportUserSalaryFullView.swift; sourceTree = "<group>"; };
+		6DF717AA25B81AA400F57D2D /* EventSalaryCompactView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSalaryCompactView.swift; sourceTree = "<group>"; };
+		6DF717AB25B81AA400F57D2D /* ShiftSalaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftSalaryView.swift; sourceTree = "<group>"; };
+		6DF717AC25B81AA400F57D2D /* PlaceSalaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceSalaryView.swift; sourceTree = "<group>"; };
+		6DF717AD25B81AA400F57D2D /* PlaceSalaryEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceSalaryEdit.swift; sourceTree = "<group>"; };
+		6DF717AE25B81AA400F57D2D /* EventSalaryFullView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSalaryFullView.swift; sourceTree = "<group>"; };
+		6DF717BA25B81ABE00F57D2D /* EventSalaryAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSalaryAPI.swift; sourceTree = "<group>"; };
+		6DF717BB25B81ABE00F57D2D /* ReportSalaryAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportSalaryAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -341,6 +363,7 @@
 				6DDD8184252DF78B008CE80A /* UserPropertyTypeAPI.swift */,
 				6DDD8183252DF78B008CE80A /* UserSettingsAPI.swift */,
 				6DDD818A252DF78B008CE80A /* VkPropertyAPI.swift */,
+				6DF717B925B81AAD00F57D2D /* Salary */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -400,6 +423,7 @@
 				6DDD819D252DF78B008CE80A /* UserView.swift */,
 				6DDD81AC252DF78B008CE80A /* VkVerifyRequest.swift */,
 				6DDD81B9252DF78B008CE80A /* WisherEventView.swift */,
+				6DF717A525B81A6D00F57D2D /* Salary */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,6 +443,31 @@
 				6D5DE58A25B5A16B003ED6DA /* ProfilePage.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		6DF717A525B81A6D00F57D2D /* Salary */ = {
+			isa = PBXGroup;
+			children = (
+				6DF717AA25B81AA400F57D2D /* EventSalaryCompactView.swift */,
+				6DF717A625B81AA300F57D2D /* EventSalaryCreateEdit.swift */,
+				6DF717AE25B81AA400F57D2D /* EventSalaryFullView.swift */,
+				6DF717AD25B81AA400F57D2D /* PlaceSalaryEdit.swift */,
+				6DF717AC25B81AA400F57D2D /* PlaceSalaryView.swift */,
+				6DF717A825B81AA300F57D2D /* ReportUserSalaryEdit.swift */,
+				6DF717A925B81AA300F57D2D /* ReportUserSalaryFullView.swift */,
+				6DF717A725B81AA300F57D2D /* ShiftSalaryEdit.swift */,
+				6DF717AB25B81AA400F57D2D /* ShiftSalaryView.swift */,
+			);
+			path = Salary;
+			sourceTree = "<group>";
+		};
+		6DF717B925B81AAD00F57D2D /* Salary */ = {
+			isa = PBXGroup;
+			children = (
+				6DF717BA25B81ABE00F57D2D /* EventSalaryAPI.swift */,
+				6DF717BB25B81ABE00F57D2D /* ReportSalaryAPI.swift */,
+			);
+			path = Salary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -505,6 +554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D5DE58B25B5A16B003ED6DA /* ProfilePage.swift in Sources */,
+				6DF717B525B81AA400F57D2D /* PlaceSalaryView.swift in Sources */,
 				6DDD81E2252DF78B008CE80A /* CreateEditPlaceView.swift in Sources */,
 				6D1842A02523588F00B95EBB /* AppAuthInteraction.swift in Sources */,
 				6DDD81DA252DF78B008CE80A /* EquipmentAPI.swift in Sources */,
@@ -519,9 +569,11 @@
 				6DDD8204252DF78B008CE80A /* UserPropertyTypeCreateRequest.swift in Sources */,
 				6DDD81D4252DF78B008CE80A /* AboutAPI.swift in Sources */,
 				6DDD81DF252DF78B008CE80A /* EventRoleView.swift in Sources */,
+				6DF717B425B81AA400F57D2D /* ShiftSalaryView.swift in Sources */,
 				6DDD81E9252DF78B008CE80A /* RoleView.swift in Sources */,
 				6DDD81FD252DF78B008CE80A /* UserAndEventRole.swift in Sources */,
 				6DF46361251EC364007149F6 /* AppDelegate.swift in Sources */,
+				6DF717B025B81AA400F57D2D /* ShiftSalaryEdit.swift in Sources */,
 				6DDD81E7252DF78B008CE80A /* BuildInformation.swift in Sources */,
 				6DDD81FC252DF78B008CE80A /* PlaceEditRequest.swift in Sources */,
 				6DDD81DE252DF78B008CE80A /* ShiftView.swift in Sources */,
@@ -545,20 +597,25 @@
 				6DDD81F8252DF78B008CE80A /* InviteUserRequest.swift in Sources */,
 				6DDD81C8252DF78B008CE80A /* APIHelper.swift in Sources */,
 				6DDD820E252DF78B008CE80A /* EventApplicationView.swift in Sources */,
+				6DF717B725B81AA400F57D2D /* EventSalaryFullView.swift in Sources */,
 				6DDD8202252DF78B008CE80A /* PlaceView.swift in Sources */,
 				6D2AB2802533686000AFCDBB /* Markdown.swift in Sources */,
 				6DDD8203252DF78B008CE80A /* ResetPasswordRequest.swift in Sources */,
 				6DDD8210252DF78B008CE80A /* PlaceCreateRequest.swift in Sources */,
 				6DDD81E5252DF78B008CE80A /* EquipmentCreateRequest.swift in Sources */,
+				6DF717BD25B81ABE00F57D2D /* ReportSalaryAPI.swift in Sources */,
 				6DEE2DE92554B0C90087D656 /* PlaceUIView.swift in Sources */,
 				6DDD8207252DF78B008CE80A /* WisherEventView.swift in Sources */,
 				6DDD81E3252DF78B008CE80A /* DeletableRequest.swift in Sources */,
 				6DDD81FE252DF78B008CE80A /* AccountEditRequest.swift in Sources */,
 				6DDD81F3252DF78B008CE80A /* ShiftCreateRequest.swift in Sources */,
 				6D00FE7125501921000ED344 /* ITLabApp.swift in Sources */,
+				6DF717B625B81AA400F57D2D /* PlaceSalaryEdit.swift in Sources */,
 				6DDD81D6252DF78B008CE80A /* EquipmentTypeAPI.swift in Sources */,
 				6DDD81DC252DF78B008CE80A /* JSONEncodableEncoding.swift in Sources */,
+				6DF717B125B81AA400F57D2D /* ReportUserSalaryEdit.swift in Sources */,
 				6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */,
+				6DF717AF25B81AA400F57D2D /* EventSalaryCreateEdit.swift in Sources */,
 				6DDD81CF252DF78B008CE80A /* EventTypeAPI.swift in Sources */,
 				6DDD81C9252DF78B008CE80A /* AlamofireImplementations.swift in Sources */,
 				6DDD81EA252DF78B008CE80A /* GetSummaryRequest.swift in Sources */,
@@ -579,10 +636,12 @@
 				6DDD81E1252DF78B008CE80A /* EventView.swift in Sources */,
 				6DDD8208252DF78B008CE80A /* EventCreateRequest.swift in Sources */,
 				6DDD81FA252DF78B008CE80A /* VkVerifyRequest.swift in Sources */,
+				6DF717B225B81AA400F57D2D /* ReportUserSalaryFullView.swift in Sources */,
 				6DDD81CE252DF78B008CE80A /* SummaryAPI.swift in Sources */,
 				6DDD8212252DF78B008CE80A /* Extensions.swift in Sources */,
 				6DDD81F0252DF78B008CE80A /* EventRoleCreateRequest.swift in Sources */,
 				6DDD820F252DF78B008CE80A /* ChangePasswordRequest.swift in Sources */,
+				6DF717BC25B81ABE00F57D2D /* EventSalaryAPI.swift in Sources */,
 				6DDD81D8252DF78B008CE80A /* EquipmentUserAPI.swift in Sources */,
 				6DDD81D3252DF78B008CE80A /* UserPropertyTypeAPI.swift in Sources */,
 				6DDD8211252DF78B008CE80A /* AccountCreateRequest.swift in Sources */,
@@ -593,6 +652,7 @@
 				6DDD81D0252DF78B008CE80A /* UserPropertyAPI.swift in Sources */,
 				6DDD8209252DF78B008CE80A /* PersonWorkRequest.swift in Sources */,
 				6DDD820A252DF78B008CE80A /* EventTypeCreateRequest.swift in Sources */,
+				6DF717B325B81AA400F57D2D /* EventSalaryCompactView.swift in Sources */,
 				6DDD81CA252DF78B008CE80A /* JSONValue.swift in Sources */,
 				6DDD81F7252DF78B008CE80A /* UserPropertyTypeEditRequest.swift in Sources */,
 				6DDD81F9252DF78B008CE80A /* EventEditRequest.swift in Sources */,

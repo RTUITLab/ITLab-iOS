@@ -11,7 +11,9 @@ struct ShiftUIView: View {
     
     let shift: ShiftView
     
-    @State var isExpanded: Bool = false
+    @State private var isExpanded: Bool = false
+    
+    @Binding var salary: EventSalaryFullView?
     
     var body : some View {
         List {
@@ -20,12 +22,12 @@ struct ShiftUIView: View {
                 
                 if index == 0 {
                     Section(header: Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")) {
-                        PlaceUIView(place: shift.places![index], indexPlace: index + 1)
+                        PlaceUIView(place: shift.places![index], indexPlace: index + 1, salary: salary?.placeSalaries?.first(where: { $0.placeId == shift.places![index]._id}))
                             .padding(.vertical, 2.0)
                     }
                 } else {
                     Section {
-                        PlaceUIView(place: shift.places![index], indexPlace: index + 1)
+                        PlaceUIView(place: shift.places![index], indexPlace: index + 1, salary: salary?.placeSalaries?.first(where: { $0.placeId == shift.places![index]._id}))
                             
                             .padding(.vertical, 2.0)
                     }
@@ -38,3 +40,5 @@ struct ShiftUIView: View {
     }
     
 }
+
+
