@@ -96,8 +96,8 @@ struct EventPage: View {
                                 UIApplication.shared.open(URL(string: "https://itunes.apple.com/ru/app/yandex.maps/id313877526?mt=8")!)
                             }
                         }) {
-                            Text("Открыть карты")
-                            Image("location.fill")
+                            Text("Яндекс.Карты")
+                            Image(systemName: "map")
                         }
                         
                         Button(action: {
