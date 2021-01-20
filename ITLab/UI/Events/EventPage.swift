@@ -143,7 +143,7 @@ struct EventPage: View {
                     if event != nil {
                         ForEach (event!.shifts!, id: \._id){ shift in
                             
-                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift))
+                            NavigationLink("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())", destination:  ShiftUIView(shift: shift, salary: $salary))
                         }
                         
                     }
