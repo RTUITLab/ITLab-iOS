@@ -140,7 +140,9 @@ struct PlaceUIView: View {
             
             var kek: [ActionSheet.Button] = []
             for i in EventRole.data {
-                kek.append(.default(Text(i.title ?? "nil")) { registrationEvent(event: i._id!) })
+                kek.append(.default(Text(i.title ?? "nil")) {
+                    registrationEvent(event: i._id!)
+                })
             }
             kek.append(.cancel(Text("Отмена")))
             
@@ -191,7 +193,7 @@ struct PlaceUIView: View {
                     }
                     .padding(.trailing, 5)
                     
-                    Text("\(user.user!.lastName!) \(user.user!.firstName!)")
+                    Text("\(user.user!.lastName ?? "") \(user.user!.firstName ?? "")")
                         .font(.callout)
                         .bold()
                     

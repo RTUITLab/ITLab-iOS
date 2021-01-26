@@ -18,23 +18,30 @@ struct EventsPage: View {
     @State var isLoading: Bool = true
     @State var isEditungRight : Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
     
+    @State var addedAlert: Bool = false
+    
     var body: some View {
         NavigationView {
             List {
                 if isLoading {
                     GeometryReader() { g in
-                    ProgressView()
-                        .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                        ProgressView()
+                            .frame(width: g.size.width, height: g.size.height, alignment: .center)
                     }
                 } else {
                     
-                    ForEach(events, id: \.id) { event in
-                        EventStack(event: event)
-                            .padding(.vertical, 10)
-                
+                    if events.count == 0 {
+                        GeometryReader() { g in
+                            Text("На данный момент событий нет!")
+                                .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                        }
+                    } else {
+                        ForEach(events, id: \.id) { event in
+                            EventStack(event: event)
+                                .padding(.vertical, 10)
+                        }
                     }
                 }
-                
             }
             .listStyle(GroupedListStyle())
             .navigationTitle("События")
@@ -49,26 +56,17 @@ struct EventsPage: View {
                 VStack{
                     if self.isEditungRight{
                         Button(action: {
-                            print("Not working")
+                            addedAlert = true
                         }) {
                             Image(systemName: "plus")
                                 .padding([.top, .leading, .bottom], 15)
                         }
+                        .alert(isPresented: $addedAlert) { Alert(title: Text("Пока не готово =(")) }
                     }
                 })
         }
-        
-        
         .onAppear{
-           
-            if AppAuthInteraction.shared.getUserInfo() == nil {
-                AppAuthInteraction.shared.getUserInfoReq {
-                    isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
-                }
-            }
-            
             getEvents()
-            
         }
     }
     
@@ -154,7 +152,7 @@ extension EventsPage {
                         .padding(.vertical, 5)
                     }
                 }
-                .padding(.horizontal, 10)
+                //                .padding(.horizontal, 10)
                 .frame(height: 100)
                 
             }

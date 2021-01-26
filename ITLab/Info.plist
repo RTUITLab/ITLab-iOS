@@ -27,8 +27,15 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>yandexmaps</string>
+		<string>vk</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>При разрешении доступа появится возможность добавлять пользователей в свои контакты</string>
 	<key>ServerApi</key>
 	<dict>
 		<key>ClientName</key>
