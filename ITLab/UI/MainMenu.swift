@@ -11,7 +11,7 @@ import AppAuth
 struct MainMenu: View {
     
     let eventPage = EventsPage()
-    @State var user: UserView?
+    @State var user: UserView = UserView(_id: UUID(), firstName: nil, lastName: nil, middleName: nil, phoneNumber: nil, email: nil, properties: nil)
     
     var body: some View {
         TabView {
@@ -42,19 +42,20 @@ struct MainMenu: View {
                 }
         }
         .onAppear() {
-            Contact.requestAccess()
-            
+
             if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
                 user = profile
             }
             
             AppAuthInteraction.shared.getUserInfoReq {
                 eventPage.isEditungRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
-                
-                user = AppAuthInteraction.shared.getUserInfo()?.profile
+
+                if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
+                    user = profile
+                }
             }
-            
-            
+
+            Contact.requestAccess()
         }
     }
     

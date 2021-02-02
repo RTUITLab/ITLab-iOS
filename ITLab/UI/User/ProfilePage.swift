@@ -9,15 +9,8 @@ import SwiftUI
 
 struct ProfilePage: View {
     
-    @Binding var user: UserView?
-    
-    @State var equipments: [EquipmentView] = []
-    @State var isLoadingEquipments: Bool = true
-    
-    @State var events: [UsersEventsView] = []
-    @State private var fromDateEvent = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-    @State private var beforeDateEvent = Date()
-    @State var isLoadingEvents: Bool = true
+    @Binding var user: UserView
+
     @State var isSheet: Bool = false
     
     var body: some View {
@@ -31,7 +24,7 @@ struct ProfilePage: View {
                             .padding(.horizontal, 3.0)
                             .opacity(0.5)
                         
-                        Text(user?.lastName ?? "Фамилия")
+                        Text(user.lastName ?? "Фамилия")
                             
                     }
                     .onTapGesture(count: 6) {
@@ -48,10 +41,10 @@ struct ProfilePage: View {
                             .padding(.horizontal, 3.0)
                             .opacity(0.5)
                         
-                        Text(user?.firstName ?? "Имя")
+                        Text(user.firstName ?? "Имя")
                     }
                     
-                    if let middleName = user?.middleName {
+                    if let middleName = user.middleName {
                         HStack(alignment: .center) {
                             Text("О")
                                 .foregroundColor(.gray)
@@ -63,7 +56,7 @@ struct ProfilePage: View {
                         }
                     }
                     
-                    if let email = user?.email {
+                    if let email = user.email {
                         HStack(alignment: .center) {
                             Image(systemName: "envelope.fill")
                                 .foregroundColor(.gray)
@@ -72,7 +65,7 @@ struct ProfilePage: View {
                             Text(email)
                         }
                     }
-                    if let phone = user?.phoneNumber {
+                    if let phone = user.phoneNumber {
                         HStack(alignment: .center) {
                             Image(systemName: "phone.circle.fill")
                                 .foregroundColor(.gray)
@@ -82,7 +75,7 @@ struct ProfilePage: View {
                         }
                     }
                     
-                    if let vkId = user?.properties?.first(where: { (property) -> Bool in
+                    if let vkId = user.properties?.first(where: { (property) -> Bool in
                         return property.userPropertyType?.title == "VKID"
                     })?.value {
                         HStack(alignment: .center) {
@@ -113,7 +106,7 @@ struct ProfilePage: View {
                         }
                     }
                     
-                    if let group = user?.properties?.first(where: { (property) -> Bool in
+                    if let group = user.properties?.first(where: { (property) -> Bool in
                         return property.userPropertyType?.title == "Учебная группа"
                     })?.value {
                         HStack(alignment: .center) {
@@ -124,58 +117,9 @@ struct ProfilePage: View {
                         }
                     }
                 }
-                
-                Section(header: Text("Техника на руках")) {
-                    if isLoadingEquipments {
-                        GeometryReader() { g in
-                            ProgressView()
-                                .frame(width: g.size.width, height: g.size.height, alignment: .center)
-                        }
-                    } else {
-                        if equipments.count > 0 {
-                            ForEach(equipments, id: \._id) { equipment in
-                                UserPage.EquipmentStack(equipment: equipment)
-                            }
-                        } else {
-                            Text("Оборудование на руках нет")
-                        }
-                    }
-                }
-                
-                
-                Section(header: Text("Участие в событии")) {
-                    VStack {
-                        DatePicker("От", selection: $fromDateEvent, displayedComponents: .date)
-                            .environment(\.locale, Locale.init(identifier: "ru"))
-                            .onChange(of: fromDateEvent) { (_) in
-                                isLoadingEvents = true
-                                getEvents()
-                            }
-                        
-                        Spacer()
-                        
-                        DatePicker("До", selection: $beforeDateEvent, displayedComponents: .date)
-                            .environment(\.locale, Locale.init(identifier: "ru"))
-                            .onChange(of: beforeDateEvent) { (_) in
-                                isLoadingEvents = true
-                                getEvents()
-                            }
-                    }
-                    if isLoadingEvents {
-                        GeometryReader() { g in
-                            ProgressView()
-                                .frame(width: g.size.width, height: g.size.height, alignment: .center)
-                        }
-                    } else {
-                        if events.count > 0 {
-                            ForEach(events, id: \._id) { event in
-                                Text(event.title!)
-                            }
-                        } else {
-                            Text("Нет событий за данный период")
-                        }
-                    }
-                }
+
+                UserPage.EquipmentStack(user: $user)
+                UserPage.EventStack(user: $user)
                 
                 GeometryReader() { g in
                     Button(action: {
@@ -189,43 +133,7 @@ struct ProfilePage: View {
             }
             .listStyle(GroupedListStyle())
             .navigationTitle("Профиль")
-            .onAppear() {
-                getEquimpment()
-                getEvents()
-            }
         }
         
-    }
-    
-    func getEquimpment() {
-        AppAuthInteraction.shared.performAction { (token, _) in
-            
-            EquipmentUserAPI.apiEquipmentUserUserIdGet(userId: user!._id!) { (equipments, error) in
-                
-                if let error = error {
-                    print(error)
-                    self.isLoadingEquipments = false
-                    return
-                }
-                
-                self.equipments = equipments ?? []
-                self.isLoadingEquipments = false
-            }
-            
-        }
-    }
-    
-    func getEvents() {
-        AppAuthInteraction.shared.performAction { (_, _) in
-            EventAPI.apiEventUserUserIdGet(userId: user!._id!, begin: fromDateEvent, end: beforeDateEvent) { (events, error) in
-                if let error = error {
-                    print(error)
-                    self.isLoadingEvents = false
-                    return
-                }
-                self.events = events ?? []
-                self.isLoadingEvents = false
-            }
-        }
     }
 }
