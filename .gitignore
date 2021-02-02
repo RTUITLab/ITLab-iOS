@@ -93,3 +93,5 @@ iOSInjectionProject/
 ITLab/DebugConfig.xcconfig
 
 ITLab/ReleaseConfig.xcconfig
+
+.idea/
