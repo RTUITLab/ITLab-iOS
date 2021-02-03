@@ -12,14 +12,15 @@ struct PlaceUIView: View {
     
     let place: PlaceView
     let indexPlace: Int
+    @State var salary: PlaceSalaryView?
     
-    @State var isUsers: Bool = false
-    @State var isEquipment: Bool = false
-    @State var isEnableButton: Bool = false
-    @State var isExpanded: Bool = false
+    @State private var isUsers: Bool = false
+    @State private var isEquipment: Bool = false
+    @State private var isEnableButton: Bool = false
+    @State private var isExpanded: Bool = false
     
-    @State var showingActionSheet: Bool = false
-    @State var actionSheetButtons: [ActionSheet.Button] = []
+    @State private var showingActionSheet: Bool = false
+    @State private var actionSheetButtons: [ActionSheet.Button] = []
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -38,7 +39,7 @@ struct PlaceUIView: View {
                         .fontWeight(.bold)
                         .padding(.bottom, 1)
                     
-                    HStack {
+                    HStack(alignment: .center) {
                         Image(systemName: "person.2.fill")
                             .font(.callout)
                             .foregroundColor(.gray)
@@ -48,6 +49,18 @@ struct PlaceUIView: View {
                             .foregroundColor(Color.gray)
                     }
                     
+                    if let salary = self.salary {
+                        HStack(alignment: .center) {
+                            Image(systemName: "creditcard.fill")
+                                .font(.callout)
+                                .foregroundColor(.gray)
+                                .opacity(0.5)
+                            Text("\(salary.count!) \u{20BD}")
+                                .font(.callout)
+                                .foregroundColor(Color.gray)
+                        }
+                        .padding(.top, 1.0)
+                    }
                 }
                 
                 Spacer()
