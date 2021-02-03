@@ -14,31 +14,64 @@ class EventRole: ObservableObject {
 
 struct EventsPage: View {
 
-    @State var events : [CompactEventView] = []
-    @State var isLoading: Bool = true
+    @State private var events : [CompactEventView] = []
+    @State private var oldEvents : [CompactEventView] = []
+    @State private var isLoadingEvents: Bool = true
+    @State private var showOldEvent: Bool = false
+
     @State var isEditungRight : Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
 
-    @State var addedAlert: Bool = false
+    @State private var addedAlert: Bool = false
+
+    @State private var fromDate: String = ""
 
     var body: some View {
         NavigationView {
             List {
-                if isLoading {
+                if isLoadingEvents {
                     GeometryReader() { g in
                         ProgressView()
                                 .frame(width: g.size.width, height: g.size.height, alignment: .center)
                     }
                 } else {
-
-                    if events.count == 0 {
+                    Section(header: Text("От: \(fromDate)")) {
+                        if events.count == 0 {
+                            GeometryReader() { g in
+                                Text("На данный момент событий нет!")
+                                        .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                            }
+                        } else {
+                            ForEach(events, id: \.id) { event in
+                                EventStack(event: event)
+                                        .padding(.vertical, 10)
+                            }
+                        }
+                    }
+                    Section {
                         GeometryReader() { g in
-                            Text("На данный момент событий нет!")
+                            Button(action: {
+                                self.showOldEvent.toggle()
+
+                                if showOldEvent {
+                                    getOldEvents()
+                                }
+                            }) {
+                                Text(showOldEvent ? "Скрыть более поздние события" :"Показать более поздние события")
+                            }
                                     .frame(width: g.size.width, height: g.size.height, alignment: .center)
                         }
-                    } else {
-                        ForEach(events, id: \.id) { event in
-                            EventStack(event: event)
-                                    .padding(.vertical, 10)
+                        if showOldEvent {
+                            if oldEvents.count <= 0 {
+                                GeometryReader() { g in
+                                    ProgressView()
+                                            .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                                }
+                            } else {
+                                ForEach(oldEvents, id: \.id) { event in
+                                    EventStack(event: event)
+                                            .padding(.vertical, 10)
+                                }
+                            }
                         }
                     }
                 }
@@ -47,9 +80,14 @@ struct EventsPage: View {
                     .navigationTitle("События")
                     .navigationBarTitleDisplayMode(.automatic)
                     .navigationBarItems(leading: Button(action: {
-                        isLoading = true
+                        isLoadingEvents = true
                         getEvents()
 
+                        if showOldEvent {
+                            self.oldEvents = []
+
+                            getOldEvents()
+                        }
                     }) {
                         Image(systemName: "arrow.clockwise").padding([.top, .bottom, .trailing], 15)
                     }, trailing:
@@ -65,8 +103,13 @@ struct EventsPage: View {
                         }
                     })
         }
+                .navigationViewStyle(StackNavigationViewStyle())
                 .onAppear{
                     getEvents()
+
+                    if showOldEvent {
+                        getOldEvents()
+                    }
                 }
     }
 
@@ -75,7 +118,7 @@ struct EventsPage: View {
     func getEvents()
     {
         if self.events.isEmpty {
-            self.isLoading = true
+            self.isLoadingEvents = true
         }
 
         AppAuthInteraction.shared.performAction { (token, _) in
@@ -92,12 +135,16 @@ struct EventsPage: View {
 
             let newDate = Calendar.current.date(from: dateComponents)
 
+            let dateFormmat = DateFormatter()
+            dateFormmat.dateFormat = "dd MMMM yyyy"
+            self.fromDate = dateFormmat.string(from: newDate!)
+
             EventAPI.apiEventGet(begin: newDate) { (events, error) in
 
                 self.events = events?.sorted() { (a, b) -> Bool in
                     a.beginTime! > b.beginTime!
                 } ?? []
-                self.isLoading = false
+                self.isLoadingEvents = false
 
             }
 
@@ -108,6 +155,31 @@ struct EventsPage: View {
                 }
 
                 EventRole.data = eventsRole
+            }
+        }
+    }
+
+    func getOldEvents() {
+        AppAuthInteraction.shared.performAction { (token, _) in
+
+            let date = Date()
+            var dateComponents = DateComponents()
+
+            dateComponents.year = Calendar.current.component(.year, from: date)
+            dateComponents.month = Calendar.current.component(.month, from: date) - 1
+            dateComponents.day = Calendar.current.component(.day, from: date)
+            dateComponents.hour = Calendar.current.component(.hour, from: date)
+            dateComponents.minute = Calendar.current.component(.minute, from: date) - 1
+            dateComponents.timeZone = Calendar.current.timeZone
+
+            let newDate = Calendar.current.date(from: dateComponents)
+
+            EventAPI.apiEventGet(end: newDate) { (events, error) in
+
+                self.oldEvents = events?.sorted() { (a, b) -> Bool in
+                    a.beginTime! > b.beginTime!
+                } ?? []
+
             }
         }
     }
