@@ -19,7 +19,7 @@ struct EventsPage: View {
     @State private var isLoadingEvents: Bool = true
     @State private var showOldEvent: Bool = false
 
-    @State var isEditungRight : Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+    @State var isEditingRight: Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
 
     @State private var addedAlert: Bool = false
 
@@ -91,7 +91,7 @@ struct EventsPage: View {
                         Image(systemName: "arrow.clockwise").padding([.top, .bottom, .trailing], 15)
                     }, trailing:
                     VStack{
-                        if self.isEditungRight{
+                        if self.isEditingRight{
                             Button(action: {
                                 addedAlert = true
                             }) {
