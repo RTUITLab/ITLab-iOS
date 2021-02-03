@@ -354,9 +354,3 @@ extension UserPage {
         }
     }
 }
-
-struct UserPage_Previews: PreviewProvider {
-    static var previews: some View {
-        UserPage(user: UserView(_id: nil, firstName: nil, lastName: nil, middleName: nil, phoneNumber: nil, email: nil, properties: nil))
-    }
-}
