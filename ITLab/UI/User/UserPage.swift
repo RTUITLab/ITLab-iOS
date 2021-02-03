@@ -203,7 +203,8 @@ extension UserPage {
         @State private var beforeDateEvent = Date()
 
         var body: some View {
-            Section(header: Text("Участие в событии")) {
+            Section(header: Text("Участие в событии\(events.count > 0 ? " — \(events.count)" : "")"))
+            {
                 VStack {
                     DatePicker("От", selection: $fromDateEvent, displayedComponents: .date)
                             .environment(\.locale, Locale.init(identifier: "ru"))
@@ -229,7 +230,7 @@ extension UserPage {
                     }
                 } else {
                     if events.count > 0 {
-                        ForEach(0 ..< events.count) { number in
+                        ForEach(0 ..< events.count, id: \.self) { number in
                             NavigationLink(destination:
                             EventPage(compactEvent: CompactEventView(id: events[number]._id,
                                     title: events[number].title,
@@ -301,7 +302,7 @@ extension UserPage {
         @State private var equipments: [EquipmentView] = []
 
         var body: some View {
-            Section(header: Text("Техника на руках")) {
+            Section(header: Text("Техника на руках\(equipments.count > 0 ? " — \(equipments.count)" : "")")) {
                 if isLoading {
                     GeometryReader() { g in
                         ProgressView()
@@ -352,11 +353,5 @@ extension UserPage {
 
             }
         }
-    }
-}
-
-struct UserPage_Previews: PreviewProvider {
-    static var previews: some View {
-        UserPage(user: UserView(_id: nil, firstName: nil, lastName: nil, middleName: nil, phoneNumber: nil, email: nil, properties: nil))
     }
 }

@@ -22,6 +22,7 @@ struct EventPage: View {
     @State private var beginDate: String?
     @State private var endDate: String?
 
+    @State private var isLoadedSalary: Bool = false
     @State private var isExpandedDescription: Bool = false
 
     var body: some View {
@@ -62,15 +63,17 @@ struct EventPage: View {
                     }
                 }
 
-                HStack(alignment: .center) {
+                if isLoadedSalary {
+                    HStack(alignment: .center) {
 
-                    Image(systemName: "creditcard.fill")
-                            .padding(.trailing, 4)
-                            .foregroundColor(.gray)
-                            .opacity(0.5)
+                        Image(systemName: "creditcard.fill")
+                                .padding(.trailing, 4)
+                                .foregroundColor(.gray)
+                                .opacity(0.5)
 
 
-                    Text(salary != nil ? "\(salary!.count!) \u{20BD}" : "Оплата не назначена")
+                        Text(salary != nil ? "\(salary!.count!) \u{20BD}" : "Оплата не назначена")
+                    }
                 }
 
                 HStack(alignment: .center) {
@@ -176,6 +179,7 @@ struct EventPage: View {
 
                         EventSalaryAPI.apiSalaryV1EventEventIdGet(eventId: self.compactEvent.id!) { salary, _ in
                             self.salary = salary
+                            self.isLoadedSalary = true
                         }
 
                         EventAPI.apiEventIdGet(_id: self.compactEvent.id!) { (event, _) in
