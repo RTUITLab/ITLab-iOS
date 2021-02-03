@@ -211,6 +211,7 @@ extension UserPage {
                                 isLoading = true
                                 getEvents()
                             }
+                            .frame(minWidth: 280)
 
                     Spacer()
 
@@ -228,8 +229,43 @@ extension UserPage {
                     }
                 } else {
                     if events.count > 0 {
-                        ForEach(events, id: \._id) { event in
-                            Text(event.title!)
+                        ForEach(0 ..< events.count) { number in
+                            NavigationLink(destination:
+                            EventPage(compactEvent: CompactEventView(id: events[number]._id,
+                                    title: events[number].title,
+                                    eventType: events[number].eventType,
+                                    beginTime: nil,
+                                    endTime: nil,
+                                    address: events[number].address,
+                                    shiftsCount: nil,
+                                    currentParticipantsCount: nil,
+                                    targetParticipantsCount: nil,
+                                    participating: true)))
+                            {
+                                VStack(alignment: .leading) {
+                                    Text(events[number].title!)
+                                            .bold()
+                                            .padding(.vertical, 1)
+
+                                    HStack(alignment:.center) {
+                                        Image(systemName: "person.fill")
+                                                .font(.callout)
+                                                .opacity(0.6)
+                                        Text(events[number].role!.title!)
+                                                .opacity(0.6)
+                                    }
+
+                                    HStack(alignment:.center) {
+                                        Image(systemName: "clock")
+                                                .font(.callout)
+                                                .opacity(0.6)
+                                        Text(dateFormate(events[number].beginTime!))
+                                                .opacity(0.6)
+                                    }
+                                            .padding(.bottom, 1)
+
+                                }
+                            }
                         }
                     } else {
                         Text("Нет событий за данный период")
@@ -238,7 +274,9 @@ extension UserPage {
             }
                     .onAppear()
                     {
-                        getEvents()
+                        if events.isEmpty {
+                            getEvents()
+                        }
                     }
         }
 
@@ -259,8 +297,8 @@ extension UserPage {
 
     struct EquipmentStack : View {
         @Binding var user: UserView
-        @State var isLoading: Bool = true
-        @State var equipments: [EquipmentView] = []
+        @State private var isLoading: Bool = true
+        @State private var equipments: [EquipmentView] = []
 
         var body: some View {
             Section(header: Text("Техника на руках")) {
@@ -291,7 +329,9 @@ extension UserPage {
             }
                     .onAppear()
                     {
-                        getEquimpment()
+                        if equipments.isEmpty {
+                            getEquimpment()
+                        }
                     }
         }
 
