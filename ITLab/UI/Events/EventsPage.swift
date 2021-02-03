@@ -77,8 +77,7 @@ struct EventsPage: View {
                 }
             }
                     .listStyle(GroupedListStyle())
-                    .navigationTitle("События")
-                    .navigationBarTitleDisplayMode(.automatic)
+                    .navigationBarTitle("Пользователи", displayMode: .automatic)
                     .navigationBarItems(leading: Button(action: {
                         isLoadingEvents = true
                         getEvents()
