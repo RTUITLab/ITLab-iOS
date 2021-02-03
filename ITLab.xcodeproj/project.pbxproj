@@ -515,7 +515,6 @@
 			developmentRegion = ru;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				ru,
 			);
 			mainGroup = 6D9A0C582518EBAA007796CD;
