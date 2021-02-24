@@ -324,7 +324,7 @@ extension UserPage {
                             } .padding(5)
                         }
                     } else {
-                        Text("Оборудование на руках нет")
+                        Text("Оборудования на руках нет")
                     }
                 }
             }

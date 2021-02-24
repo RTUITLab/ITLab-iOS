@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import UIKit
 
 extension UIApplication {
@@ -26,30 +27,30 @@ extension UIApplication: UIGestureRecognizerDelegate {
 }
 
 struct SearchBar: UIViewRepresentable {
-    
+
     @Binding var text: String
-    
+
     class Coordinator: NSObject, UISearchBarDelegate {
-        
+
         @Binding var text: String
-        
+
         init(text: Binding<String>) {
             _text = text
         }
-        
+
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
             text = searchText
         }
-        
+
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
     }
-    
+
     func makeCoordinator() -> SearchBar.Coordinator {
         return Coordinator(text: $text)
     }
-    
+
     func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.placeholder = "Поиск пользователя"
@@ -58,7 +59,7 @@ struct SearchBar: UIViewRepresentable {
         searchBar.autocapitalizationType = .none
         return searchBar
     }
-    
+
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
         uiView.text = text
     }
@@ -69,48 +70,46 @@ struct UsersListPage: View {
     @State var isLoading: Bool = true
     @State var users: [UserView] = []
     @State var userSearch: String = ""
-    
+
     var body: some View {
         NavigationView {
-            VStack {
-                List {
-                    if isLoading {
-                        GeometryReader() { g in
-                            ProgressView()
+            List {
+                if isLoading {
+                    GeometryReader() { g in
+                        ProgressView()
                                 .frame(width: g.size.width, height: g.size.height, alignment: .center)
-                        }
-                    } else {
-                        Section(header: SearchBar(text: $userSearch)) {
-                            ForEach(self.users.filter {
-                                self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
-                            }, id: \._id) { user in
-                                UserStack(user: user)
-                            }
+                    }
+                } else {
+                    Section(header: SearchBar(text: $userSearch)) {
+                        ForEach(self.users.filter {
+                            self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
+                        }, id: \._id) { user in
+                            UserStack(user: user)
                         }
                     }
                 }
-                .listStyle(GroupedListStyle())
-                
             }
-            .navigationTitle("Пользователи")
-            .navigationBarTitleDisplayMode(.automatic)
-            .onAppear() {
-                getUsers()
-                UIApplication.shared.addTapGestureRecognizer()
-            }
+                    .listStyle(GroupedListStyle())
+
+                    .navigationBarTitle("Пользователи", displayMode: .automatic)
+                    .onAppear() {
+                        getUsers()
+                        UIApplication.shared.addTapGestureRecognizer()
+                    }
         }
+                .navigationViewStyle(StackNavigationViewStyle())
     }
-    
+
     func getUsers() {
         AppAuthInteraction.shared.performAction { (token, _) in
-            
+
             UserAPI.apiUserGet(count: -1) { (users, error) in
                 if let error = error {
                     print(error)
                     self.isLoading = false
                     return
                 }
-                
+
                 guard let users = users else {
                     print("Not data")
                     self.isLoading = false
@@ -131,57 +130,57 @@ struct UsersListPage: View {
 extension UsersListPage {
     struct UserStack: View {
         @State var user: UserView
-        
+
         var body: some View {
             NavigationLink(destination: UserPage(user: self.user)) {
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading) {
                         Text("\(user.lastName ?? "") \(user.firstName ?? "")")
-                            .font(.title3)
-                            .fontWeight(.bold)
+                                .font(.title3)
+                                .fontWeight(.bold)
                         if let middleName = user.middleName {
                             if !middleName.isEmpty {
                                 Text(middleName)
-                                    .font(.title3)
-                                    .fontWeight(.bold)
+                                        .font(.title3)
+                                        .fontWeight(.bold)
                             }
                         }
                     }
-                    .padding(.top, 10)
-                    .padding(.bottom, 5)
-                    
-                    
+                            .padding(.top, 10)
+                            .padding(.bottom, 5)
+
+
                     HStack (alignment: .center) {
                         VStack(alignment: .center, spacing: 10) {
                             if user.email != nil {
                                 Image(systemName: "envelope.fill")
-                                    .foregroundColor(.gray)
-                                    .opacity(0.5)
-                                    .padding(.top, 3)
+                                        .foregroundColor(.gray)
+                                        .opacity(0.5)
+                                        .padding(.top, 3)
                             }
-                            
+
                             if user.phoneNumber != nil {
                                 Image(systemName: "phone.circle.fill")
-                                    .foregroundColor(.gray)
-                                    .opacity(0.5)
-                                    .padding(.top, 1)
+                                        .foregroundColor(.gray)
+                                        .opacity(0.5)
+                                        .padding(.top, 1)
                             }
                         }
-                        
+
                         VStack(alignment: .leading, spacing: 10) {
                             if let email = user.email {
                                 Text(email)
                             }
-                            
+
                             if let phone = user.phoneNumber {
                                 Text(phone)
                             }
                         }
                     }
-                    .padding(.bottom, 10)
+                            .padding(.bottom, 10)
                 }
             }
-            .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(PlainButtonStyle())
         }
     }
 }

@@ -161,8 +161,6 @@ extension AppAuthInteraction {
             return
         }
         
-        print("Fetching configuration for issuer: \(issuer)")
-        
         // discovers endpoints
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
             
@@ -170,8 +168,6 @@ extension AppAuthInteraction {
                 self.errorApp("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 return
             }
-            
-            print("Got configuration: \(config)")
             
             self.doAuthWithAutoCodeExchange(configuration: config, clientID: self.appAuthConfiguration.kClientID, clientSecret: nil)
         }
@@ -184,8 +180,6 @@ extension AppAuthInteraction {
             return
         }
         
-        print("Fetching configuration for issuer: \(issuer)")
-        
         // discovers endpoints
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuer) { configuration, error in
             
@@ -193,8 +187,6 @@ extension AppAuthInteraction {
                 self.errorApp("Error retrieving discovery document: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
                 return
             }
-            
-            print("Got configuration: \(config)")
             
             self.endSession(configuration: config)
         }
@@ -265,7 +257,6 @@ extension AppAuthInteraction {
             
             if let respon = response
             {
-                print(respon)
                 self.authState = nil
                 self.userInfo = nil
                 self.isLoader = false
@@ -275,7 +266,6 @@ extension AppAuthInteraction {
             
             if let err = error
             {
-                print(err)
                 self.authState = nil
                 self.userInfo = nil
                 self.isLoader = false
@@ -309,9 +299,7 @@ extension AppAuthInteraction {
                                               redirectURL: redirectURI,
                                               responseType: OIDResponseTypeCode,
                                               additionalParameters: nil)
-        
-        // performs authentication request
-        print("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
+
         
         
         guard let viewController = UIApplication.shared.windows.first?.rootViewController else {
@@ -323,7 +311,6 @@ extension AppAuthInteraction {
             
             if let authState = authState {
                 self.setAuthState(authState)
-                print("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
                 
                 //                self.viewController.logIn()
                 self.getUserInfoReq()
