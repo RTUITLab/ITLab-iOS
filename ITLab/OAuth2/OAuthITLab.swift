@@ -18,6 +18,7 @@ class OAuthITLab: NSObject, ObservableObject  {
     }()
     
     private var configuration : OAuthITLabConfiguration
+    private var userInfo: UserInfo?
     
     @Published private var oauthSwift: OAuth2Swift
     
@@ -39,8 +40,11 @@ class OAuthITLab: NSObject, ObservableObject  {
             prefersEphemeralWebBrowserSession: true
         )
         
-        
         self.loadState()
+        
+        if self.isAuthorize() {
+            self.loadUserInfo()
+        }
     }
 }
 
@@ -119,7 +123,10 @@ extension OAuthITLab {
             switch result {
             case .success(_):
                 self.saveState()
-                complited(nil)
+                
+                self.getUserInfoReq {
+                    complited(nil)
+                }
             case .failure(let error):
                 
                 complited(error)
@@ -154,6 +161,26 @@ extension OAuthITLab {
 }
 
 extension OAuthITLab {
+    
+    private func saveUserInfo() {
+        let encoder = JSONEncoder()
+        
+        if let data = try? encoder.encode(self.userInfo ) {
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(data, forKey: "userInfo")
+            userDefaults.synchronize()
+        }
+    }
+    
+    public func loadUserInfo() {
+        if let data = UserDefaults.standard.object(forKey: "userInfo") as? Data {
+            let decoder = JSONDecoder()
+            if let userInfo = try? decoder.decode(UserInfo.self, from: data) {
+                self.userInfo = userInfo
+            }
+        }
+    }
+    
     private func saveState() {
         
         var data : Data? = nil
@@ -183,6 +210,131 @@ extension OAuthITLab {
         }
         catch {
             print("Not load data")
+        }
+    }
+}
+
+extension OAuthITLab {
+    
+    struct UserInfo: Codable {
+        let userId: UUID
+        var profile: UserView?
+        private var roles: [String:Bool] = ["CanEditEquipment": false,
+                                            "CanEditEvent": false,
+                                            "CanInviteToSystem": false,
+                                            "Participant": false,
+                                            "CanDeleteEventRole": false,
+                                            "CanEditEquipmentOwner": false,
+                                            "CanEditRoles": false,
+                                            "CanEditEquipmentType": false,
+                                            "CanEditEventType": false,
+                                            "CanEditUserPropertyTypes": false]
+        
+        func getRole(_ key: String) ->  Bool {
+            
+            guard let index = roles.index(forKey: key) else {
+                return false
+            }
+            
+            return roles[index].value
+        }
+        
+        public enum CodingKeys: String, CodingKey {
+            case userId = "sub"
+            case roles = "role"
+            case profile
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            userId = try container.decode(UUID.self, forKey: .userId)
+            profile = try? container.decode(UserView.self, forKey: .profile)
+            if let roles = try? container.decode([String].self, forKey: .roles) {
+                roles.forEach { (role) in
+                    self.roles.updateValue(true, forKey: role)
+                }
+            } else if let role = try? container.decode(String.self, forKey: .roles)  {
+                self.roles.updateValue(true, forKey: role)
+            } else if let roles = try? container.decode([String:Bool].self, forKey: .roles) {
+                self.roles = roles
+            }
+        }
+    }
+}
+
+extension OAuthITLab {
+    
+    public func getUserInfo() -> UserInfo? {
+        return self.userInfo
+    }
+    
+    public func getUserInfoReq(complited: @escaping () -> Void) {
+        self.getToken { (error) in
+            
+            if error != nil {
+                print(error.debugDescription)
+                return
+            }
+            
+            
+            var urlRequest = URLRequest(url: URL(string: self.configuration.kIssuer + "/connect/userinfo")!)
+            urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(self.oauthSwift.client.credential.oauthToken)"]
+            
+            let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+                
+                DispatchQueue.main.async { [self] in
+                    
+                    guard error == nil else {
+                        print("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
+                        return
+                    }
+                    
+                    guard let response = response as? HTTPURLResponse else {
+                       print("Non-HTTP response")
+                        return
+                    }
+                    
+                    guard let data = data else {
+                        print("HTTP response data is empty")
+                        return
+                    }
+                    
+                    if response.statusCode != 200 {
+                        // server replied with an error
+                        let responseText: String? = String(data: data, encoding: String.Encoding.utf8)
+                        
+                        if response.statusCode == 401 {
+                            // "401 Unauthorized" generally indicates there is an issue with the authorization
+                            // grant. Puts OIDAuthState into an error state.
+                            print(error.debugDescription)
+                        } else {
+                            print("HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
+                        }
+                        return
+                    }
+                    
+                    guard let user: UserInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
+                        print("JSON serialization error in UserInfo")
+                        return
+                    }
+                    self.userInfo = user
+                    
+                    UserAPI.apiUserIdGet(_id: user.userId) { (profile, error) in
+                        if let error = error {
+                            print(error)
+                            return
+                        }
+                        
+                        self.userInfo?.profile = profile
+                        self.saveUserInfo()
+                        
+                        complited()
+                    }
+                    
+                }
+            }
+            
+            task.resume()
         }
     }
 }

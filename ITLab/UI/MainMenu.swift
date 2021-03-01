@@ -43,7 +43,7 @@ struct MainMenu: View {
         }
         .onAppear() {
 
-            if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
+            if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                 user = profile
             }
             
@@ -51,7 +51,7 @@ struct MainMenu: View {
                 
                 eventPage.isEditingRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
 
-                if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
+                if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                     user = profile
                 }
             }
