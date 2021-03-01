@@ -10,8 +10,10 @@ import SwiftUI
 struct ProfilePage: View {
 
     @Binding var user: UserView
+    
+    @State private var showLogOutAlert: Bool = false
 
-    @State var isSheet: Bool = false
+    @State private var isSheet: Bool = false
 
     var body: some View {
         NavigationView {
@@ -123,13 +125,18 @@ struct ProfilePage: View {
 
                 GeometryReader() { g in
                     Button(action: {
-                        AppAuthInteraction.shared.logOut()
+                        self.showLogOutAlert.toggle()
                     }) {
                         Text("Выход")
                                 .foregroundColor(.red)
                     }
                             .frame(width: g.size.width, height: g.size.height, alignment: .center)
                 }
+                .alert(isPresented: $showLogOutAlert, content: {
+                    Alert(title: Text("Выход из аккаунта"), message: Text("Вы точно хотите выйти?"), primaryButton: .cancel(Text("Нет")), secondaryButton: .default(Text("Да"), action: {
+                        OAuthITLab.shared.logOut()
+                    }))
+                })
             }
                     .listStyle(GroupedListStyle())
                     .navigationBarTitle("Профиль", displayMode: .automatic)

@@ -9,8 +9,11 @@ import SwiftUI
 
 @main
 struct ITLabApp: App {
-  
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
+    init() {
+        //TODO: deleted
+        UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: "authState")
+    }
     
     var body: some Scene {
         WindowGroup{

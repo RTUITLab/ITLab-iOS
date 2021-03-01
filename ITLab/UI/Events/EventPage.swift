@@ -175,7 +175,7 @@ struct EventPage: View {
                 .listStyle(GroupedListStyle())
                 .onAppear() {
 
-                    AppAuthInteraction.shared.performAction { (accesToken, _) in
+                    OAuthITLab.shared.getToken{ error in
 
                         EventSalaryAPI.apiSalaryV1EventEventIdGet(eventId: self.compactEvent.id!) { salary, _ in
                             self.salary = salary

@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
-import AppAuth
 
 struct AuthorizationPage: View {
     
-    @ObservedObject private var appAuth : AppAuthInteraction = AppAuthInteraction.shared
+    @ObservedObject private var oauthITLab : OAuthITLab = OAuthITLab.shared
+    
+    @State var isLoading: Bool = false
     
     var body: some View {
         VStack{
-            if appAuth.getAuthState()?.isAuthorized ?? false && !appAuth.isLoader {
+            if oauthITLab.isAuthorize {
                 MainMenu()
             } else {
                 VStack{
@@ -27,11 +28,15 @@ struct AuthorizationPage: View {
                 }
                 .padding(.top, 20)
                 Spacer()
-                if appAuth.isLoader {
+                if isLoading {
                     ProgressView()
                 } else {
                 Button(action: {
-                    appAuth.authorization()
+                    isLoading = true
+                    OAuthITLab.shared.authorize { (error) in
+                        isLoading = false
+                        print(error)
+                    }
                 }){
                     Text("Войти")
                         .font(.title)
@@ -41,11 +46,5 @@ struct AuthorizationPage: View {
                 Spacer()
             }
         }
-    }
-}
-
-struct AuthorizationPage_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthorizationPage()
     }
 }
