@@ -120,7 +120,7 @@ struct EventsPage: View {
             self.isLoadingEvents = true
         }
 
-        AppAuthInteraction.shared.performAction { (token, _) in
+        OAuthITLab.shared.getToken{ error in
 
             let date = Date()
             var dateComponents = DateComponents()
@@ -159,7 +159,7 @@ struct EventsPage: View {
     }
 
     func getOldEvents() {
-        AppAuthInteraction.shared.performAction { (token, _) in
+        OAuthITLab.shared.getToken{ error in
 
             let date = Date()
             var dateComponents = DateComponents()

@@ -134,13 +134,15 @@ extension OAuthITLab {
             debugPrint("token expired, going to refresh")
             self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
                 switch result {
-                case .success(_):
+                case .success(let token):
+                    SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
                     complited(nil)
                 case .failure(let error):
                     complited(error)
                 }
             }
         } else {
+            SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
             complited(nil)
         }
     }

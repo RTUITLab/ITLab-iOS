@@ -282,7 +282,7 @@ extension UserPage {
         }
 
         func getEvents() {
-            AppAuthInteraction.shared.performAction { (_, _) in
+            OAuthITLab.shared.getToken{ error in
                 EventAPI.apiEventUserUserIdGet(userId: user._id!, begin: fromDateEvent, end: beforeDateEvent) { (events, error) in
                     if let error = error {
                         print(error)
@@ -337,7 +337,7 @@ extension UserPage {
         }
 
         func getEquimpment() {
-            AppAuthInteraction.shared.performAction { (token, _) in
+            OAuthITLab.shared.getToken{ error in
 
                 EquipmentUserAPI.apiEquipmentUserUserIdGet(userId: user._id!) { (equipments, error) in
 
