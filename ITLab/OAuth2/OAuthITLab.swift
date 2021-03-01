@@ -6,9 +6,46 @@
 //
 
 import Foundation
+import SwiftUI
 import OAuthSwift
 
-class OAuthITLab {
+class OAuthITLab: NSObject, ObservableObject  {
+    
+    public static var shared: OAuthITLab = {
+        let instance = OAuthITLab()
+        
+        return instance
+    }()
+    
+    private var configuration : OAuthITLabConfiguration
+    
+    @Published private var oauthSwift: OAuth2Swift
+    
+    override init() {
+        self.configuration = OAuthITLabConfiguration()
+        
+        self.oauthSwift = OAuth2Swift(
+            consumerKey:    configuration.kClientID,
+            consumerSecret: "",
+            authorizeUrl:   configuration.kIssuer + "/connect/authorize",
+            accessTokenUrl: configuration.kIssuer + "/connect/token",
+            responseType:   "code"
+        )
+        super.init()
+        
+        self.oauthSwift.authorizeURLHandler = ASWebAuthenticationSessionURLHandler(
+            callbackUrlScheme: configuration.kRedirectURL,
+            presentationAnchor: nil,  // If the app doesn't support for multiple windows, it doesn't matter to use nil.
+            prefersEphemeralWebBrowserSession: true
+        )
+        
+        
+        self.loadState()
+    }
+}
+
+
+extension OAuthITLab {
     
     private struct OAuthITLabConfiguration {
         var kIssuer: String = ""
@@ -69,19 +106,84 @@ class OAuthITLab {
             
         }
     }
+}
+
+
+
+
+extension OAuthITLab {
     
-    private var configuration : OAuthITLabConfiguration
+    public func authorize(complited: @escaping (Error?) -> Void) {
+        
+        oauthSwift.authorize(
+            withCallbackURL: URL(string: configuration.kRedirectURL + "/itlab")!,
+            scope: "roles openid profile itlab.events offline_access",
+            state: configuration.kOAuthITLabStateKey) { result in
+            switch result {
+            case .success(_):
+                self.saveState()
+                complited(nil)
+            case .failure(let error):
+                
+                complited(error)
+            }
+        }
+    }
     
-    public let oauthSwift: OAuth2Swift
+    public func getToken(complited: @escaping (Error?) -> Void) {
+        let credential = self.oauthSwift.client.credential
+        if credential.isTokenExpired() {
+            
+            debugPrint("token expired, going to refresh")
+            self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
+                switch result {
+                case .success(_):
+                    complited(nil)
+                case .failure(let error):
+                    complited(error)
+                }
+            }
+        } else {
+            complited(nil)
+        }
+    }
     
-    init() {
-        self.configuration = OAuthITLabConfiguration()
-        self.oauthSwift = OAuth2Swift(
-            consumerKey:    configuration.kClientID,
-            consumerSecret: "",
-            authorizeUrl:   configuration.kIssuer + "/connect/authorize",
-            accessTokenUrl: configuration.kIssuer + "/connect/token",
-            responseType:   "code"
-        )
+    public func isAuthorize() -> Bool {
+        let credential = self.oauthSwift.client.credential
+        return !credential.oauthToken.isEmpty && !credential.isTokenExpired()
+    }
+}
+
+extension OAuthITLab {
+    private func saveState() {
+        
+        var data : Data? = nil
+        
+        do {
+            data = try NSKeyedArchiver.archivedData(withRootObject: oauthSwift.client.credential, requiringSecureCoding: true)
+        } catch {
+            print("Not save data")
+        }
+        
+        if let userDefaults = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab") {
+            userDefaults.set(data, forKey: self.configuration.kOAuthITLabStateKey)
+            userDefaults.synchronize()
+        }
+    }
+    
+    private func loadState() {
+        guard let data = UserDefaults (suiteName: "group.ru.RTUITLab.ITLab")?
+                .object(forKey: self.configuration.kOAuthITLabStateKey) as? Data
+        else {
+            return
+        }
+        
+        do {
+            let credential = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as! OAuthSwiftCredential
+            self.oauthSwift.client = OAuthSwiftClient(credential: credential)
+        }
+        catch {
+            print("Not load data")
+        }
     }
 }
