@@ -108,9 +108,6 @@ extension OAuthITLab {
     }
 }
 
-
-
-
 extension OAuthITLab {
     
     public func authorize(complited: @escaping (Error?) -> Void) {

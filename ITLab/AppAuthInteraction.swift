@@ -68,7 +68,7 @@ class AppAuthInteraction: NSObject, ObservableObject {
     
     private var appAuthConfiguration : AppAuthConfiguration = AppAuthConfiguration()
     
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     @Published private var authState: OIDAuthState?
     
@@ -253,26 +253,26 @@ extension AppAuthInteraction {
         
         let agent = OIDExternalUserAgentIOS(presenting: viewController)
         
-        self.appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
-            
-            if let respon = response
-            {
-                self.authState = nil
-                self.userInfo = nil
-                self.isLoader = false
-                self.stateChanged()
-                self.saveUserInfo()
-            }
-            
-            if let err = error
-            {
-                self.authState = nil
-                self.userInfo = nil
-                self.isLoader = false
-                self.stateChanged()
-                self.saveUserInfo()
-            }
-        })
+//        self.appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, externalUserAgent: agent!, callback: { (response, error) in
+//
+//            if let respon = response
+//            {
+//                self.authState = nil
+//                self.userInfo = nil
+//                self.isLoader = false
+//                self.stateChanged()
+//                self.saveUserInfo()
+//            }
+//
+//            if let err = error
+//            {
+//                self.authState = nil
+//                self.userInfo = nil
+//                self.isLoader = false
+//                self.stateChanged()
+//                self.saveUserInfo()
+//            }
+//        })
     }
     
     private func errorApp(_ message: String)
@@ -307,22 +307,22 @@ extension AppAuthInteraction {
             return
         }
         
-        self.appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController) { authState, error in
-            
-            if let authState = authState {
-                self.setAuthState(authState)
-                
-                //                self.viewController.logIn()
-                self.getUserInfoReq()
-                
-            } else {
-                self.errorApp("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                //                self.viewController.isLoading(false)
-                self.setAuthState(nil)
-            }
-            
-            
-        }
+//        self.appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: viewController) { authState, error in
+//            
+//            if let authState = authState {
+//                self.setAuthState(authState)
+//                
+//                //                self.viewController.logIn()
+//                self.getUserInfoReq()
+//                
+//            } else {
+//                self.errorApp("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+//                //                self.viewController.isLoading(false)
+//                self.setAuthState(nil)
+//            }
+//            
+//            
+//        }
     }
     
     public func getUserInfoReq(complited: @escaping () -> Void) {
