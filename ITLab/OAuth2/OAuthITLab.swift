@@ -119,7 +119,7 @@ extension OAuthITLab {
         
         oauthSwift.authorize(
             withCallbackURL: URL(string: configuration.kRedirectURL + "/itlab")!,
-            scope: "roles openid profile itlab.events offline_access",
+            scope: "roles openid profile itlab.events offline_access itlab.salary",
             state: configuration.kOAuthITLabStateKey) { result in
             switch result {
             case .success(_):
