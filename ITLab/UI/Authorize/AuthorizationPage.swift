@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppAuth
 
 struct AuthorizationPage: View {
     
@@ -16,7 +15,7 @@ struct AuthorizationPage: View {
     
     var body: some View {
         VStack{
-            if oauthITLab.isAuthorize() {
+            if oauthITLab.isAuthorize {
                 MainMenu()
             } else {
                 VStack{

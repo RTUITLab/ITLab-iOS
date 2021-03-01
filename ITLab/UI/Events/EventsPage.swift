@@ -19,7 +19,7 @@ struct EventsPage: View {
     @State private var isLoadingEvents: Bool = true
     @State private var showOldEvent: Bool = false
 
-    @State var isEditingRight: Bool = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+    @State var isEditingRight: Bool = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
 
     @State private var addedAlert: Bool = false
 

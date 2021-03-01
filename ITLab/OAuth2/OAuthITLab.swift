@@ -21,6 +21,7 @@ class OAuthITLab: NSObject, ObservableObject  {
     private var userInfo: UserInfo?
     
     @Published private var oauthSwift: OAuth2Swift
+    @Published public var isAuthorize: Bool = false
     
     override init() {
         self.configuration = OAuthITLabConfiguration()
@@ -42,7 +43,7 @@ class OAuthITLab: NSObject, ObservableObject  {
         
         self.loadState()
         
-        if self.isAuthorize() {
+        if self.isAuthorizeCheck() {
             self.loadUserInfo()
         }
     }
@@ -123,8 +124,8 @@ extension OAuthITLab {
             switch result {
             case .success(_):
                 self.saveState()
-                
                 self.getUserInfoReq {
+                    _ = self.isAuthorizeCheck()
                     complited(nil)
                 }
             case .failure(let error):
@@ -154,9 +155,17 @@ extension OAuthITLab {
         }
     }
     
-    public func isAuthorize() -> Bool {
+    private func isAuthorizeCheck() -> Bool {
         let credential = self.oauthSwift.client.credential
-        return !credential.oauthToken.isEmpty && !credential.isTokenExpired()
+        self.isAuthorize = !credential.oauthToken.isEmpty && !credential.isTokenExpired()
+        return self.isAuthorize
+    }
+    
+    public func logOut() {
+        self.oauthSwift.client.credential.oauthToken = ""
+        self.oauthSwift.client.credential.oauthRefreshToken = ""
+        self.isAuthorize = false
+        self.saveState()
     }
 }
 

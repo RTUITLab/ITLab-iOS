@@ -129,21 +129,21 @@ struct PlaceUIView: View {
                     if let participants = place.participants {
                         usersCount += participants.count
                         isParticipant = participants.contains(where: { (user) -> Bool in
-                            return user.user!._id == AppAuthInteraction.shared.getUserInfo()!.userId
+                            return user.user!._id == OAuthITLab.shared.getUserInfo()!.userId
                         })
                     }
 
                     if let wishers = place.wishers {
                         usersCount += wishers.count
                         isWisher = wishers.contains(where: { (user) -> Bool in
-                            return user.user!._id == AppAuthInteraction.shared.getUserInfo()!.userId
+                            return user.user!._id == OAuthITLab.shared.getUserInfo()!.userId
                         })
                     }
 
                     if let invited = place.invited {
                         usersCount += invited.count
                         isInvite = invited.contains(where: { (user) -> Bool in
-                            return user.user!._id == AppAuthInteraction.shared.getUserInfo()!.userId
+                            return user.user!._id == OAuthITLab.shared.getUserInfo()!.userId
                         })
                     }
 
