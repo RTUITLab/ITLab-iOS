@@ -117,10 +117,24 @@ extension OAuthITLab {
     
     public func authorize(complited: @escaping (Error?) -> Void) {
         
+        let pkce = OAuthITLabPKCE()
+       
+        guard let codeVerifier = pkce.generateCodeVerifier() else {
+            return
+        }
+
+        guard let codeChallenge = pkce.codeChallenge() else {
+            return
+        }
+        
+        oauthSwift.accessTokenBasicAuthentification = true
         oauthSwift.authorize(
             withCallbackURL: URL(string: configuration.kRedirectURL + "/itlab")!,
             scope: "roles openid profile itlab.events offline_access itlab.salary",
-            state: configuration.kOAuthITLabStateKey) { result in
+            state: configuration.kOAuthITLabStateKey,
+            codeChallenge: codeChallenge,
+            codeChallengeMethod: pkce.codeChallengeMethod,
+            codeVerifier: codeVerifier) { result in
             switch result {
             case .success(_):
                 self.saveState()
@@ -299,7 +313,7 @@ extension OAuthITLab {
                     }
                     
                     guard let response = response as? HTTPURLResponse else {
-                       print("Non-HTTP response")
+                        print("Non-HTTP response")
                         return
                     }
                     
