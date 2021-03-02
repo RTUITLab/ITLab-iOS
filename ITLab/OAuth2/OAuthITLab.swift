@@ -45,20 +45,6 @@ class OAuthITLab: NSObject, ObservableObject  {
         
         if self.isAuthorizeCheck() {
             self.loadUserInfo()
-            self.oauthSwift.renewAccessToken(withRefreshToken: oauthSwift.client.credential.oauthRefreshToken,
-                                             completionHandler: {
-                                                result in
-                                                switch result{
-                                                case .success(let token):
-                                                    SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
-                                                   
-                                                    
-                                                case .failure(let error):
-                                                    print(error.description)
-                                                    self.isAuthorize = false
-                                                    UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
-                                                }
-                                             })
         }
     }
 }
@@ -174,8 +160,11 @@ extension OAuthITLab {
                     SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
                     self.saveState()
                     complited(nil)
+                    
                 case .failure(let error):
                     complited(error)
+                    self.isAuthorize = false
+                    UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
                 }
             }
         } else {
