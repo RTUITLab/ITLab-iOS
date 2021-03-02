@@ -171,7 +171,7 @@ extension OAuthITLab {
     
     private func isAuthorizeCheck() -> Bool {
         let credential = self.oauthSwift.client.credential
-        self.isAuthorize = !credential.oauthToken.isEmpty && !credential.isTokenExpired()
+        self.isAuthorize = !credential.oauthToken.isEmpty && !credential.oauthRefreshToken.isEmpty
         return self.isAuthorize
     }
     
