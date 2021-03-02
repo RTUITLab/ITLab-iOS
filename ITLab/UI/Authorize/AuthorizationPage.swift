@@ -35,7 +35,6 @@ struct AuthorizationPage: View {
                     isLoading = true
                     OAuthITLab.shared.authorize { (error) in
                         isLoading = false
-                        print(error)
                     }
                 }){
                     Text("Войти")

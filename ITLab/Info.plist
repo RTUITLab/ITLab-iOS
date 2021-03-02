@@ -35,7 +35,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSContactsUsageDescription</key>
-	<string>При разрешении доступа появится возможность добавлять пользователей в свои контакты</string>
+	<string>Данные контактов не отправляются на удаленные сервера. Данное раззрешение позволит Вам добавлять в свои контакты данные пользователей, зарегистрированных в системе.</string>
 	<key>ServerApi</key>
 	<dict>
 		<key>ClientName</key>

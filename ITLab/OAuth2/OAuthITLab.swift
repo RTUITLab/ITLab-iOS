@@ -44,6 +44,18 @@ class OAuthITLab: NSObject, ObservableObject  {
         self.loadState()
         
         if self.isAuthorizeCheck() {
+            self.oauthSwift.renewAccessToken(withRefreshToken: oauthSwift.client.credential.oauthRefreshToken,
+                                             completionHandler: {
+                                                result in
+                                                switch result{
+                                                case .success(let token):
+                                                    SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
+                                                    
+                                                case .failure(let error):
+                                                    print(error.description)
+                                                    self.isAuthorize = false
+                                                }
+                                             })
             self.loadUserInfo()
         }
     }
@@ -118,11 +130,11 @@ extension OAuthITLab {
     public func authorize(complited: @escaping (Error?) -> Void) {
         
         let pkce = OAuthITLabPKCE()
-       
+        
         guard let codeVerifier = pkce.generateCodeVerifier() else {
             return
         }
-
+        
         guard let codeChallenge = pkce.codeChallenge() else {
             return
         }
