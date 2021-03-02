@@ -101,7 +101,7 @@ struct UsersListPage: View {
     }
 
     func getUsers() {
-        AppAuthInteraction.shared.performAction { (token, _) in
+        OAuthITLab.shared.getToken{ error in
 
             UserAPI.apiUserGet(count: -1) { (users, error) in
                 if let error = error {

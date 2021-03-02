@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppAuth
 
 struct MainMenu: View {
     
@@ -43,14 +42,15 @@ struct MainMenu: View {
         }
         .onAppear() {
 
-            if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
+            if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                 user = profile
             }
             
-            AppAuthInteraction.shared.getUserInfoReq {
-                eventPage.isEditingRight = AppAuthInteraction.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+            OAuthITLab.shared.getToken{ error in
+                
+                eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
 
-                if let profile = AppAuthInteraction.shared.getUserInfo()?.profile {
+                if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                     user = profile
                 }
             }
