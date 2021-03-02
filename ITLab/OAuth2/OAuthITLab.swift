@@ -172,6 +172,7 @@ extension OAuthITLab {
                 switch result {
                 case .success(let token):
                     SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
+                    self.saveState()
                     complited(nil)
                 case .failure(let error):
                     complited(error)
