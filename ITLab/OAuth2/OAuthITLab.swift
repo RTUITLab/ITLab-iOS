@@ -128,10 +128,13 @@ extension OAuthITLab {
         }
         
         oauthSwift.accessTokenBasicAuthentification = true
+        
+        let state = generateState(withLength: 30)
+        
         oauthSwift.authorize(
             withCallbackURL: URL(string: configuration.kRedirectURL + "/itlab")!,
             scope: "roles openid profile itlab.events offline_access itlab.salary",
-            state: configuration.kOAuthITLabStateKey,
+            state: state,
             codeChallenge: codeChallenge,
             codeChallengeMethod: pkce.codeChallengeMethod,
             codeVerifier: codeVerifier) { result in
@@ -152,19 +155,21 @@ extension OAuthITLab {
     public func getToken(complited: @escaping (Error?) -> Void) {
         let credential = self.oauthSwift.client.credential
         if credential.isTokenExpired() {
-            
-            debugPrint("token expired, going to refresh")
-            self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
-                switch result {
-                case .success(let token):
-                    SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
-                    self.saveState()
-                    complited(nil)
-                    
-                case .failure(let error):
-                    complited(error)
-                    self.isAuthorize = false
-                    UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
+            DispatchQueue.main.async {
+                debugPrint("token expired, going to refresh")
+                self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
+                    switch result {
+                    case .success(let token):
+                        SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
+                        self.saveState()
+                        complited(nil)
+                        
+                    case .failure(let error):
+                        print("Token refresh error: \(error.localizedDescription)")
+                        complited(error)
+                        self.isAuthorize = false
+                        UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
+                    }
                 }
             }
         } else {
