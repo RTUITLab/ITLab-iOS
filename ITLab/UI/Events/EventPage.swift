@@ -175,15 +175,28 @@ struct EventPage: View {
                 .listStyle(GroupedListStyle())
                 .onAppear() {
 
-                    OAuthITLab.shared.getToken{ error in
+                    OAuthITLab.shared.getToken{
 
-                        EventSalaryAPI.apiSalaryV1EventEventIdGet(eventId: self.compactEvent.id!) { salary, _ in
+                        EventSalaryAPI.apiSalaryV1EventEventIdGet(eventId: self.compactEvent.id!) { salary, error in
+                            
+                            if let error = error {
+                                print(error)
+                                AlertError.shared.callAlert(message: error.localizedDescription)
+                                return
+                            }
+                            
                             self.salary = salary
                             self.isLoadedSalary = true
                         }
 
-                        EventAPI.apiEventIdGet(_id: self.compactEvent.id!) { (event, _) in
+                        EventAPI.apiEventIdGet(_id: self.compactEvent.id!) { (event, error) in
 
+                            if let error = error {
+                                print(error)
+                                AlertError.shared.callAlert(message: error.localizedDescription)
+                                return
+                            }
+                            
                             self.event = event
 
                             countingDate()

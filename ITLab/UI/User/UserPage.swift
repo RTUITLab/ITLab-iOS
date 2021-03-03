@@ -282,13 +282,16 @@ extension UserPage {
         }
 
         func getEvents() {
-            OAuthITLab.shared.getToken{ error in
+            OAuthITLab.shared.getToken{
                 EventAPI.apiEventUserUserIdGet(userId: user._id!, begin: fromDateEvent, end: beforeDateEvent) { (events, error) in
+                   
                     if let error = error {
                         print(error)
                         self.isLoading = false
+                        AlertError.shared.callAlert(message: error.localizedDescription)
                         return
                     }
+                    
                     self.events = events ?? []
                     self.isLoading = false
                 }
@@ -337,13 +340,14 @@ extension UserPage {
         }
 
         func getEquimpment() {
-            OAuthITLab.shared.getToken{ error in
+            OAuthITLab.shared.getToken{
 
                 EquipmentUserAPI.apiEquipmentUserUserIdGet(userId: user._id!) { (equipments, error) in
 
                     if let error = error {
                         print(error)
                         self.isLoading = false
+                        AlertError.shared.callAlert(message: error.localizedDescription)
                         return
                     }
 

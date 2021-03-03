@@ -46,8 +46,7 @@ struct MainMenu: View {
                 user = profile
             }
             
-            OAuthITLab.shared.getToken{ error in
-                
+            OAuthITLab.shared.getToken{                
                 eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
 
                 if let profile = OAuthITLab.shared.getUserInfo()?.profile {

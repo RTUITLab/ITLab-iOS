@@ -18,6 +18,8 @@ struct ITLabApp: App {
     var body: some Scene {
         WindowGroup{
             AuthorizationPage()
+                .alertError()
+                
         }
     }
 }
