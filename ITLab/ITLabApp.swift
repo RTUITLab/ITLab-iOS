@@ -23,3 +23,19 @@ struct ITLabApp: App {
         }
     }
 }
+
+fileprivate struct ITLabAlert: ViewModifier {
+    @ObservedObject private var config = ITLabAlertConfig.shared
+    func body(content: Content) -> some View {
+        content
+            .alert(isPresented: $config.showAlert, content: {
+                Alert(title: Text(config.title), message: Text(config.msg), dismissButton: .default(Text("Окей")))
+            })
+    }
+}
+
+fileprivate extension View {
+    func alertError() -> some View {
+        self.modifier(ITLabAlert())
+    }
+}

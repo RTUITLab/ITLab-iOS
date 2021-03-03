@@ -26,19 +26,3 @@ class ITLabAlertConfig: ObservableObject {
         showAlert.toggle()
     }
 }
-
-struct ITLabAlert: ViewModifier {
-    @ObservedObject private var config = ITLabAlertConfig.shared
-    func body(content: Content) -> some View {
-        content
-            .alert(isPresented: $config.showAlert, content: {
-                Alert(title: Text(config.title), message: Text(config.msg), dismissButton: .default(Text("Окей")))
-            })
-    }
-}
-
-extension View {
-    func alertError() -> some View {
-        self.modifier(ITLabAlert())
-    }
-}
