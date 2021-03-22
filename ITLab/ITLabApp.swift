@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct ITLabApp: App {
     
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    
     init() {
         //TODO: deleted
         UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: "authState")
