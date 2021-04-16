@@ -14,6 +14,7 @@
 		6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */; };
 		6D2AB2802533686000AFCDBB /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2AB27F2533686000AFCDBB /* Markdown.swift */; };
 		6D2AB28425337AEB00AFCDBB /* DownView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6D2AB28325337AEB00AFCDBB /* DownView.bundle */; };
+		6D2D860B2629DE5A00E98E0A /* PushNotification in Frameworks */ = {isa = PBXBuildFile; productRef = 6D2D860A2629DE5A00E98E0A /* PushNotification */; };
 		6D357CEB2539BF9A000B0F60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D357CEA2539BF9A000B0F60 /* LaunchScreen.storyboard */; };
 		6D5074252530F2BA00679B4C /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 6D5074242530F2BA00679B4C /* Down */; };
 		6D53C63225EF807E002FF8C4 /* ITLabAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D53C63125EF807E002FF8C4 /* ITLabAlert.swift */; };
@@ -248,6 +249,7 @@
 				6D5074252530F2BA00679B4C /* Down in Frameworks */,
 				6DDD8223252E0726008CE80A /* Alamofire in Frameworks */,
 				6DF4D03225ECE2AE00C29407 /* OAuthSwift in Frameworks */,
+				6D2D860B2629DE5A00E98E0A /* PushNotification in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +509,7 @@
 				6DDD8222252E0726008CE80A /* Alamofire */,
 				6D5074242530F2BA00679B4C /* Down */,
 				6DF4D03125ECE2AE00C29407 /* OAuthSwift */,
+				6D2D860A2629DE5A00E98E0A /* PushNotification */,
 			);
 			productName = ITLab;
 			productReference = 6D9A0C612518EBAA007796CD /* ITLab.app */;
@@ -538,6 +541,7 @@
 				6DDD8217252DF80B008CE80A /* XCRemoteSwiftPackageReference "Alamofire" */,
 				6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */,
 				6DF4D03025ECE2AE00C29407 /* XCRemoteSwiftPackageReference "OAuthSwift" */,
+				6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */,
 			);
 			productRefGroup = 6D9A0C622518EBAA007796CD /* Products */;
 			projectDirPath = "";
@@ -877,6 +881,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RTUITLab/ITLab-PushNotification-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/iwasrobbed/Down";
@@ -904,6 +916,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D2D860A2629DE5A00E98E0A /* PushNotification */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */;
+			productName = PushNotification;
+		};
 		6D5074242530F2BA00679B4C /* Down */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */;
