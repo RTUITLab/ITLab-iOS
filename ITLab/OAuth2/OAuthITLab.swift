@@ -132,7 +132,7 @@ extension OAuthITLab {
         let state = generateState(withLength: 20)
         
         oauthSwift.authorize(
-            withCallbackURL: URL(string: configuration.kRedirectURL + "/itlab")!,
+            withCallbackURL: URL(string: configuration.kRedirectURL)!,
             scope: "roles openid profile itlab.events offline_access itlab.salary",
             state: state,
             codeChallenge: codeChallenge,
