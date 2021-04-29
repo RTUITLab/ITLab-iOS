@@ -154,27 +154,33 @@ extension OAuthITLab {
     
     public func getToken(complited: @escaping () -> Void) {
         let credential = self.oauthSwift.client.credential
+        
+        let group = DispatchGroup()
+        group.enter()
+        
         if credential.isTokenExpired() {
-            DispatchQueue.main.async {
                 debugPrint("token expired, going to refresh")
                 self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
                     switch result {
                     case .success(let token):
                         SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
                         self.saveState()
+                        group.leave()
                         complited()
                         
                     case .failure(let error):
                         print("Token refresh error: \(error.localizedDescription)")
                         self.isAuthorize = false
                         UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
+                        group.leave()
                     }
                 }
+            return
             }
-        } else {
-            SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
-            complited()
-        }
+        
+        SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
+        group.leave()
+        complited()
     }
     
     private func isAuthorizeCheck() -> Bool {
