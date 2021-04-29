@@ -181,7 +181,6 @@ struct EventPage: View {
                             
                             if let error = error {
                                 print(error)
-                                AlertError.shared.callAlert(message: error.localizedDescription)
                                 return
                             }
                             
@@ -193,7 +192,6 @@ struct EventPage: View {
 
                             if let error = error {
                                 print(error)
-                                AlertError.shared.callAlert(message: error.localizedDescription)
                                 return
                             }
                             

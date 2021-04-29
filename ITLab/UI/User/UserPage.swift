@@ -288,7 +288,6 @@ extension UserPage {
                     if let error = error {
                         print(error)
                         self.isLoading = false
-                        AlertError.shared.callAlert(message: error.localizedDescription)
                         return
                     }
                     
@@ -347,7 +346,6 @@ extension UserPage {
                     if let error = error {
                         print(error)
                         self.isLoading = false
-                        AlertError.shared.callAlert(message: error.localizedDescription)
                         return
                     }
 
