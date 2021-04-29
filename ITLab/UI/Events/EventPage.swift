@@ -46,7 +46,7 @@ struct EventPage: View {
                                 .foregroundColor(.gray)
                                 .opacity(0.5)
 
-                        Text("\(beginDate ?? formateDateToString(compactEvent.beginTime)) — \(endDate ?? formateDateToString(compactEvent.endTime))")
+                        Text("\(beginDate ?? formatDateToString(compactEvent.beginTime)) — \(endDate ?? formatDateToString(compactEvent.endTime))")
                     }
                             .padding(.vertical, 5)
                 }
@@ -220,17 +220,17 @@ struct EventPage: View {
             return a.beginTime! < b.beginTime!
         }
 
-        self.beginDate = formateDateToString(beginDate)
-        self.endDate = formateDateToString(endDate)
+        self.beginDate = formatDateToString(beginDate)
+        self.endDate = formatDateToString(endDate)
     }
 
-    func formateDateToString(_ date: Date?) -> String
+    func formatDateToString(_ date: Date?) -> String
     {
-        let dateFormmat = DateFormatter()
-        dateFormmat.locale = Locale(identifier: "ru")
-        dateFormmat.dateFormat = "d.MM.yy HH:mm"
+        let dateFormat = DateFormatter()
+        dateFormat.locale = Locale(identifier: "ru")
+        dateFormat.dateFormat = "d.MM.yy HH:mm"
 
-        return dateFormmat.string(from: date ?? Date())
+        return dateFormat.string(from: date ?? Date())
     }
 
     static func localizedDate(_ date: Date) -> String
