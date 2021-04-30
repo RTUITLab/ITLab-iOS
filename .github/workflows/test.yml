@@ -1,6 +1,10 @@
 name: Test
 
-on: push
+on: 
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -11,18 +15,21 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
+
       - name: Create Debug file
         uses: 1arp/create-a-file-action@0.2
         with:
           path: 'ITLab'
           file: 'DebugConfig.xcconfig'
           content: ${{secrets.DEBUG}}
+
       - name: Create Release file
         uses: 1arp/create-a-file-action@0.2
         with:
           path: 'ITLab'
           file: 'Release.xcconfig'
           content: ${{secrets.RELEASE}}
+
       - name: Xcode build
         uses: sersoft-gmbh/xcodebuild-action@v1
         with:
@@ -30,6 +37,7 @@ jobs:
           scheme: ITLab
           destination: platform=iOS Simulator,name=iPhone 12
           action: build
+
       - name: Xcode test
         uses: sersoft-gmbh/xcodebuild-action@v1
         with:
@@ -38,7 +46,8 @@ jobs:
           destination: platform=iOS Simulator,name=iPhone 12
           build-settings: LOGIN=${{secrets.LOGIN}} PSW=${{secrets.PSW}}
           action: test
+
       - uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
+          name: report-test
           path: /Users/runner/Library/Developer/Xcode/DerivedData/ITLab-*/Logs/Test/*.xcresult
