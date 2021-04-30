@@ -28,17 +28,17 @@ jobs:
         with:
           project: ITLab.xcodeproj
           scheme: ITLab
-          destination: platform=iOS Simulator, name=iPhone 11 Pro Max
+          destination: platform=iOS Simulator,name=iPhone 12
           action: build
       - name: Xcode test
         uses: sersoft-gmbh/xcodebuild-action@v1
         with:
           project: ITLab.xcodeproj
           scheme: ITLab
-          destination: platform=iOS Simulator, name=iPhone 11 Pro Max
-          build-settings: LOGIN='${{secrets.LOGIN}}' PSW='${{secrets.PSW}}'
+          destination: platform=iOS Simulator,name=iPhone 12
+          build-settings: LOGIN=${{secrets.LOGIN}} PSW=${{secrets.PSW}}
           action: test
-     - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           name: my-artifact
           path: /Users/runner/Library/Developer/Xcode/DerivedData/ITLab-*/Logs/Test/*.xcresult
