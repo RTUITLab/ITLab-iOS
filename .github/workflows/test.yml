@@ -22,6 +22,12 @@ jobs:
         with:
           path: 'ITLab'
           file: 'Release.xcconfig'
-          content: ${{secrets.RELEASE}}   
+          content: ${{secrets.RELEASE}}
+      - name: Xcode build
+        run: xcodebuild -scheme ITLab -allowProvisioningUpdates build
       - name: Xcode test
-        run: xcodebuild  -scheme ITLab -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' LOGIN='${{secrets.LOGIN}}' PSW='${{secrets.PSW}}' test
+        run: xcodebuild -scheme ITLab -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' LOGIN='${{secrets.LOGIN}}' PSW='${{secrets.PSW}}' test
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: /Users/runner/Library/Developer/Xcode/DerivedData/ITLab-*/Logs/Test/*.xcresult
