@@ -1,0 +1,27 @@
+name: Test
+
+on: push
+
+jobs:
+  build:
+    name: test
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Create Debug file
+        uses: 1arp/create-a-file-action@0.2
+        with:
+          path: 'ITLab'
+          file: 'DebugConfig.xcconfig'
+          content: ${{secrets.DEBUG}}
+      - name: Create Release file
+        uses: 1arp/create-a-file-action@0.2
+        with:
+          path: 'ITLab'
+          file: 'Release.xcconfig'
+          content: ${{secrets.RELEASE}}   
+      - name: Xcode test
+        run: xcodebuild  -scheme ITLab -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' LOGIN='${{secrets.LOGIN}}' PSW='${{secrets.PSW}}' test
