@@ -39,7 +39,10 @@ class ITLabUITests: XCTestCase {
             XCTFail("Приложение уже авторизированно")
         }
         
-        guard let login = login, let psw = psw else {
+        guard let login = login,
+              let psw = psw,
+              !login.isEmpty,
+              !psw.isEmpty else {
             return XCTFail("Нет данных об авторизации")
         }
         
