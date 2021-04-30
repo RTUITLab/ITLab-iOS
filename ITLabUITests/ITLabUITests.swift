@@ -33,7 +33,7 @@ class ITLabUITests: XCTestCase {
         if (app.buttons["Войти"].exists) {
             app.buttons["Войти"].tap()
         } else {
-            XCTFail("Отсутствует авторизация")
+            XCTFail("Приложение уже авторизированно")
         }
         if (app.webViews.webViews.webViews.textFields["Username"].waitForExistence(timeout: 15)) {
                 app.webViews.webViews.webViews.textFields["Username"].tap()
@@ -71,9 +71,16 @@ class ITLabUITests: XCTestCase {
             XCTFail("Не смог войти в приложение")
         }
         
-        if (app.alerts["“ITLab” Would Like to Access Your Contacts"].exists) {
-            app.alerts["“ITLab” Would Like to Access Your Contacts"].buttons["OK"].tap()
+        addUIInterruptionMonitor(withDescription: "Contacs permission") { (alert) -> Bool in
+            if (alert.buttons["OK"].exists) {
+                alert.buttons["OK"].tap()
+                return true
+            }
+            
+            return false
         }
+        
+        app.navigationBars["События"].tap()
     }
     
     func testExit() throws {
