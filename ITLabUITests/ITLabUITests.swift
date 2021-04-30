@@ -9,6 +9,9 @@ import XCTest
 
 class ITLabUITests: XCTestCase {
     
+    var login: String? = ProcessInfo.processInfo.environment["LOGIN"]
+    var psw: String? = ProcessInfo.processInfo.environment["PSW"]
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
@@ -35,16 +38,21 @@ class ITLabUITests: XCTestCase {
         } else {
             XCTFail("Приложение уже авторизированно")
         }
+        
+        guard let login = login, let psw = psw else {
+            return XCTFail("Нет данных об авторизации")
+        }
+        
         if (app.webViews.webViews.webViews.textFields["Username"].waitForExistence(timeout: 15)) {
                 app.webViews.webViews.webViews.textFields["Username"].tap()
-                app.webViews.webViews.webViews.textFields["Username"].typeText("") //TODO need secrets file
+                app.webViews.webViews.webViews.textFields["Username"].typeText(login)
         } else {
             XCTFail("Не нашел элемент с логином")
         }
         
         if (app.webViews.webViews.webViews.secureTextFields["Password"].exists) {
                 app.webViews.webViews.webViews.secureTextFields["Password"].tap()
-                app.webViews.webViews.webViews.secureTextFields["Password"].typeText("") //TODO need secrets file
+                app.webViews.webViews.webViews.secureTextFields["Password"].typeText(psw)
         } else {
             XCTFail("Не нашел элемент с паролем")
         }
