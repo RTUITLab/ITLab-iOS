@@ -26,8 +26,41 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "NO"
+      systemAttachmentLifetime = "keepAlways"
+      userAttachmentLifetime = "keepAlways">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6D9A0C602518EBAA007796CD"
+            BuildableName = "ITLab.app"
+            BlueprintName = "ITLab"
+            ReferencedContainer = "container:ITLab.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "PSW"
+            value = "$(PSW)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "LOGIN"
+            value = "$(LOGIN)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6DE1A41B263BD5F20016B16B"
+               BuildableName = "ITLabUITests.xctest"
+               BlueprintName = "ITLabUITests"
+               ReferencedContainer = "container:ITLab.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

@@ -100,6 +100,7 @@
 		6DDD8215252DF78B008CE80A /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD81C7252DF78B008CE80A /* Configuration.swift */; };
 		6DDD8223252E0726008CE80A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6DDD8222252E0726008CE80A /* Alamofire */; };
 		6DE117C22549A12E002D500E /* UserPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE117C12549A12E002D500E /* UserPage.swift */; };
+		6DE1A41F263BD5F20016B16B /* ITLabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1A41E263BD5F20016B16B /* ITLabUITests.swift */; };
 		6DEE2DE62554B00A0087D656 /* ShiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEE2DE52554B00A0087D656 /* ShiftUIView.swift */; };
 		6DEE2DE92554B0C90087D656 /* PlaceUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */; };
 		6DF0E0FF25496023007D8BC6 /* UsersListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */; };
@@ -119,6 +120,16 @@
 		6DF717BC25B81ABE00F57D2D /* EventSalaryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717BA25B81ABE00F57D2D /* EventSalaryAPI.swift */; };
 		6DF717BD25B81ABE00F57D2D /* ReportSalaryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717BB25B81ABE00F57D2D /* ReportSalaryAPI.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6DE1A421263BD5F20016B16B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D9A0C592518EBAA007796CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D9A0C602518EBAA007796CD;
+			remoteInfo = ITLab;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		6D00FE6C255014A5000ED344 /* AuthorizationPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationPage.swift; sourceTree = "<group>"; };
@@ -216,6 +227,9 @@
 		6DDD81C6252DF78B008CE80A /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		6DDD81C7252DF78B008CE80A /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		6DE117C12549A12E002D500E /* UserPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPage.swift; sourceTree = "<group>"; };
+		6DE1A41C263BD5F20016B16B /* ITLabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITLabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DE1A41E263BD5F20016B16B /* ITLabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITLabUITests.swift; sourceTree = "<group>"; };
+		6DE1A420263BD5F20016B16B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DEE2DE52554B00A0087D656 /* ShiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftUIView.swift; sourceTree = "<group>"; };
 		6DEE2DE82554B0C90087D656 /* PlaceUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceUIView.swift; sourceTree = "<group>"; };
 		6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListPage.swift; sourceTree = "<group>"; };
@@ -243,6 +257,13 @@
 				6D5074252530F2BA00679B4C /* Down in Frameworks */,
 				6DDD8223252E0726008CE80A /* Alamofire in Frameworks */,
 				6DF4D03225ECE2AE00C29407 /* OAuthSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DE1A419263BD5F20016B16B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				6D9A0C632518EBAA007796CD /* ITLab */,
+				6DE1A41D263BD5F20016B16B /* ITLabUITests */,
 				6D9A0C622518EBAA007796CD /* Products */,
 				6DDD821C252DFBD2008CE80A /* Frameworks */,
 			);
@@ -293,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				6D9A0C612518EBAA007796CD /* ITLab.app */,
+				6DE1A41C263BD5F20016B16B /* ITLabUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -434,6 +457,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6DE1A41D263BD5F20016B16B /* ITLabUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6DE1A41E263BD5F20016B16B /* ITLabUITests.swift */,
+				6DE1A420263BD5F20016B16B /* Info.plist */,
+			);
+			path = ITLabUITests;
+			sourceTree = "<group>";
+		};
 		6DF0E0FD25496006007D8BC6 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,17 +536,39 @@
 			productReference = 6D9A0C612518EBAA007796CD /* ITLab.app */;
 			productType = "com.apple.product-type.application";
 		};
+		6DE1A41B263BD5F20016B16B /* ITLabUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DE1A425263BD5F20016B16B /* Build configuration list for PBXNativeTarget "ITLabUITests" */;
+			buildPhases = (
+				6DE1A418263BD5F20016B16B /* Sources */,
+				6DE1A419263BD5F20016B16B /* Frameworks */,
+				6DE1A41A263BD5F20016B16B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6DE1A422263BD5F20016B16B /* PBXTargetDependency */,
+			);
+			name = ITLabUITests;
+			productName = ITLabUITests;
+			productReference = 6DE1A41C263BD5F20016B16B /* ITLabUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		6D9A0C592518EBAA007796CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					6D9A0C602518EBAA007796CD = {
 						CreatedOnToolsVersion = 12.0;
+					};
+					6DE1A41B263BD5F20016B16B = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 6D9A0C602518EBAA007796CD;
 					};
 				};
 			};
@@ -524,6 +578,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				ru,
+				Base,
 			);
 			mainGroup = 6D9A0C582518EBAA007796CD;
 			packageReferences = (
@@ -536,6 +591,7 @@
 			projectRoot = "";
 			targets = (
 				6D9A0C602518EBAA007796CD /* ITLab */,
+				6DE1A41B263BD5F20016B16B /* ITLabUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -549,6 +605,13 @@
 				6D9A0C692518EBB2007796CD /* Assets.xcassets in Resources */,
 				6D2AB28425337AEB00AFCDBB /* DownView.bundle in Resources */,
 				6D357CEB2539BF9A000B0F60 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DE1A41A263BD5F20016B16B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,7 +729,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6DE1A418263BD5F20016B16B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DE1A41F263BD5F20016B16B /* ITLabUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6DE1A422263BD5F20016B16B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D9A0C602518EBAA007796CD /* ITLab */;
+			targetProxy = 6DE1A421263BD5F20016B16B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		6D9A0C6E2518EBB2007796CD /* Debug */ = {
@@ -796,7 +875,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
@@ -806,7 +885,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.RTUITLab.ITLab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -822,7 +901,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_ASSET_PATHS = "\"ITLab/Preview Content\"";
 				DEVELOPMENT_TEAM = ZBVHAA67XK;
 				ENABLE_PREVIEWS = YES;
@@ -832,12 +911,52 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.RTUITLab.ITLab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6DE1A423263BD5F20016B16B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ZBVHAA67XK;
+				INFOPLIST_FILE = ITLabUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.RTUITLab.ITLabUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ITLab;
+			};
+			name = Debug;
+		};
+		6DE1A424263BD5F20016B16B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ZBVHAA67XK;
+				INFOPLIST_FILE = ITLabUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ru.RTUITLab.ITLabUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ITLab;
 			};
 			name = Release;
 		};
@@ -858,6 +977,15 @@
 			buildConfigurations = (
 				6D9A0C712518EBB2007796CD /* Debug */,
 				6D9A0C722518EBB2007796CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6DE1A425263BD5F20016B16B /* Build configuration list for PBXNativeTarget "ITLabUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DE1A423263BD5F20016B16B /* Debug */,
+				6DE1A424263BD5F20016B16B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

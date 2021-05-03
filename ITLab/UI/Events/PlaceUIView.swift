@@ -166,6 +166,12 @@ struct PlaceUIView: View {
 
     func registrationEvent(event id: UUID) {
         EventAPI.apiEventWishPlaceIdRoleIdPost(placeId: place._id!, roleId: id) { (_, error) in
+            
+            if let error = error {
+                print(error)
+                return
+            }
+            
             self.presentationMode.wrappedValue.dismiss()
 
         }

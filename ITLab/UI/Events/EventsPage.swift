@@ -120,7 +120,7 @@ struct EventsPage: View {
             self.isLoadingEvents = true
         }
 
-        OAuthITLab.shared.getToken{ error in
+        OAuthITLab.shared.getToken{
 
             let date = Date()
             var dateComponents = DateComponents()
@@ -140,6 +140,11 @@ struct EventsPage: View {
 
             EventAPI.apiEventGet(begin: newDate) { (events, error) in
 
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
                 self.events = events?.sorted() { (a, b) -> Bool in
                     a.beginTime! > b.beginTime!
                 } ?? []
@@ -148,6 +153,12 @@ struct EventsPage: View {
             }
 
             EventRoleAPI.apiEventRoleGet { (eventsRole, error) in
+                
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
                 guard let eventsRole = eventsRole else {
                     print("Not get events role")
                     return
@@ -159,7 +170,7 @@ struct EventsPage: View {
     }
 
     func getOldEvents() {
-        OAuthITLab.shared.getToken{ error in
+        OAuthITLab.shared.getToken{
 
             let date = Date()
             var dateComponents = DateComponents()
@@ -174,7 +185,12 @@ struct EventsPage: View {
             let newDate = Calendar.current.date(from: dateComponents)
 
             EventAPI.apiEventGet(end: newDate) { (events, error) in
-
+                
+                if let error = error {
+                    print(error)
+                    return
+                }
+                
                 self.oldEvents = events?.sorted() { (a, b) -> Bool in
                     a.beginTime! > b.beginTime!
                 } ?? []

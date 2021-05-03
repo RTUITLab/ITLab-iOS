@@ -101,9 +101,10 @@ struct UsersListPage: View {
     }
 
     func getUsers() {
-        OAuthITLab.shared.getToken{ error in
+        OAuthITLab.shared.getToken{
 
             UserAPI.apiUserGet(count: -1) { (users, error) in
+                
                 if let error = error {
                     print(error)
                     self.isLoading = false
