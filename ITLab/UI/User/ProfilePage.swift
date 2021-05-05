@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PushNotification
 
 struct ProfilePage: View {
 
@@ -134,6 +135,7 @@ struct ProfilePage: View {
                 }
                 .alert(isPresented: $showLogOutAlert, content: {
                     Alert(title: Text("Выход из аккаунта"), message: Text("Вы точно хотите выйти?"), primaryButton: .cancel(Text("Нет")), secondaryButton: .default(Text("Да"), action: {
+                        PushNotification.removeDevice()
                         OAuthITLab.shared.logOut()
                     }))
                 })

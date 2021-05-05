@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/Alamofire/Alamofire",
         "state": {
           "branch": null,
-          "revision": "4d19ad82f80cc71ff829b941ded114c56f4f604c",
-          "version": "5.4.2"
+          "revision": "f96b619bcb2383b43d898402283924b80e2c4bae",
+          "version": "5.4.3"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/iwasrobbed/Down",
         "state": {
           "branch": null,
-          "revision": "0bcd20dc56ad7fd47bbb99a1d2302a8bfa43b6d0",
-          "version": "0.10.0"
+          "revision": "f34b166be1f1db4aa8f573067e901d72f2a6be57",
+          "version": "0.11.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/RTUITLab/ITLab-PushNotification-iOS",
         "state": {
           "branch": null,
-          "revision": "16bf3dcddb1c53f7b7c55857a99eba586fc9e5e2",
-          "version": "0.1.0"
+          "revision": "79f78b76d28400f159ed9787091672697f9ed50e",
+          "version": "0.2.0"
         }
       },
       {
