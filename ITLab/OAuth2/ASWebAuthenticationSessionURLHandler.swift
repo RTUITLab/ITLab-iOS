@@ -22,7 +22,7 @@ public class ASWebAuthenticationSessionURLHandler: NSObject, OAuthSwiftURLHandle
     public func handle(_ url: URL) {
         webAuthSession = ASWebAuthenticationSession(
             url: url,
-            callbackURLScheme: callbackUrlScheme,
+            callbackURLScheme: URL(string: callbackUrlScheme)?.scheme,
             completionHandler: { callbackURL, error in
                 guard error == nil, let callbackURL = callbackURL else {
                     let msg = error?.localizedDescription.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)

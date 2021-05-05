@@ -142,7 +142,6 @@ struct EventsPage: View {
 
                 if let error = error {
                     print(error)
-                    AlertError.shared.callAlert(message: error.localizedDescription)
                     return
                 }
                 
@@ -157,13 +156,11 @@ struct EventsPage: View {
                 
                 if let error = error {
                     print(error)
-                    AlertError.shared.callAlert(message: error.localizedDescription)
                     return
                 }
                 
                 guard let eventsRole = eventsRole else {
                     print("Not get events role")
-                    AlertError.shared.callAlert(message: "Not get events role")
                     return
                 }
 
@@ -191,7 +188,6 @@ struct EventsPage: View {
                 
                 if let error = error {
                     print(error)
-                    AlertError.shared.callAlert(message: error.localizedDescription)
                     return
                 }
                 

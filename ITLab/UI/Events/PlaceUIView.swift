@@ -169,7 +169,6 @@ struct PlaceUIView: View {
             
             if let error = error {
                 print(error)
-                AlertError.shared.callAlert(message: error.localizedDescription)
                 return
             }
             

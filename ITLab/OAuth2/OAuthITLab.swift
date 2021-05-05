@@ -19,7 +19,7 @@ class OAuthITLab: NSObject, ObservableObject  {
     
     private var configuration : OAuthITLabConfiguration
     private var userInfo: UserInfo?
-
+    
     @Published private var oauthSwift: OAuth2Swift
     @Published public var isAuthorize: Bool = false
     
@@ -154,28 +154,33 @@ extension OAuthITLab {
     
     public func getToken(complited: @escaping () -> Void) {
         let credential = self.oauthSwift.client.credential
+        
+        let group = DispatchGroup()
+        group.enter()
+        
         if credential.isTokenExpired() {
-            DispatchQueue.main.async {
                 debugPrint("token expired, going to refresh")
                 self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
                     switch result {
                     case .success(let token):
                         SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
                         self.saveState()
+                        group.leave()
                         complited()
                         
                     case .failure(let error):
                         print("Token refresh error: \(error.localizedDescription)")
                         self.isAuthorize = false
                         UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
-                        AlertError.shared.callAlert(message: error.localizedDescription)
+                        group.leave()
                     }
                 }
+            return
             }
-        } else {
-            SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
-            complited()
-        }
+        
+        SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
+        group.leave()
+        complited()
     }
     
     private func isAuthorizeCheck() -> Bool {
@@ -220,7 +225,6 @@ extension OAuthITLab {
         do {
             data = try NSKeyedArchiver.archivedData(withRootObject: oauthSwift.client.credential, requiringSecureCoding: true)
         } catch {
-            AlertError.shared.callAlert(message: "Not save data")
             print("Not save data")
         }
         
@@ -242,7 +246,6 @@ extension OAuthITLab {
             self.oauthSwift.client = OAuthSwiftClient(credential: credential)
         }
         catch {
-            AlertError.shared.callAlert(message: "Not load data")
             print("Not load data")
         }
     }
@@ -303,58 +306,52 @@ extension OAuthITLab {
     }
     
     public func getUserInfoReq(complited: @escaping () -> Void) {
-            var urlRequest = URLRequest(url: URL(string: self.configuration.kIssuer + "/connect/userinfo")!)
-            urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(self.oauthSwift.client.credential.oauthToken)"]
+        var urlRequest = URLRequest(url: URL(string: self.configuration.kIssuer + "/connect/userinfo")!)
+        urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(self.oauthSwift.client.credential.oauthToken)"]
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             
-            let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            DispatchQueue.main.async { [self] in
                 
-                DispatchQueue.main.async { [self] in
+                guard error == nil else {
+                    print("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse else {
+                    print("Non-HTTP response")
+                    return
+                }
+                
+                guard let data = data else {
+                    print("HTTP response data is empty")
+                    return
+                }
+                
+                if response.statusCode != 200 {
+                    // server replied with an error
+                    let responseText: String? = String(data: data, encoding: String.Encoding.utf8)
                     
-                    guard error == nil else {
-                        AlertError.shared.callAlert(message: "HTTP request failed \(error?.localizedDescription ?? "ERROR")")
-                        print("HTTP request failed \(error?.localizedDescription ?? "ERROR")")
-                        return
+                    if response.statusCode == 401 {
+                        // "401 Unauthorized" generally indicates there is an issue with the authorization
+                        // grant. Puts OIDAuthState into an error state.
+                        print(error.debugDescription)
+                    } else {
+                        print("HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
                     }
-                    
-                    guard let response = response as? HTTPURLResponse else {
-                        print("Non-HTTP response")
-                        AlertError.shared.callAlert(message: "Non-HTTP response")
-                        return
-                    }
-                    
-                    guard let data = data else {
-                        AlertError.shared.callAlert(message: "HTTP response data is empty")
-                        print("HTTP response data is empty")
-                        return
-                    }
-                    
-                    if response.statusCode != 200 {
-                        // server replied with an error
-                        let responseText: String? = String(data: data, encoding: String.Encoding.utf8)
-                        
-                        if response.statusCode == 401 {
-                            // "401 Unauthorized" generally indicates there is an issue with the authorization
-                            // grant. Puts OIDAuthState into an error state.
-                            AlertError.shared.callAlert(message: error.debugDescription)
-                            print(error.debugDescription)
-                        } else {
-                            AlertError.shared.callAlert(message: "HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
-                            print("HTTP: \(response.statusCode), Response: \(responseText ?? "RESPONSE_TEXT")")
-                        }
-                        return
-                    }
-                    
-                    guard let user: UserInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
-                        AlertError.shared.callAlert(message: "JSON serialization error in UserInfo")
-                        print("JSON serialization error in UserInfo")
-                        return
-                    }
-                    self.userInfo = user
+                    return
+                }
+                
+                guard let user: UserInfo = try? JSONDecoder().decode(UserInfo.self, from: data) else {
+                    print("JSON serialization error in UserInfo")
+                    return
+                }
+                self.userInfo = user
+                getToken {
                     
                     UserAPI.apiUserIdGet(_id: user.userId) { (profile, error) in
                         if let error = error {
                             print(error)
-                            AlertError.shared.callAlert(message: error.localizedDescription)
                             return
                         }
                         
@@ -363,10 +360,10 @@ extension OAuthITLab {
                         
                         complited()
                     }
-                    
                 }
             }
-            
-            task.resume()
+        }
+        
+        task.resume()
     }
 }

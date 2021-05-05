@@ -108,7 +108,6 @@ struct UsersListPage: View {
                 if let error = error {
                     print(error)
                     self.isLoading = false
-                    AlertError.shared.callAlert(message: error.localizedDescription)
                     return
                 }
 
