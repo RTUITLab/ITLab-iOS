@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PushNotification
 
 struct MainMenu: View {
     
@@ -44,6 +45,14 @@ struct MainMenu: View {
 
             if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                 user = profile
+                
+                if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? Dictionary<String, String>,
+                   let pushURL = serverAPI["PushNotification"],
+                   var url = URLComponents(string: pushURL) {
+                    url.scheme = "https"
+                    
+                    PushNotification.notificationActivate(url.string!, authenticationMethod: .user(id: profile._id!))
+                }
             }
             
             OAuthITLab.shared.getToken{                
