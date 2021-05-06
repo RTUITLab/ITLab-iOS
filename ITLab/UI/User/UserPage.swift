@@ -33,7 +33,7 @@ struct UserPage: View {
                         .textCase(.none)
                 }
                 
-                if let middleName = user.middleName {
+                if let middleName = user.middleName, !middleName.isEmpty {
                     Text(middleName)
                         .foregroundColor(Color("user.title"))
                         .fontWeight(.bold)

@@ -46,7 +46,7 @@ struct ProfilePage: View {
                         Text(user.firstName ?? "Имя")
                     }
 
-                    if let middleName = user.middleName {
+                    if let middleName = user.middleName, !middleName.isEmpty {
                         HStack(alignment: .center) {
                             Text("О")
                                     .foregroundColor(.gray)
