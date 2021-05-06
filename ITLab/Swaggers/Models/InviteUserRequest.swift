@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct InviteUserRequest: Codable {
 
     public var email: String?
@@ -19,6 +17,4 @@ public struct InviteUserRequest: Codable {
         self.redirectUrl = redirectUrl
     }
 
-
 }
-

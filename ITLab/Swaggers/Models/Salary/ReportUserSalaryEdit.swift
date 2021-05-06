@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ReportUserSalaryEdit: Codable {
 
     public var count: Int?
@@ -19,7 +17,7 @@ public struct ReportUserSalaryEdit: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case count
         case _description = "description"
     }

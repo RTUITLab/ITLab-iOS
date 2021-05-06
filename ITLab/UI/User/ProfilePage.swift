@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfilePage: View {
 
     @Binding var user: UserView
-    
+
     @State private var showLogOutAlert: Bool = false
 
     @State private var isSheet: Bool = false
@@ -46,7 +46,7 @@ struct ProfilePage: View {
                         Text(user.firstName ?? "Имя")
                     }
 
-                    if let middleName = user.middleName {
+                    if let middleName = user.middleName, !middleName.isEmpty {
                         HStack(alignment: .center) {
                             Text("О")
                                     .foregroundColor(.gray)
@@ -87,23 +87,23 @@ struct ProfilePage: View {
 
                             Button(action: {
                                 UIApplication.shared.open(URL(string: "vk://vk.com/id\(vkId)")!)
-                            }) {
+                            }, label: {
                                 Text("@\(vkId)")
-                            }
-                                    .contextMenu() {
+                            })
+                                    .contextMenu {
                                         Button(action: {
                                             UIApplication.shared.open(URL(string: "vk://vk.com/id\(vkId)")!)
-                                        }) {
+                                        }, label: {
                                             Text("Открыть VK")
                                             Image("vk.logo.fill")
-                                        }
+                                        })
 
                                         Button(action: {
                                             UIPasteboard.general.string = vkId
-                                        }) {
+                                        }, label: {
                                             Text("Копировать")
                                             Image(systemName: "doc.on.doc")
-                                        }
+                                        })
                                     }
                         }
                     }
@@ -123,17 +123,21 @@ struct ProfilePage: View {
                 UserPage.EquipmentStack(user: $user)
                 UserPage.EventStack(user: $user)
 
-                GeometryReader() { g in
+                GeometryReader { geometry in
                     Button(action: {
                         self.showLogOutAlert.toggle()
-                    }) {
+                    }, label: {
                         Text("Выход")
                                 .foregroundColor(.red)
-                    }
-                            .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                    })
+                            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
                 }
                 .alert(isPresented: $showLogOutAlert, content: {
-                    Alert(title: Text("Выход из аккаунта"), message: Text("Вы точно хотите выйти?"), primaryButton: .cancel(Text("Нет")), secondaryButton: .default(Text("Да"), action: {
+                    Alert(title: Text("Выход из аккаунта"),
+                          message: Text("Вы точно хотите выйти?"),
+                          primaryButton: .cancel(Text("Нет")),
+                          secondaryButton: .default(Text("Да"),
+                                                    action: {
                         OAuthITLab.shared.logOut()
                     }))
                 })

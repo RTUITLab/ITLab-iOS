@@ -8,18 +8,16 @@
 import Foundation
 import Alamofire
 
-
 open class VkPropertyAPI {
     /**
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyVkGet(completion: @escaping ((_ data: String?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyVkGet(completion: @escaping ((_ data: String?, _ error: Error?) -> Void)) {
         apiAccountPropertyVkGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/account/property/vk
@@ -35,9 +33,8 @@ open class VkPropertyAPI {
     open class func apiAccountPropertyVkGetWithRequestBuilder() -> RequestBuilder<String> {
         let path = "/api/account/property/vk"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<String>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -48,12 +45,11 @@ open class VkPropertyAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyVkPost(body: VkVerifyRequest? = nil, completion: @escaping ((_ data: UserView?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyVkPost(body: VkVerifyRequest? = nil, completion: @escaping ((_ data: UserView?, _ error: Error?) -> Void)) {
         apiAccountPropertyVkPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - POST /api/account/property/vk
@@ -100,7 +96,6 @@ open class VkPropertyAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UserView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

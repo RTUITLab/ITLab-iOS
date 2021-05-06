@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 open class ReportSalaryAPI {
     /**
 
@@ -16,12 +15,11 @@ open class ReportSalaryAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSalaryV1ReportReportIdPut(reportId: String, body: ReportUserSalaryEdit? = nil, completion: @escaping ((_ data: ReportUserSalaryFullView?,_ error: Error?) -> Void)) {
+    open class func apiSalaryV1ReportReportIdPut(reportId: String, body: ReportUserSalaryEdit? = nil, completion: @escaping ((_ data: ReportUserSalaryFullView?, _ error: Error?) -> Void)) {
         apiSalaryV1ReportReportIdPutWithRequestBuilder(reportId: reportId, body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - PUT /api/salary/v1/report/{reportId}
@@ -51,7 +49,6 @@ open class ReportSalaryAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<ReportUserSalaryFullView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -62,12 +59,11 @@ open class ReportSalaryAPI {
      - parameter userId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSalaryV1ReportUserUserIdGet(userId: UUID, completion: @escaping ((_ data: [ReportUserSalaryFullView]?,_ error: Error?) -> Void)) {
+    open class func apiSalaryV1ReportUserUserIdGet(userId: UUID, completion: @escaping ((_ data: [ReportUserSalaryFullView]?, _ error: Error?) -> Void)) {
         apiSalaryV1ReportUserUserIdGetWithRequestBuilder(userId: userId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get list of report salary
@@ -100,9 +96,8 @@ open class ReportSalaryAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[ReportUserSalaryFullView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

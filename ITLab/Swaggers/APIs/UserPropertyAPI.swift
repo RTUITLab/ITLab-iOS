@@ -8,19 +8,17 @@
 import Foundation
 import Alamofire
 
-
 open class UserPropertyAPI {
     /**
      Return all users properties
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyGet(completion: @escaping ((_ data: [UserPropertyView]?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyGet(completion: @escaping ((_ data: [UserPropertyView]?, _ error: Error?) -> Void)) {
         apiAccountPropertyGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Return all users properties
@@ -57,9 +55,8 @@ open class UserPropertyAPI {
     open class func apiAccountPropertyGetWithRequestBuilder() -> RequestBuilder<[UserPropertyView]> {
         let path = "/api/account/property"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[UserPropertyView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -71,12 +68,11 @@ open class UserPropertyAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyPut(body: UserPropertyEditRequest? = nil, completion: @escaping ((_ data: UserPropertyView?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyPut(body: UserPropertyEditRequest? = nil, completion: @escaping ((_ data: UserPropertyView?, _ error: Error?) -> Void)) {
         apiAccountPropertyPutWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Edit property
@@ -106,7 +102,6 @@ open class UserPropertyAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UserPropertyView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

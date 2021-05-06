@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 open class EventSalaryAPI {
     /**
      Delete event salary record
@@ -16,8 +15,8 @@ open class EventSalaryAPI {
      - parameter eventId: (path) Target event id 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSalaryV1EventEventIdDelete(eventId: UUID, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiSalaryV1EventEventIdDeleteWithRequestBuilder(eventId: eventId).execute { (response, error) -> Void in
+    open class func apiSalaryV1EventEventIdDelete(eventId: UUID, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiSalaryV1EventEventIdDeleteWithRequestBuilder(eventId: eventId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -25,7 +24,6 @@ open class EventSalaryAPI {
             }
         }
     }
-
 
     /**
      Delete event salary record
@@ -45,9 +43,8 @@ open class EventSalaryAPI {
         let eventIdPostEscape = eventIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{eventId}", with: eventIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -59,12 +56,11 @@ open class EventSalaryAPI {
      - parameter eventId: (path) event id to search 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSalaryV1EventEventIdGet(eventId: UUID, completion: @escaping ((_ data: EventSalaryFullView?,_ error: Error?) -> Void)) {
+    open class func apiSalaryV1EventEventIdGet(eventId: UUID, completion: @escaping ((_ data: EventSalaryFullView?, _ error: Error?) -> Void)) {
         apiSalaryV1EventEventIdGetWithRequestBuilder(eventId: eventId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get one full event salary by event id
@@ -110,9 +106,8 @@ open class EventSalaryAPI {
         let eventIdPostEscape = eventIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{eventId}", with: eventIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EventSalaryFullView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -125,12 +120,11 @@ open class EventSalaryAPI {
      - parameter body: (body) Event salary info (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSalaryV1EventEventIdPut(eventId: UUID, body: EventSalaryCreateEdit? = nil, completion: @escaping ((_ data: EventSalaryFullView?,_ error: Error?) -> Void)) {
+    open class func apiSalaryV1EventEventIdPut(eventId: UUID, body: EventSalaryCreateEdit? = nil, completion: @escaping ((_ data: EventSalaryFullView?, _ error: Error?) -> Void)) {
         apiSalaryV1EventEventIdPutWithRequestBuilder(eventId: eventId, body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Update or Create event salary info
@@ -180,7 +174,6 @@ open class EventSalaryAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<EventSalaryFullView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -192,12 +185,11 @@ open class EventSalaryAPI {
      - parameter end: (query) Smallest begin time. If not defined begin time equals zero (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSalaryV1EventGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [EventSalaryCompactView]?,_ error: Error?) -> Void)) {
+    open class func apiSalaryV1EventGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [EventSalaryCompactView]?, _ error: Error?) -> Void)) {
         apiSalaryV1EventGetWithRequestBuilder(begin: begin, end: end).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get list of event salary
@@ -224,13 +216,12 @@ open class EventSalaryAPI {
     open class func apiSalaryV1EventGetWithRequestBuilder(begin: Date? = nil, end: Date? = nil) -> RequestBuilder<[EventSalaryCompactView]> {
         let path = "/api/salary/v1/event"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "begin": begin?.encodeToJSON(), 
+                        "begin": begin?.encodeToJSON(),
                         "end": end?.encodeToJSON()
         ])
-
 
         let requestBuilder: RequestBuilder<[EventSalaryCompactView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

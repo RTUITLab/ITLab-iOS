@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct VkVerifyRequest: Codable {
 
     public var token: String?
@@ -19,6 +17,4 @@ public struct VkVerifyRequest: Codable {
         self.vkId = vkId
     }
 
-
 }
-

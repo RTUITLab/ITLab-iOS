@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserView: Codable {
 
     public var _id: UUID?
@@ -29,7 +27,7 @@ public struct UserView: Codable {
         self.properties = properties
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case firstName
         case lastName
@@ -40,4 +38,3 @@ public struct UserView: Codable {
     }
 
 }
-

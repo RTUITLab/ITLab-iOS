@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct PlaceEditRequest: Codable {
 
     public var clientId: Int?
@@ -29,7 +27,7 @@ public struct PlaceEditRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case clientId
         case targetParticipantsCount
         case equipment
@@ -40,4 +38,3 @@ public struct PlaceEditRequest: Codable {
     }
 
 }
-

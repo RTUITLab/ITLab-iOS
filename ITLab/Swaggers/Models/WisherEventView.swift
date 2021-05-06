@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct WisherEventView: Codable {
 
     public var _id: UUID?
@@ -41,7 +39,7 @@ public struct WisherEventView: Codable {
         self.doneTime = doneTime
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case title
         case eventType
@@ -58,4 +56,3 @@ public struct WisherEventView: Codable {
     }
 
 }
-
