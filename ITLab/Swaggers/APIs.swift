@@ -7,54 +7,54 @@
 import Foundation
 
 open class SwaggerClientAPI {
-    public static var basePath : String = getURL()
+    public static var basePath: String = getURL()
     public static var credential: URLCredential?
-    public static var customHeaders: [String:String] = [:]
+    public static var customHeaders: [String: String] = [:]
     public static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
-    
+
     private static func getURL() -> String {
-        guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? Dictionary<String, String> else {
+        guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String] else {
             assertionFailure("Server parameters are not specified in info.plist")
             return ""
         }
-        
+
         guard var serverURL = serverApi["ServerURL"] else {
             assertionFailure("No parameter specifying the connection server")
             return ""
         }
-        
+
         assert(serverURL != "",
-                "Server reference not specified in config file. Property: API_Issuer");
-        
+                "Server reference not specified in config file. Property: API_Issuer")
+
         guard let isSecure = serverApi["isSecure"] as NSString? else {
             assertionFailure("No parameter specifying the connection server")
             return ""
         }
-        
+
         serverURL = serverURL.replacingOccurrences(of: "identity.", with: "")
-        
+
         if isSecure.boolValue {
             serverURL = "https://" + serverURL
         } else {
             serverURL = "http://" + serverURL
         }
-        
+
         return serverURL
     }
 }
 
 open class RequestBuilder<T> {
     var credential: URLCredential?
-    var headers: [String:String]
-    public let parameters: [String:Any]?
+    var headers: [String: String]
+    public let parameters: [String: Any]?
     public let isBody: Bool
     public let method: String
     public let URLString: String
 
     /// Optional block to obtain a reference to the request's progress instance when available.
-    public var onProgressReady: ((Progress) -> ())?
+    public var onProgressReady: ((Progress) -> Void)?
 
-    required public init(method: String, URLString: String, parameters: [String:Any]?, isBody: Bool, headers: [String:String] = [:]) {
+    required public init(method: String, URLString: String, parameters: [String: Any]?, isBody: Bool, headers: [String: String] = [:]) {
         self.method = method
         self.URLString = URLString
         self.parameters = parameters
@@ -64,7 +64,7 @@ open class RequestBuilder<T> {
         addHeaders(SwaggerClientAPI.customHeaders)
     }
 
-    open func addHeaders(_ aHeaders:[String:String]) {
+    open func addHeaders(_ aHeaders: [String: String]) {
         for (header, value) in aHeaders {
             headers[header] = value
         }
@@ -87,5 +87,5 @@ open class RequestBuilder<T> {
 
 public protocol RequestBuilderFactory {
     func getNonDecodableBuilder<T>() -> RequestBuilder<T>.Type
-    func getBuilder<T:Decodable>() -> RequestBuilder<T>.Type
+    func getBuilder<T: Decodable>() -> RequestBuilder<T>.Type
 }

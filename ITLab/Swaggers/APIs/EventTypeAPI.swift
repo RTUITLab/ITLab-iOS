@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 open class EventTypeAPI {
     /**
 
@@ -16,12 +15,11 @@ open class EventTypeAPI {
      - parameter all: (query)  (optional, default to false)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventTypeGet(match: String? = nil, all: Bool? = nil, completion: @escaping ((_ data: [EventTypeView]?,_ error: Error?) -> Void)) {
+    open class func apiEventTypeGet(match: String? = nil, all: Bool? = nil, completion: @escaping ((_ data: [EventTypeView]?, _ error: Error?) -> Void)) {
         apiEventTypeGetWithRequestBuilder(match: match, all: all).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/EventType
@@ -47,13 +45,12 @@ open class EventTypeAPI {
     open class func apiEventTypeGetWithRequestBuilder(match: String? = nil, all: Bool? = nil) -> RequestBuilder<[EventTypeView]> {
         let path = "/api/EventType"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "match": match, 
+                        "match": match,
                         "all": all
         ])
-
 
         let requestBuilder: RequestBuilder<[EventTypeView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -64,12 +61,11 @@ open class EventTypeAPI {
      - parameter _id: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventTypeIdGet(_id: UUID, completion: @escaping ((_ data: EventTypeView?,_ error: Error?) -> Void)) {
+    open class func apiEventTypeIdGet(_id: UUID, completion: @escaping ((_ data: EventTypeView?, _ error: Error?) -> Void)) {
         apiEventTypeIdGetWithRequestBuilder(_id: _id).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/EventType/{id}
@@ -93,9 +89,8 @@ open class EventTypeAPI {
         let _idPostEscape = _idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{id}", with: _idPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EventTypeView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -106,12 +101,11 @@ open class EventTypeAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventTypePost(body: EventTypeCreateRequest? = nil, completion: @escaping ((_ data: EventTypeView?,_ error: Error?) -> Void)) {
+    open class func apiEventTypePost(body: EventTypeCreateRequest? = nil, completion: @escaping ((_ data: EventTypeView?, _ error: Error?) -> Void)) {
         apiEventTypePostWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - POST /api/EventType
@@ -135,7 +129,6 @@ open class EventTypeAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<EventTypeView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -145,12 +138,11 @@ open class EventTypeAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventTypePut(body: EventTypeEditRequest? = nil, completion: @escaping ((_ data: EventTypeView?,_ error: Error?) -> Void)) {
+    open class func apiEventTypePut(body: EventTypeEditRequest? = nil, completion: @escaping ((_ data: EventTypeView?, _ error: Error?) -> Void)) {
         apiEventTypePutWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - PUT /api/EventType
@@ -173,7 +165,6 @@ open class EventTypeAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EventTypeView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

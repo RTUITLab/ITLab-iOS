@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserPropertyView: Codable {
 
     public var value: String?
@@ -21,6 +19,4 @@ public struct UserPropertyView: Codable {
         self.userPropertyType = userPropertyType
     }
 
-
 }
-

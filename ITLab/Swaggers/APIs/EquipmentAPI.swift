@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 open class EquipmentAPI {
     /**
 
@@ -18,12 +17,11 @@ open class EquipmentAPI {
      - parameter all: (query)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentGet(eventId: UUID? = nil, equipmentTypeId: UUID? = nil, match: String? = nil, all: Bool? = nil, completion: @escaping ((_ data: [CompactEquipmentView]?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentGet(eventId: UUID? = nil, equipmentTypeId: UUID? = nil, match: String? = nil, all: Bool? = nil, completion: @escaping ((_ data: [CompactEquipmentView]?, _ error: Error?) -> Void)) {
         apiEquipmentGetWithRequestBuilder(eventId: eventId, equipmentTypeId: equipmentTypeId, match: match, all: all).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/Equipment
@@ -75,15 +73,14 @@ open class EquipmentAPI {
     open class func apiEquipmentGetWithRequestBuilder(eventId: UUID? = nil, equipmentTypeId: UUID? = nil, match: String? = nil, all: Bool? = nil) -> RequestBuilder<[CompactEquipmentView]> {
         let path = "/api/Equipment"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "eventId": eventId, 
-                        "equipmentTypeId": equipmentTypeId, 
-                        "match": match, 
+                        "eventId": eventId,
+                        "equipmentTypeId": equipmentTypeId,
+                        "match": match,
                         "all": all
         ])
-
 
         let requestBuilder: RequestBuilder<[CompactEquipmentView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -94,12 +91,11 @@ open class EquipmentAPI {
      - parameter _id: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentIdGet(_id: UUID, completion: @escaping ((_ data: EquipmentView?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentIdGet(_id: UUID, completion: @escaping ((_ data: EquipmentView?, _ error: Error?) -> Void)) {
         apiEquipmentIdGetWithRequestBuilder(_id: _id).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/Equipment/{id}
@@ -136,9 +132,8 @@ open class EquipmentAPI {
         let _idPostEscape = _idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{id}", with: _idPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EquipmentView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -150,12 +145,11 @@ open class EquipmentAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentPost(body: EquipmentCreateRequest? = nil, completion: @escaping ((_ data: EquipmentView?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentPost(body: EquipmentCreateRequest? = nil, completion: @escaping ((_ data: EquipmentView?, _ error: Error?) -> Void)) {
         apiEquipmentPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Create new Equipment
@@ -193,7 +187,6 @@ open class EquipmentAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<EquipmentView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -204,12 +197,11 @@ open class EquipmentAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentPut(body: EquipmentEditRequest? = nil, completion: @escaping ((_ data: EquipmentView?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentPut(body: EquipmentEditRequest? = nil, completion: @escaping ((_ data: EquipmentView?, _ error: Error?) -> Void)) {
         apiEquipmentPutWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Edit equipment
@@ -246,7 +238,6 @@ open class EquipmentAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EquipmentView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

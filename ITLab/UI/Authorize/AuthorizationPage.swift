@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct AuthorizationPage: View {
-    
-    @ObservedObject private var oauthITLab : OAuthITLab = OAuthITLab.shared
-    
+
+    @ObservedObject private var oauthITLab: OAuthITLab = OAuthITLab.shared
     @State var isLoading: Bool = false
-    
+
     var body: some View {
-        VStack{
+        VStack {
             if oauthITLab.isAuthorize {
                 MainMenu()
             } else {
-                VStack{
+                VStack {
                     Image("LogoRTU")
                         .resizable()
                         .frame(width: 280, height: 250)
@@ -31,16 +30,16 @@ struct AuthorizationPage: View {
                 if isLoading {
                     ProgressView()
                 } else {
-                Button(action: {
-                    isLoading = true
-                    OAuthITLab.shared.authorize { (error) in
-                        isLoading = false
-                    }
-                }){
-                    Text("Войти")
-                        .font(.title)
-                        .padding(50)
-                }
+                    Button(action: {
+                        isLoading = true
+                        OAuthITLab.shared.authorize { (_) in
+                            isLoading = false
+                        }
+                    }, label: {
+                        Text("Войти")
+                            .font(.title)
+                            .padding(50)
+                    })
                 }
                 Spacer()
             }

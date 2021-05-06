@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct PlaceSalaryView: Codable {
 
     public var placeId: UUID?
@@ -21,7 +19,7 @@ public struct PlaceSalaryView: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case placeId
         case count
         case _description = "description"

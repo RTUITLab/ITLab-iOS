@@ -8,14 +8,13 @@
 import SwiftUI
 
 class EventRole: ObservableObject {
-    static var data : [EventRoleView] = []
+    static var data: [EventRoleView] = []
 }
-
 
 struct EventsPage: View {
 
-    @State private var events : [CompactEventView] = []
-    @State private var oldEvents : [CompactEventView] = []
+    @State private var events: [CompactEventView] = []
+    @State private var oldEvents: [CompactEventView] = []
     @State private var isLoadingEvents: Bool = true
     @State private var showOldEvent: Bool = false
 
@@ -29,16 +28,20 @@ struct EventsPage: View {
         NavigationView {
             List {
                 if isLoadingEvents {
-                    GeometryReader() { g in
+                    GeometryReader { geometry in
                         ProgressView()
-                                .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                                .frame(width: geometry.size.width,
+                                       height: geometry.size.height,
+                                       alignment: .center)
                     }
                 } else {
                     Section(header: Text("От: \(fromDate)")) {
                         if events.count == 0 {
-                            GeometryReader() { g in
+                            GeometryReader { geometry in
                                 Text("На данный момент событий нет!")
-                                        .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                                        .frame(width: geometry.size.width,
+                                               height: geometry.size.height,
+                                               alignment: .center)
                             }
                         } else {
                             ForEach(events, id: \.id) { event in
@@ -48,23 +51,27 @@ struct EventsPage: View {
                         }
                     }
                     Section {
-                        GeometryReader() { g in
+                        GeometryReader { geometry in
                             Button(action: {
                                 self.showOldEvent.toggle()
 
                                 if showOldEvent {
                                     getOldEvents()
                                 }
-                            }) {
+                            }, label: {
                                 Text(showOldEvent ? "Скрыть более поздние события" :"Показать более поздние события")
-                            }
-                                    .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                            })
+                                    .frame(width: geometry.size.width,
+                                           height: geometry.size.height,
+                                           alignment: .center)
                         }
                         if showOldEvent {
                             if oldEvents.count <= 0 {
-                                GeometryReader() { g in
+                                GeometryReader { geometry in
                                     ProgressView()
-                                            .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                                            .frame(width: geometry.size.width,
+                                                   height: geometry.size.height,
+                                                   alignment: .center)
                                 }
                             } else {
                                 ForEach(oldEvents, id: \.id) { event in
@@ -87,23 +94,23 @@ struct EventsPage: View {
 
                             getOldEvents()
                         }
-                    }) {
+                    }, label: {
                         Image(systemName: "arrow.clockwise").padding([.top, .bottom, .trailing], 15)
-                    }, trailing:
-                    VStack{
-                        if self.isEditingRight{
+                    }), trailing:
+                    VStack {
+                        if self.isEditingRight {
                             Button(action: {
                                 addedAlert = true
-                            }) {
+                            }, label: {
                                 Image(systemName: "plus")
                                         .padding([.top, .leading, .bottom], 15)
-                            }
+                            })
                                     .alert(isPresented: $addedAlert) { Alert(title: Text("Пока не готово =(")) }
                         }
                     })
         }
                 .navigationViewStyle(StackNavigationViewStyle())
-                .onAppear{
+                .onAppear {
                     getEvents()
 
                     if showOldEvent {
@@ -112,15 +119,12 @@ struct EventsPage: View {
                 }
     }
 
-
-
-    func getEvents()
-    {
+    func getEvents() {
         if self.events.isEmpty {
             self.isLoadingEvents = true
         }
 
-        OAuthITLab.shared.getToken{
+        OAuthITLab.shared.getToken {
 
             let date = Date()
             var dateComponents = DateComponents()
@@ -144,21 +148,21 @@ struct EventsPage: View {
                     print(error)
                     return
                 }
-                
-                self.events = events?.sorted() { (a, b) -> Bool in
-                    a.beginTime! > b.beginTime!
+
+                self.events = events?.sorted {
+                    $0.beginTime! > $1.beginTime!
                 } ?? []
                 self.isLoadingEvents = false
 
             }
 
             EventRoleAPI.apiEventRoleGet { (eventsRole, error) in
-                
+
                 if let error = error {
                     print(error)
                     return
                 }
-                
+
                 guard let eventsRole = eventsRole else {
                     print("Not get events role")
                     return
@@ -170,7 +174,7 @@ struct EventsPage: View {
     }
 
     func getOldEvents() {
-        OAuthITLab.shared.getToken{
+        OAuthITLab.shared.getToken {
 
             let date = Date()
             var dateComponents = DateComponents()
@@ -185,14 +189,14 @@ struct EventsPage: View {
             let newDate = Calendar.current.date(from: dateComponents)
 
             EventAPI.apiEventGet(end: newDate) { (events, error) in
-                
+
                 if let error = error {
                     print(error)
                     return
                 }
-                
-                self.oldEvents = events?.sorted() { (a, b) -> Bool in
-                    a.beginTime! > b.beginTime!
+
+                self.oldEvents = events?.sorted {
+                    $0.beginTime! > $1.beginTime!
                 } ?? []
 
             }
@@ -201,15 +205,14 @@ struct EventsPage: View {
 }
 
 extension EventsPage {
-    private struct EventStack : View {
+    private struct EventStack: View {
 
-        @State var event : CompactEventView
+        @State var event: CompactEventView
 
         var body: some View {
-            NavigationLink(destination: EventPage(compactEvent: event))
-            {
+            NavigationLink(destination: EventPage(compactEvent: event)) {
                 HStack {
-                    VStack (alignment: .leading) {
+                    VStack(alignment: .leading) {
                         Text(event.title ?? "Not title")
                                 .font(.title3)
                                 .fontWeight(.bold)
@@ -218,9 +221,12 @@ extension EventsPage {
                                 .opacity(0.6)
                                 .padding(.bottom, 5)
 
-                        ProgressView(value: Float(event.currentParticipantsCount ?? 4), total: Float((event.targetParticipantsCount ?? 10) >= (event.currentParticipantsCount ?? 4) ? event.targetParticipantsCount ?? 10 : event.currentParticipantsCount ?? 4 )).progressViewStyle(LinearProgressViewStyle(tint: .blue))
+                        ProgressView(value: Float(event.currentParticipantsCount ?? 4),
+                                     total: Float((event.targetParticipantsCount ?? 10) >=
+                                                    (event.currentParticipantsCount ?? 4) ? event.targetParticipantsCount ?? 10 : event.currentParticipantsCount ?? 4 ))
+                            .progressViewStyle(LinearProgressViewStyle(tint: .blue))
 
-                        HStack{
+                        HStack {
                             HStack(alignment: .center) {
                                 Image(systemName: "clock")
                                         .font(.callout)
@@ -248,8 +254,7 @@ extension EventsPage {
     }
 }
 
-func dateFormate(_ date: Date) -> String
-{
+func dateFormate(_ date: Date) -> String {
     let dateFormmat = DateFormatter()
 
     dateFormmat.dateFormat = "dd.MM.yy HH:mm"

@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ShiftView: Codable {
 
     public var _id: UUID?
@@ -25,7 +23,7 @@ public struct ShiftView: Codable {
         self.places = places
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case beginTime
         case endTime
@@ -34,4 +32,3 @@ public struct ShiftView: Codable {
     }
 
 }
-

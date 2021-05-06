@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EventRoleView: Codable {
 
     public var _id: UUID?
@@ -21,11 +19,10 @@ public struct EventRoleView: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case title
         case _description = "description"
     }
 
 }
-

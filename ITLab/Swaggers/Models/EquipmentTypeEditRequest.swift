@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EquipmentTypeEditRequest: Codable {
 
     public var title: String?
@@ -25,7 +23,7 @@ public struct EquipmentTypeEditRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case title
         case shortTitle
         case _description = "description"
@@ -34,4 +32,3 @@ public struct EquipmentTypeEditRequest: Codable {
     }
 
 }
-

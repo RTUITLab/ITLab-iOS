@@ -8,15 +8,14 @@
 import Foundation
 import Alamofire
 
-
 open class SummaryAPI {
     /**
 
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiSummaryPost(body: GetSummaryRequest? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiSummaryPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiSummaryPost(body: GetSummaryRequest? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiSummaryPostWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -24,7 +23,6 @@ open class SummaryAPI {
             }
         }
     }
-
 
     /**
      - POST /api/summary
@@ -42,7 +40,6 @@ open class SummaryAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 

@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct DeletableRequest: Codable {
 
     public var delete: Bool?
@@ -19,10 +17,9 @@ public struct DeletableRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case delete
         case _id = "id"
     }
 
 }
-

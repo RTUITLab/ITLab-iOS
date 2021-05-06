@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserPropertyTypeCreateRequest: Codable {
 
     public var title: String
@@ -21,11 +19,10 @@ public struct UserPropertyTypeCreateRequest: Codable {
         self.defaultStatus = defaultStatus
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case title
         case _description = "description"
         case defaultStatus
     }
 
 }
-

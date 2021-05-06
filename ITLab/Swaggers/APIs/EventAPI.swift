@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 open class EventAPI {
     /**
      Get invites or wishes of authorized user
@@ -16,12 +15,11 @@ open class EventAPI {
      - parameter requestType: (path) type of request, \&quot;wishes\&quot; for wishes, \&quot;invitations\&quot; for invitations 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventApplicationsRequestTypeGet(requestType: String, completion: @escaping ((_ data: [EventApplicationView]?,_ error: Error?) -> Void)) {
+    open class func apiEventApplicationsRequestTypeGet(requestType: String, completion: @escaping ((_ data: [EventApplicationView]?, _ error: Error?) -> Void)) {
         apiEventApplicationsRequestTypeGetWithRequestBuilder(requestType: requestType).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get invites or wishes of authorized user
@@ -84,9 +82,8 @@ open class EventAPI {
         let requestTypePostEscape = requestTypePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{requestType}", with: requestTypePostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[EventApplicationView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -99,12 +96,11 @@ open class EventAPI {
      - parameter end: (query) Smallest begin time. If not defined begin time equals zero (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventDocsGenGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [EventView]?,_ error: Error?) -> Void)) {
+    open class func apiEventDocsGenGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [EventView]?, _ error: Error?) -> Void)) {
         apiEventDocsGenGetWithRequestBuilder(begin: begin, end: end).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get events list
@@ -1105,13 +1101,12 @@ open class EventAPI {
     open class func apiEventDocsGenGetWithRequestBuilder(begin: Date? = nil, end: Date? = nil) -> RequestBuilder<[EventView]> {
         let path = "/api/Event/docsGen"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "begin": begin?.encodeToJSON(), 
+                        "begin": begin?.encodeToJSON(),
                         "end": end?.encodeToJSON()
         ])
-
 
         let requestBuilder: RequestBuilder<[EventView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -1122,12 +1117,11 @@ open class EventAPI {
      - parameter eventId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventEventIdDelete(eventId: UUID, completion: @escaping ((_ data: UUID?,_ error: Error?) -> Void)) {
+    open class func apiEventEventIdDelete(eventId: UUID, completion: @escaping ((_ data: UUID?, _ error: Error?) -> Void)) {
         apiEventEventIdDeleteWithRequestBuilder(eventId: eventId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - DELETE /api/Event/{eventId}
@@ -1147,9 +1141,8 @@ open class EventAPI {
         let eventIdPostEscape = eventIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{eventId}", with: eventIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UUID>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -1162,12 +1155,11 @@ open class EventAPI {
      - parameter end: (query) Smallest begin time. If not defined begin time equals zero (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [CompactEventView]?,_ error: Error?) -> Void)) {
+    open class func apiEventGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [CompactEventView]?, _ error: Error?) -> Void)) {
         apiEventGetWithRequestBuilder(begin: begin, end: end).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get events list
@@ -1216,13 +1208,12 @@ open class EventAPI {
     open class func apiEventGetWithRequestBuilder(begin: Date? = nil, end: Date? = nil) -> RequestBuilder<[CompactEventView]> {
         let path = "/api/Event"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "begin": begin?.encodeToJSON(), 
+                        "begin": begin?.encodeToJSON(),
                         "end": end?.encodeToJSON()
         ])
-
 
         let requestBuilder: RequestBuilder<[CompactEventView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -1234,12 +1225,11 @@ open class EventAPI {
      - parameter _id: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventIdGet(_id: UUID, completion: @escaping ((_ data: EventView?,_ error: Error?) -> Void)) {
+    open class func apiEventIdGet(_id: UUID, completion: @escaping ((_ data: EventView?, _ error: Error?) -> Void)) {
         apiEventIdGetWithRequestBuilder(_id: _id).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get event information
@@ -1751,9 +1741,8 @@ open class EventAPI {
         let _idPostEscape = _idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{id}", with: _idPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EventView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -1766,12 +1755,11 @@ open class EventAPI {
      - parameter end: (query) Smallest begin time. If not defined begin time equals zero (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventIdsGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [UUID]?,_ error: Error?) -> Void)) {
+    open class func apiEventIdsGet(begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [UUID]?, _ error: Error?) -> Void)) {
         apiEventIdsGetWithRequestBuilder(begin: begin, end: end).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get events ids list
@@ -1790,13 +1778,12 @@ open class EventAPI {
     open class func apiEventIdsGetWithRequestBuilder(begin: Date? = nil, end: Date? = nil) -> RequestBuilder<[UUID]> {
         let path = "/api/Event/ids"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "begin": begin?.encodeToJSON(), 
+                        "begin": begin?.encodeToJSON(),
                         "end": end?.encodeToJSON()
         ])
-
 
         let requestBuilder: RequestBuilder<[UUID]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -1807,8 +1794,8 @@ open class EventAPI {
      - parameter placeId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventInvitationPlaceIdAcceptPost(placeId: UUID, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiEventInvitationPlaceIdAcceptPostWithRequestBuilder(placeId: placeId).execute { (response, error) -> Void in
+    open class func apiEventInvitationPlaceIdAcceptPost(placeId: UUID, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiEventInvitationPlaceIdAcceptPostWithRequestBuilder(placeId: placeId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -1816,7 +1803,6 @@ open class EventAPI {
             }
         }
     }
-
 
     /**
      - POST /api/Event/invitation/{placeId}/accept
@@ -1835,9 +1821,8 @@ open class EventAPI {
         let placeIdPostEscape = placeIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{placeId}", with: placeIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -1848,8 +1833,8 @@ open class EventAPI {
      - parameter placeId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventInvitationPlaceIdRejectPost(placeId: UUID, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiEventInvitationPlaceIdRejectPostWithRequestBuilder(placeId: placeId).execute { (response, error) -> Void in
+    open class func apiEventInvitationPlaceIdRejectPost(placeId: UUID, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiEventInvitationPlaceIdRejectPostWithRequestBuilder(placeId: placeId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -1857,7 +1842,6 @@ open class EventAPI {
             }
         }
     }
-
 
     /**
      - POST /api/Event/invitation/{placeId}/reject
@@ -1876,9 +1860,8 @@ open class EventAPI {
         let placeIdPostEscape = placeIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{placeId}", with: placeIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -1891,8 +1874,8 @@ open class EventAPI {
      - parameter userId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventInvitationPlaceIdRoleIdUserIdPost(placeId: UUID, roleId: UUID, userId: UUID, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiEventInvitationPlaceIdRoleIdUserIdPostWithRequestBuilder(placeId: placeId, roleId: roleId, userId: userId).execute { (response, error) -> Void in
+    open class func apiEventInvitationPlaceIdRoleIdUserIdPost(placeId: UUID, roleId: UUID, userId: UUID, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiEventInvitationPlaceIdRoleIdUserIdPostWithRequestBuilder(placeId: placeId, roleId: roleId, userId: userId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -1900,7 +1883,6 @@ open class EventAPI {
             }
         }
     }
-
 
     /**
      - POST /api/Event/invitation/{placeId}/{roleId}/{userId}
@@ -1927,9 +1909,8 @@ open class EventAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -1941,12 +1922,11 @@ open class EventAPI {
      - parameter body: (body) New event information (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventPost(body: EventCreateRequest? = nil, completion: @escaping ((_ data: CreateEditEventView?,_ error: Error?) -> Void)) {
+    open class func apiEventPost(body: EventCreateRequest? = nil, completion: @escaping ((_ data: CreateEditEventView?, _ error: Error?) -> Void)) {
         apiEventPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Create new event
@@ -2464,7 +2444,6 @@ open class EventAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<CreateEditEventView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -2475,12 +2454,11 @@ open class EventAPI {
      - parameter body: (body) New info about event (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventPut(body: EventEditRequest? = nil, completion: @escaping ((_ data: CreateEditEventView?,_ error: Error?) -> Void)) {
+    open class func apiEventPut(body: EventEditRequest? = nil, completion: @escaping ((_ data: CreateEditEventView?, _ error: Error?) -> Void)) {
         apiEventPutWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Edit exists event
@@ -2998,7 +2976,6 @@ open class EventAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<CreateEditEventView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -3011,12 +2988,11 @@ open class EventAPI {
      - parameter end: (query) Smallest begin time. If not defined begin time equals zero (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventUserUserIdGet(userId: UUID, begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [UsersEventsView]?,_ error: Error?) -> Void)) {
+    open class func apiEventUserUserIdGet(userId: UUID, begin: Date? = nil, end: Date? = nil, completion: @escaping ((_ data: [UsersEventsView]?, _ error: Error?) -> Void)) {
         apiEventUserUserIdGetWithRequestBuilder(userId: userId, begin: begin, end: end).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get events list for specific user
@@ -3069,13 +3045,12 @@ open class EventAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "begin": begin?.encodeToJSON(), 
+                        "begin": begin?.encodeToJSON(),
                         "end": end?.encodeToJSON()
         ])
-
 
         let requestBuilder: RequestBuilder<[UsersEventsView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -3087,8 +3062,8 @@ open class EventAPI {
      - parameter roleId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventWishPlaceIdRoleIdPost(placeId: UUID, roleId: UUID, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiEventWishPlaceIdRoleIdPostWithRequestBuilder(placeId: placeId, roleId: roleId).execute { (response, error) -> Void in
+    open class func apiEventWishPlaceIdRoleIdPost(placeId: UUID, roleId: UUID, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiEventWishPlaceIdRoleIdPostWithRequestBuilder(placeId: placeId, roleId: roleId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -3096,7 +3071,6 @@ open class EventAPI {
             }
         }
     }
-
 
     /**
      - POST /api/Event/wish/{placeId}/{roleId}
@@ -3119,9 +3093,8 @@ open class EventAPI {
         let roleIdPostEscape = roleIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{roleId}", with: roleIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -3133,12 +3106,11 @@ open class EventAPI {
      - parameter userId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventWishPlaceIdUserIdAcceptPost(placeId: UUID, userId: UUID, completion: @escaping ((_ data: WisherEventView?,_ error: Error?) -> Void)) {
+    open class func apiEventWishPlaceIdUserIdAcceptPost(placeId: UUID, userId: UUID, completion: @escaping ((_ data: WisherEventView?, _ error: Error?) -> Void)) {
         apiEventWishPlaceIdUserIdAcceptPostWithRequestBuilder(placeId: placeId, userId: userId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - POST /api/Event/wish/{placeId}/{userId}/accept
@@ -3212,9 +3184,8 @@ open class EventAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<WisherEventView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -3226,8 +3197,8 @@ open class EventAPI {
      - parameter userId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventWishPlaceIdUserIdRejectPost(placeId: UUID, userId: UUID, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiEventWishPlaceIdUserIdRejectPostWithRequestBuilder(placeId: placeId, userId: userId).execute { (response, error) -> Void in
+    open class func apiEventWishPlaceIdUserIdRejectPost(placeId: UUID, userId: UUID, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiEventWishPlaceIdUserIdRejectPostWithRequestBuilder(placeId: placeId, userId: userId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -3235,7 +3206,6 @@ open class EventAPI {
             }
         }
     }
-
 
     /**
      - POST /api/Event/wish/{placeId}/{userId}/reject
@@ -3258,9 +3228,8 @@ open class EventAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -3271,12 +3240,11 @@ open class EventAPI {
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventWishersGet(completion: @escaping ((_ data: [WisherEventView]?,_ error: Error?) -> Void)) {
+    open class func apiEventWishersGet(completion: @escaping ((_ data: [WisherEventView]?, _ error: Error?) -> Void)) {
         apiEventWishersGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get all wishers
@@ -3393,9 +3361,8 @@ open class EventAPI {
     open class func apiEventWishersGetWithRequestBuilder() -> RequestBuilder<[WisherEventView]> {
         let path = "/api/Event/wishers"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[WisherEventView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

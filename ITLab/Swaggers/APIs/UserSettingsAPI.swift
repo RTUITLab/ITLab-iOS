@@ -8,18 +8,16 @@
 import Foundation
 import Alamofire
 
-
 open class UserSettingsAPI {
     /**
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserSettingsGet(completion: @escaping ((_ data: [UserSettingPresent]?,_ error: Error?) -> Void)) {
+    open class func apiUserSettingsGet(completion: @escaping ((_ data: [UserSettingPresent]?, _ error: Error?) -> Void)) {
         apiUserSettingsGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/user/settings
@@ -41,9 +39,8 @@ open class UserSettingsAPI {
     open class func apiUserSettingsGetWithRequestBuilder() -> RequestBuilder<[UserSettingPresent]> {
         let path = "/api/user/settings"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[UserSettingPresent]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -54,8 +51,8 @@ open class UserSettingsAPI {
      - parameter settingName: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserSettingsSettingNameDelete(settingName: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiUserSettingsSettingNameDeleteWithRequestBuilder(settingName: settingName).execute { (response, error) -> Void in
+    open class func apiUserSettingsSettingNameDelete(settingName: String, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiUserSettingsSettingNameDeleteWithRequestBuilder(settingName: settingName).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -63,7 +60,6 @@ open class UserSettingsAPI {
             }
         }
     }
-
 
     /**
      - DELETE /api/user/settings/{settingName}
@@ -82,9 +78,8 @@ open class UserSettingsAPI {
         let settingNamePostEscape = settingNamePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{settingName}", with: settingNamePostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -95,8 +90,8 @@ open class UserSettingsAPI {
      - parameter settingName: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserSettingsSettingNameGet(settingName: String, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiUserSettingsSettingNameGetWithRequestBuilder(settingName: settingName).execute { (response, error) -> Void in
+    open class func apiUserSettingsSettingNameGet(settingName: String, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiUserSettingsSettingNameGetWithRequestBuilder(settingName: settingName).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -104,7 +99,6 @@ open class UserSettingsAPI {
             }
         }
     }
-
 
     /**
      - GET /api/user/settings/{settingName}
@@ -123,9 +117,8 @@ open class UserSettingsAPI {
         let settingNamePostEscape = settingNamePreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{settingName}", with: settingNamePostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
@@ -137,8 +130,8 @@ open class UserSettingsAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserSettingsSettingNamePost(settingName: String, body: Any? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiUserSettingsSettingNamePostWithRequestBuilder(settingName: settingName, body: body).execute { (response, error) -> Void in
+    open class func apiUserSettingsSettingNamePost(settingName: String, body: Any? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiUserSettingsSettingNamePostWithRequestBuilder(settingName: settingName, body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -146,7 +139,6 @@ open class UserSettingsAPI {
             }
         }
     }
-
 
     /**
      - POST /api/user/settings/{settingName}
@@ -168,7 +160,6 @@ open class UserSettingsAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 

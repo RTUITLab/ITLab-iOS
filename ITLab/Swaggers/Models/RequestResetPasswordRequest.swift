@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct RequestResetPasswordRequest: Codable {
 
     public var email: String?
@@ -19,6 +17,4 @@ public struct RequestResetPasswordRequest: Codable {
         self.redirectUrl = redirectUrl
     }
 
-
 }
-

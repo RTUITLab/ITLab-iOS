@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct ITLabApp: App {
-    
+
     var body: some Scene {
-        WindowGroup{
+        WindowGroup {
             AuthorizationPage()
         }
     }

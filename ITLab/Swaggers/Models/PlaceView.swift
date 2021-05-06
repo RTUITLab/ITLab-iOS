@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct PlaceView: Codable {
 
     public var _id: UUID?
@@ -31,7 +29,7 @@ public struct PlaceView: Codable {
         self.unknowns = unknowns
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case targetParticipantsCount
         case _description = "description"
@@ -43,4 +41,3 @@ public struct PlaceView: Codable {
     }
 
 }
-

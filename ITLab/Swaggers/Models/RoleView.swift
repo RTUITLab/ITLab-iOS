@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct RoleView: Codable {
 
     public var _id: UUID?
@@ -19,10 +17,9 @@ public struct RoleView: Codable {
         self.name = name
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case name
     }
 
 }
-

@@ -9,10 +9,10 @@ import Foundation
 import CommonCrypto
 
 class OAuthITLabPKCE {
-    
+
     private var codeVerifier: String?
     public let codeChallengeMethod = "S256"
-    
+
     open func generateCodeVerifier() -> String? {
         var buffer = [UInt8](repeating: 0, count: 32)
         _ = SecRandomCopyBytes(kSecRandomDefault, buffer.count, &buffer)
@@ -21,14 +21,13 @@ class OAuthITLabPKCE {
             .replacingOccurrences(of: "/", with: "_")
             .replacingOccurrences(of: "=", with: "")
             .trimmingCharacters(in: .whitespaces)
-        
+
         return codeVerifier
     }
-    
-    
+
     open func codeChallenge() -> String? {
         guard let verifier = codeVerifier, let data = verifier.data(using: .utf8) else { return nil }
-        var buffer = [UInt8](repeating: 0,  count: Int(CC_SHA256_DIGEST_LENGTH))
+        var buffer = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
         data.withUnsafeBytes {
             _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &buffer)
         }

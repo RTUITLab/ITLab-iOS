@@ -8,15 +8,14 @@
 import Foundation
 import Alamofire
 
-
 open class AccountAPI {
     /**
 
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPasswordPut(body: ChangePasswordRequest? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiAccountPasswordPutWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiAccountPasswordPut(body: ChangePasswordRequest? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiAccountPasswordPutWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -24,7 +23,6 @@ open class AccountAPI {
             }
         }
     }
-
 
     /**
      - PUT /api/account/password
@@ -43,7 +41,6 @@ open class AccountAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -53,8 +50,8 @@ open class AccountAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPasswordRequestResetPost(body: RequestResetPasswordRequest? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiAccountPasswordRequestResetPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiAccountPasswordRequestResetPost(body: RequestResetPasswordRequest? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiAccountPasswordRequestResetPostWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -62,7 +59,6 @@ open class AccountAPI {
             }
         }
     }
-
 
     /**
      - POST /api/account/password/requestReset
@@ -81,7 +77,6 @@ open class AccountAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -91,8 +86,8 @@ open class AccountAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPasswordResetPost(body: ResetPasswordRequest? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiAccountPasswordResetPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiAccountPasswordResetPost(body: ResetPasswordRequest? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiAccountPasswordResetPostWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -100,7 +95,6 @@ open class AccountAPI {
             }
         }
     }
-
 
     /**
      - POST /api/account/password/reset
@@ -119,7 +113,6 @@ open class AccountAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -129,8 +122,8 @@ open class AccountAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPost(body: AccountCreateRequest? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiAccountPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiAccountPost(body: AccountCreateRequest? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiAccountPostWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -138,7 +131,6 @@ open class AccountAPI {
             }
         }
     }
-
 
     /**
      - POST /api/account
@@ -157,7 +149,6 @@ open class AccountAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -167,12 +158,11 @@ open class AccountAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPut(body: AccountEditRequest? = nil, completion: @escaping ((_ data: UserView?,_ error: Error?) -> Void)) {
+    open class func apiAccountPut(body: AccountEditRequest? = nil, completion: @escaping ((_ data: UserView?, _ error: Error?) -> Void)) {
         apiAccountPutWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - PUT /api/account
@@ -219,7 +209,6 @@ open class AccountAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UserView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

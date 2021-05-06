@@ -8,18 +8,16 @@
 import Foundation
 import Alamofire
 
-
 open class EventRoleAPI {
     /**
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventRoleGet(completion: @escaping ((_ data: [EventRoleView]?,_ error: Error?) -> Void)) {
+    open class func apiEventRoleGet(completion: @escaping ((_ data: [EventRoleView]?, _ error: Error?) -> Void)) {
         apiEventRoleGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/EventRole
@@ -43,9 +41,8 @@ open class EventRoleAPI {
     open class func apiEventRoleGetWithRequestBuilder() -> RequestBuilder<[EventRoleView]> {
         let path = "/api/EventRole"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[EventRoleView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -56,12 +53,11 @@ open class EventRoleAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventRolePost(body: EventRoleCreateRequest? = nil, completion: @escaping ((_ data: EventRoleView?,_ error: Error?) -> Void)) {
+    open class func apiEventRolePost(body: EventRoleCreateRequest? = nil, completion: @escaping ((_ data: EventRoleView?, _ error: Error?) -> Void)) {
         apiEventRolePostWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - POST /api/EventRole
@@ -85,7 +81,6 @@ open class EventRoleAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<EventRoleView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "POST", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -95,12 +90,11 @@ open class EventRoleAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEventRolePut(body: EventRoleEditRequest? = nil, completion: @escaping ((_ data: EventRoleView?,_ error: Error?) -> Void)) {
+    open class func apiEventRolePut(body: EventRoleEditRequest? = nil, completion: @escaping ((_ data: EventRoleView?, _ error: Error?) -> Void)) {
         apiEventRolePutWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - PUT /api/EventRole
@@ -123,7 +117,6 @@ open class EventRoleAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EventRoleView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
