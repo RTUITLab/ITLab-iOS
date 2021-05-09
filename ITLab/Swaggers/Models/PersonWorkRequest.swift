@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct PersonWorkRequest: Codable {
 
     public var eventRoleId: UUID?
@@ -21,11 +19,10 @@ public struct PersonWorkRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case eventRoleId
         case delete
         case _id = "id"
     }
 
 }
-

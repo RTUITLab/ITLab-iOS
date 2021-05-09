@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserPropertyTypeView: Codable {
 
     public var _id: UUID?
@@ -25,7 +23,7 @@ public struct UserPropertyTypeView: Codable {
         self.isLocked = isLocked
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case title
         case _description = "description"
@@ -34,4 +32,3 @@ public struct UserPropertyTypeView: Codable {
     }
 
 }
-

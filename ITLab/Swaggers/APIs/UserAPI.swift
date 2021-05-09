@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 open class UserAPI {
     /**
 
@@ -22,12 +21,11 @@ open class UserAPI {
      - parameter offset: (query)  (optional, default to 0)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserGet(email: String? = nil, firstname: String? = nil, lastname: String? = nil, middleName: String? = nil, vkId: String? = nil, match: String? = nil, count: Int? = nil, offset: Int? = nil, completion: @escaping ((_ data: [UserView]?,_ error: Error?) -> Void)) {
+    open class func apiUserGet(email: String? = nil, firstname: String? = nil, lastname: String? = nil, middleName: String? = nil, vkId: String? = nil, match: String? = nil, count: Int? = nil, offset: Int? = nil, completion: @escaping ((_ data: [UserView]?, _ error: Error?) -> Void)) {
         apiUserGetWithRequestBuilder(email: email, firstname: firstname, lastname: lastname, middleName: middleName, vkId: vkId, match: match, count: count, offset: offset).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/User
@@ -107,19 +105,18 @@ open class UserAPI {
     open class func apiUserGetWithRequestBuilder(email: String? = nil, firstname: String? = nil, lastname: String? = nil, middleName: String? = nil, vkId: String? = nil, match: String? = nil, count: Int? = nil, offset: Int? = nil) -> RequestBuilder<[UserView]> {
         let path = "/api/User"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         var url = URLComponents(string: URLString)
         url?.queryItems = APIHelper.mapValuesToQueryItems([
-                        "email": email, 
-                        "firstname": firstname, 
-                        "lastname": lastname, 
-                        "middleName": middleName, 
-                        "vkId": vkId, 
-                        "match": match, 
-                        "count": count?.encodeToJSON(), 
+                        "email": email,
+                        "firstname": firstname,
+                        "lastname": lastname,
+                        "middleName": middleName,
+                        "vkId": vkId,
+                        "match": match,
+                        "count": count?.encodeToJSON(),
                         "offset": offset?.encodeToJSON()
         ])
-
 
         let requestBuilder: RequestBuilder<[UserView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -130,12 +127,11 @@ open class UserAPI {
      - parameter _id: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserIdGet(_id: UUID, completion: @escaping ((_ data: UserView?,_ error: Error?) -> Void)) {
+    open class func apiUserIdGet(_id: UUID, completion: @escaping ((_ data: UserView?, _ error: Error?) -> Void)) {
         apiUserIdGetWithRequestBuilder(_id: _id).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/User/{id}
@@ -183,9 +179,8 @@ open class UserAPI {
         let _idPostEscape = _idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{id}", with: _idPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UserView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -196,8 +191,8 @@ open class UserAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiUserPost(body: InviteUserRequest? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiUserPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiUserPost(body: InviteUserRequest? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiUserPostWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -205,7 +200,6 @@ open class UserAPI {
             }
         }
     }
-
 
     /**
      - POST /api/User
@@ -223,7 +217,6 @@ open class UserAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 

@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserSettingPresent: Codable {
 
 //    public var title: String?
@@ -18,14 +16,11 @@ public struct UserSettingPresent: Codable {
 //        self.title = title
 //        self.value = value
 //    }
-    
-    
+
     public var title: String?
 
     public init(title: String?) {
         self.title = title
     }
 
-
 }
-

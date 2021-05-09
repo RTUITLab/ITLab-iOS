@@ -8,18 +8,16 @@
 import Foundation
 import Alamofire
 
-
 open class EquipmentUserAPI {
     /**
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentUserFreeGet(completion: @escaping ((_ data: [EquipmentView]?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentUserFreeGet(completion: @escaping ((_ data: [EquipmentView]?, _ error: Error?) -> Void)) {
         apiEquipmentUserFreeGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/equipment/user/free
@@ -69,9 +67,8 @@ open class EquipmentUserAPI {
     open class func apiEquipmentUserFreeGetWithRequestBuilder() -> RequestBuilder<[EquipmentView]> {
         let path = "/api/equipment/user/free"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[EquipmentView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -82,12 +79,11 @@ open class EquipmentUserAPI {
      - parameter userId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentUserUserIdGet(userId: UUID, completion: @escaping ((_ data: [EquipmentView]?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentUserUserIdGet(userId: UUID, completion: @escaping ((_ data: [EquipmentView]?, _ error: Error?) -> Void)) {
         apiEquipmentUserUserIdGetWithRequestBuilder(userId: userId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/equipment/user/{userId}
@@ -141,9 +137,8 @@ open class EquipmentUserAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[EquipmentView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -155,12 +150,11 @@ open class EquipmentUserAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiEquipmentUserUserIdPost(userId: UUID, body: IdRequest? = nil, completion: @escaping ((_ data: EquipmentView?,_ error: Error?) -> Void)) {
+    open class func apiEquipmentUserUserIdPost(userId: UUID, body: IdRequest? = nil, completion: @escaping ((_ data: EquipmentView?, _ error: Error?) -> Void)) {
         apiEquipmentUserUserIdPostWithRequestBuilder(userId: userId, body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - POST /api/equipment/user/{userId}
@@ -200,7 +194,6 @@ open class EquipmentUserAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<EquipmentView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

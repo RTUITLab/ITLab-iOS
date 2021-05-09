@@ -8,15 +8,14 @@
 import Foundation
 import Alamofire
 
-
 open class DebugAPI {
     /**
 
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiDebugPost(body: String? = nil, completion: @escaping ((_ data: Void?,_ error: Error?) -> Void)) {
-        apiDebugPostWithRequestBuilder(body: body).execute { (response, error) -> Void in
+    open class func apiDebugPost(body: String? = nil, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) {
+        apiDebugPostWithRequestBuilder(body: body).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
             } else {
@@ -24,7 +23,6 @@ open class DebugAPI {
             }
         }
     }
-
 
     /**
      - POST /api/debug
@@ -42,7 +40,6 @@ open class DebugAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Void>.Type = SwaggerClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 

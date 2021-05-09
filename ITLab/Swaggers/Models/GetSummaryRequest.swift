@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct GetSummaryRequest: Codable {
 
     public var targetEventTypes: [UUID]?
@@ -17,6 +15,4 @@ public struct GetSummaryRequest: Codable {
         self.targetEventTypes = targetEventTypes
     }
 
-
 }
-

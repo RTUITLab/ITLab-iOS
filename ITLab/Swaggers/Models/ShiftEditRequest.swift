@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ShiftEditRequest: Codable {
 
     public var clientId: Int?
@@ -29,7 +27,7 @@ public struct ShiftEditRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case clientId
         case beginTime
         case endTime
@@ -40,4 +38,3 @@ public struct ShiftEditRequest: Codable {
     }
 
 }
-

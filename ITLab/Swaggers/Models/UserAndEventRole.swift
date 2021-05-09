@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserAndEventRole: Codable {
 
     public var user: UserView?
@@ -23,6 +21,4 @@ public struct UserAndEventRole: Codable {
         self.doneTime = doneTime
     }
 
-
 }
-

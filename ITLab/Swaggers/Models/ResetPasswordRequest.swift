@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ResetPasswordRequest: Codable {
 
     public var email: String?
@@ -21,6 +19,4 @@ public struct ResetPasswordRequest: Codable {
         self.newPassword = newPassword
     }
 
-
 }
-

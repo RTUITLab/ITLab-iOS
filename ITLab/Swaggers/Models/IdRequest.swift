@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct IdRequest: Codable {
 
     public var _id: UUID
@@ -17,9 +15,8 @@ public struct IdRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
     }
 
 }
-

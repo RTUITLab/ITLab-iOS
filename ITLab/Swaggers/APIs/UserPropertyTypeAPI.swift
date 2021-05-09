@@ -8,19 +8,17 @@
 import Foundation
 import Alamofire
 
-
 open class UserPropertyTypeAPI {
     /**
      Returns all user property types
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyTypeGet(completion: @escaping ((_ data: [UserPropertyTypeView]?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyTypeGet(completion: @escaping ((_ data: [UserPropertyTypeView]?, _ error: Error?) -> Void)) {
         apiAccountPropertyTypeGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Returns all user property types
@@ -49,9 +47,8 @@ open class UserPropertyTypeAPI {
     open class func apiAccountPropertyTypeGetWithRequestBuilder() -> RequestBuilder<[UserPropertyTypeView]> {
         let path = "/api/account/property/type"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[UserPropertyTypeView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -63,12 +60,11 @@ open class UserPropertyTypeAPI {
      - parameter _id: (path) Id of property type to delete 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyTypeIdDelete(_id: UUID, completion: @escaping ((_ data: UUID?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyTypeIdDelete(_id: UUID, completion: @escaping ((_ data: UUID?, _ error: Error?) -> Void)) {
         apiAccountPropertyTypeIdDeleteWithRequestBuilder(_id: _id).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Delete user property type
@@ -89,9 +85,8 @@ open class UserPropertyTypeAPI {
         let _idPostEscape = _idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{id}", with: _idPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UUID>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -103,12 +98,11 @@ open class UserPropertyTypeAPI {
      - parameter _id: (path) Id of user property type 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyTypeIdGet(_id: UUID, completion: @escaping ((_ data: UserPropertyTypeView?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyTypeIdGet(_id: UUID, completion: @escaping ((_ data: UserPropertyTypeView?, _ error: Error?) -> Void)) {
         apiAccountPropertyTypeIdGetWithRequestBuilder(_id: _id).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Returns one user property type by id
@@ -135,9 +129,8 @@ open class UserPropertyTypeAPI {
         let _idPostEscape = _idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{id}", with: _idPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UserPropertyTypeView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -150,12 +143,11 @@ open class UserPropertyTypeAPI {
      - parameter body: (body)  (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyTypeIdPut(_id: UUID, body: UserPropertyTypeEditRequest? = nil, completion: @escaping ((_ data: UUID?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyTypeIdPut(_id: UUID, body: UserPropertyTypeEditRequest? = nil, completion: @escaping ((_ data: UUID?, _ error: Error?) -> Void)) {
         apiAccountPropertyTypeIdPutWithRequestBuilder(_id: _id, body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Edit user property type
@@ -180,7 +172,6 @@ open class UserPropertyTypeAPI {
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
 
-
         let requestBuilder: RequestBuilder<UUID>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
         return requestBuilder.init(method: "PUT", URLString: (url?.string ?? URLString), parameters: parameters, isBody: true)
@@ -191,12 +182,11 @@ open class UserPropertyTypeAPI {
      - parameter body: (body) Data with needed user property type (optional)
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAccountPropertyTypePost(body: UserPropertyTypeCreateRequest? = nil, completion: @escaping ((_ data: UserPropertyTypeView?,_ error: Error?) -> Void)) {
+    open class func apiAccountPropertyTypePost(body: UserPropertyTypeCreateRequest? = nil, completion: @escaping ((_ data: UserPropertyTypeView?, _ error: Error?) -> Void)) {
         apiAccountPropertyTypePostWithRequestBuilder(body: body).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Add new property type
@@ -222,7 +212,6 @@ open class UserPropertyTypeAPI {
         let URLString = SwaggerClientAPI.basePath + path
         let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<UserPropertyTypeView>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

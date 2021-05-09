@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /** Information about the build */
 
 public struct BuildInformation: Codable {
@@ -22,6 +21,4 @@ public struct BuildInformation: Codable {
         self.buildDateString = buildDateString
     }
 
-
 }
-

@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EventSalaryCompactView: Codable {
 
     public var eventId: UUID?
@@ -21,7 +19,7 @@ public struct EventSalaryCompactView: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case eventId
         case count
         case _description = "description"

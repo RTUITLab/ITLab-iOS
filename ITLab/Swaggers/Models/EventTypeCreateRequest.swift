@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EventTypeCreateRequest: Codable {
 
     public var title: String
@@ -19,10 +17,9 @@ public struct EventTypeCreateRequest: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case title
         case _description = "description"
     }
 
 }
-

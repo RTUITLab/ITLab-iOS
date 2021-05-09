@@ -11,7 +11,13 @@ import PushNotification
 struct MainMenu: View {
     
     let eventPage = EventsPage()
-    @State var user: UserView = UserView(_id: UUID(), firstName: nil, lastName: nil, middleName: nil, phoneNumber: nil, email: nil, properties: nil)
+    @State var user: UserView = UserView(_id: UUID(),
+                                         firstName: nil,
+                                         lastName: nil,
+                                         middleName: nil,
+                                         phoneNumber: nil,
+                                         email: nil,
+                                         properties: nil)
     
     var body: some View {
         TabView {
@@ -41,12 +47,12 @@ struct MainMenu: View {
                     }
                 }
         }
-        .onAppear() {
-
+        .onAppear {
+            
             if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                 user = profile
                 
-                if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? Dictionary<String, String>,
+                if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String],
                    let pushURL = serverAPI["PushNotification"],
                    var url = URLComponents(string: pushURL) {
                     url.scheme = "https"
@@ -55,18 +61,17 @@ struct MainMenu: View {
                 }
             }
             
-            OAuthITLab.shared.getToken{                
+            OAuthITLab.shared.getToken {
                 eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
-
+                
                 if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                     user = profile
                 }
             }
-
+            
             Contact.requestAccess()
         }
     }
-    
     
 }
 
@@ -97,13 +102,13 @@ struct СolorPaletteView: View {
             Spacer()
             
             VStack {
-                GeometryReader { g in
+                GeometryReader { geometry in
                     HStack {
                         Spacer()
                         
                         Text("1")
                             .fontWeight(.bold)
-                            .frame(width: g.size.width / 4, height: g.size.width / 4)
+                            .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
                             .background(Rectangle()
                                             .foregroundColor(oneButtonColor))
                             .onTapGesture {
@@ -112,7 +117,7 @@ struct СolorPaletteView: View {
                         
                         Text("2")
                             .fontWeight(.bold)
-                            .frame(width: g.size.width / 4, height: g.size.width / 4)
+                            .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
                             .background(Rectangle()
                                             .foregroundColor(twoButtonColor))
                             .padding(.horizontal)
@@ -122,7 +127,7 @@ struct СolorPaletteView: View {
                         
                         Text("3")
                             .fontWeight(.bold)
-                            .frame(width: g.size.width / 4, height: g.size.width / 4)
+                            .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
                             .background(Rectangle()
                                             .foregroundColor(threeButtonColor))
                             .onTapGesture {
@@ -131,53 +136,53 @@ struct СolorPaletteView: View {
                         
                         Spacer()
                     }
-                    .frame(width: g.size.width, height: g.size.width / 4, alignment: .center)
-                    .background(GeometryReader {gp -> Color in
-                                        DispatchQueue.main.async {
-                                            self.totalHeight = gp.size.height
-                                        }
-                                        return Color.clear
-                                    })
+                    .frame(width: geometry.size.width, height: geometry.size.width / 4, alignment: .center)
+                    .background(GeometryReader {geometryReader -> Color in
+                        DispatchQueue.main.async {
+                            self.totalHeight = geometryReader.size.height
+                        }
+                        return Color.clear
+                    })
                 }
                 
             }
             .frame(height: totalHeight)
             .padding(.bottom, 20.0)
         }
-        .onAppear() {
+        .onAppear {
             changeColor()
         }
     }
     
     func generateColor() -> UIColor {
-        let hue : CGFloat = CGFloat(arc4random() % 256) / 256 // use 256 to get full range from 0.0 to 1.0
-        let saturation : CGFloat = CGFloat(arc4random() % 128) / 256 + 0.5 // from 0.5 to 1.0 to stay away from white
-        let brightness : CGFloat = CGFloat(arc4random() % 128) / 256 + 0.5 // from 0.5 to 1.0 to stay away from black
+        let hue: CGFloat = CGFloat(arc4random() % 256) / 256 // use 256 to get full range from 0.0 to 1.0
+        let saturation: CGFloat = CGFloat(arc4random() % 128) / 256 + 0.5 // from 0.5 to 1.0 to stay away from white
+        let brightness: CGFloat = CGFloat(arc4random() % 128) / 256 + 0.5 // from 0.5 to 1.0 to stay away from black
         
         return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
     }
     
     func changeColor() {
-         mainColor = Color(generateColor())
-         let randomButton = arc4random_uniform(3)
+        mainColor = Color(generateColor())
+        let randomButton = arc4random_uniform(3)
         switch randomButton {
-         case 0:
-             oneButtonColor = mainColor
-             twoButtonColor = Color(generateColor())
-             threeButtonColor = Color(generateColor())
-         case 1:
-            oneButtonColor = Color(generateColor())
-            twoButtonColor = mainColor
-            threeButtonColor = Color(generateColor())
-         case 2:
-            oneButtonColor = Color(generateColor())
-            twoButtonColor = Color(generateColor())
-            threeButtonColor = mainColor
-         default:
+        case 0:
             oneButtonColor = mainColor
             twoButtonColor = Color(generateColor())
             threeButtonColor = Color(generateColor())
-         }
+        case 1:
+            oneButtonColor = Color(generateColor())
+            twoButtonColor = mainColor
+            threeButtonColor = Color(generateColor())
+        case 2:
+            oneButtonColor = Color(generateColor())
+            twoButtonColor = Color(generateColor())
+            threeButtonColor = mainColor
+        default:
+            oneButtonColor = mainColor
+            twoButtonColor = Color(generateColor())
+            threeButtonColor = Color(generateColor())
+        }
     }
     
     func changeScope (_ color: Color) {

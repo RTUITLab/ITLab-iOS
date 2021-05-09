@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct AccountCreateRequest: Codable {
 
     public var firstName: String
@@ -29,6 +27,4 @@ public struct AccountCreateRequest: Codable {
         self.phoneNumber = phoneNumber
     }
 
-
 }
-

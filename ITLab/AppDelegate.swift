@@ -9,9 +9,11 @@ import SwiftUI
 import UserNotifications
 import PushNotification
 
-class AppDelegate: NSObject, UIApplicationDelegate  {
+class AppDelegate: NSObject, UIApplicationDelegate {
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil)
+    -> Bool {
         
         return true
     }
@@ -23,7 +25,6 @@ class AppDelegate: NSObject, UIApplicationDelegate  {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register: \(error)")
     }
-    
     
     func registerForPushNotifications() {
         

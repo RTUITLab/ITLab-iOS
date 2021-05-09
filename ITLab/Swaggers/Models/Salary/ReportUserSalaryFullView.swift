@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ReportUserSalaryFullView: Codable {
 
     public var reportId: String?
@@ -25,7 +23,7 @@ public struct ReportUserSalaryFullView: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case reportId
         case approved
         case approverId

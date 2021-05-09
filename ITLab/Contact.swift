@@ -10,7 +10,7 @@ import Contacts
 
 class Contact: NSObject {
     public static var isAccessContacts = false
-    
+
     public static func requestAccess() {
         let store = CNContactStore()
                 switch CNContactStore.authorizationStatus(for: .contacts) {
@@ -19,7 +19,7 @@ class Contact: NSObject {
                 case .denied:
                     print("Нужно дать разрешение на добавление контакта")
                 case .restricted, .notDetermined:
-                    store.requestAccess(for: .contacts) { granted, error in
+                    store.requestAccess(for: .contacts) { granted, _ in
                         if granted {
                             Contact.isAccessContacts = true
                         }

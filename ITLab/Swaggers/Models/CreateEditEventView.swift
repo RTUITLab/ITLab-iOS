@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct CreateEditEventView: Codable {
 
     public var _id: UUID?
@@ -27,7 +25,7 @@ public struct CreateEditEventView: Codable {
         self.shifts = shifts
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case title
         case _description = "description"
@@ -37,4 +35,3 @@ public struct CreateEditEventView: Codable {
     }
 
 }
-

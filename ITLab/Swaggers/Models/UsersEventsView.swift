@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UsersEventsView: Codable {
 
     public var _id: UUID?
@@ -27,7 +25,7 @@ public struct UsersEventsView: Codable {
         self.role = role
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case address
         case title
@@ -37,4 +35,3 @@ public struct UsersEventsView: Codable {
     }
 
 }
-

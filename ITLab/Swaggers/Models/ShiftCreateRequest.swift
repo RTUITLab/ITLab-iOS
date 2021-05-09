@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ShiftCreateRequest: Codable {
 
     public var clientId: Int?
@@ -25,7 +23,7 @@ public struct ShiftCreateRequest: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case clientId
         case beginTime
         case endTime
@@ -34,4 +32,3 @@ public struct ShiftCreateRequest: Codable {
     }
 
 }
-
