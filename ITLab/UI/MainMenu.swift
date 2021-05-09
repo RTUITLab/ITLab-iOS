@@ -70,6 +70,7 @@ struct MainMenu: View {
     private func activateNotify(user id: UUID) {
         if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String] {
             if let pushURL = serverAPI["PushNotification"],
+               !pushURL.isEmpty,
                var url = URLComponents(string: pushURL) {
                 url.scheme = "https"
                 
