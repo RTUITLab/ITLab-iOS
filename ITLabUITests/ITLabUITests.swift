@@ -89,7 +89,16 @@ class ITLabUITests: XCTestCase {
 
             return false
         }
-
+        
+        addUIInterruptionMonitor(withDescription: "Notify permission") { (alert) -> Bool in
+            if (alert.buttons["Allow"].exists) {
+                alert.buttons["Allow"].tap()
+                return true
+            }
+            
+            return false
+        }
+        
         app.navigationBars["События"].tap()
     }
 
