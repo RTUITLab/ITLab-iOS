@@ -52,13 +52,7 @@ struct MainMenu: View {
             if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                 user = profile
                 
-                if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String],
-                   let pushURL = serverAPI["PushNotification"],
-                   var url = URLComponents(string: pushURL) {
-                    url.scheme = "https"
-                    
-                    PushNotification.notificationActivate(url.string!, authenticationMethod: .user(id: profile._id!))
-                }
+                activateNotify(user: user._id!)
             }
             
             OAuthITLab.shared.getToken {
@@ -73,6 +67,23 @@ struct MainMenu: View {
         }
     }
     
+    private func activateNotify(user id: UUID) {
+        if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String] {
+            if let pushURL = serverAPI["PushNotification"],
+               var url = URLComponents(string: pushURL) {
+                url.scheme = "https"
+                
+                PushNotification.notificationActivate(url.string!,
+                                                      authenticationMethod: .user(id: id))
+            } else if let pushURL = serverAPI["ServerURL"],
+                      var url = URLComponents(string: pushURL + "/api/push") {
+                url.scheme = "https"
+                
+                PushNotification.notificationActivate(url.string!,
+                                                      authenticationMethod: .user(id: id))
+            }
+        }
+    }
 }
 
 struct СolorPaletteView: View {
