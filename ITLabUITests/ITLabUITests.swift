@@ -113,9 +113,21 @@ class ITLabUITests: XCTestCase {
             XCTFail("Нет нижнего бара с кнопкой Профиль")
         }
         app.tabBars.buttons["Профиль"].tap()
+        
+        if !app.tables.buttons["Выход"].exists {
+            XCTFail("Нет кнопки выхода")
+        }
+        
         app.tables.buttons["Выход"].tap()
-        app.alerts["Выход из аккаунта"].buttons["Да"].tap()
+        
+        if !app.alerts["Выход из аккаунта"].exists,
+           !app.alerts["Выход из аккаунта"].buttons["Да"].exists
+        {
+            XCTFail("Нет уведомления о выходе")
+        }
 
+        app.alerts["Выход из аккаунта"].buttons["Да"].tap()
+        
         if !app.buttons["Войти"].waitForExistence(timeout: 10) {
             XCTFail("Не удалось выйти из приложения")
         }
