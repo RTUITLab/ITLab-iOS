@@ -12,7 +12,7 @@ open class SwaggerClientAPI {
     public static var customHeaders: [String: String] = [:]
     public static var requestBuilderFactory: RequestBuilderFactory = AlamofireRequestBuilderFactory()
 
-    private static func getURL() -> String {
+    public static func getURL() -> String {
         guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String] else {
             assertionFailure("Server parameters are not specified in info.plist")
             return ""

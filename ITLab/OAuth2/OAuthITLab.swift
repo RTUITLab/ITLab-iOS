@@ -150,6 +150,12 @@ extension OAuthITLab {
     }
     
     public func getToken(complited: @escaping () -> Void) {
+        getToken { _ in
+            complited()
+        }
+    }
+    
+    public func getToken(complited: @escaping (String) -> Void) {
         let credential = self.oauthSwift.client.credential
         
         let group = DispatchGroup()
@@ -163,7 +169,7 @@ extension OAuthITLab {
                     SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
                     self.saveState()
                     group.leave()
-                    complited()
+                    complited(token.credential.oauthToken)
                     
                 case .failure(let error):
                     print("Token refresh error: \(error.localizedDescription)")
@@ -178,7 +184,7 @@ extension OAuthITLab {
         
         SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
         group.leave()
-        complited()
+        complited(credential.oauthToken)
     }
     
     private func isAuthorizeCheck() -> Bool {
