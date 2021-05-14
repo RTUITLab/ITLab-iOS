@@ -159,42 +159,7 @@ struct UserPage: View {
             }
             
             if Contact.isAccessContacts {
-                Section {
-                    Button(action: {
-                        contactAlert = true
-                    }, label: {
-                        Text("Добавить в контакты")
-                    })
-                    .alert(isPresented: $contactAlert) {
-                        Alert(title: Text("Вы точно хотите добавить контакт?"),
-                              primaryButton: .cancel(Text("Нет")),
-                              secondaryButton: .default(Text("Да")) {
-                                let store = CNContactStore()
-                                let contact = CNMutableContact()
-                                
-                                contact.givenName = user.firstName ?? ""
-                                contact.familyName = user.lastName ?? ""
-                                
-                                if let email = user.email {
-                                    contact.emailAddresses.append(CNLabeledValue(label: "email",
-                                                                                 value: NSString(string: email)))
-                                }
-                                
-                                if let phone = user.phoneNumber {
-                                    contact.phoneNumbers.append(CNLabeledValue(label: "мобильный",
-                                                                               value: CNPhoneNumber(stringValue: phone)))
-                                }
-                                
-                                let saveRequest = CNSaveRequest()
-                                saveRequest.add(contact, toContainerWithIdentifier: nil)
-                                try? store.execute(saveRequest)
-                                isEnableButton = true
-                              })
-                    }
-                    .disabled(self.isEnableButton)
-                    
-                }
-                
+                contact
             }
             EquipmentStack(user: $user)
             EventStack(user: $user)
@@ -202,6 +167,44 @@ struct UserPage: View {
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    var contact: some View {
+        Section {
+            Button(action: {
+                contactAlert = true
+            }, label: {
+                Text("Добавить в контакты")
+            })
+            .alert(isPresented: $contactAlert) {
+                Alert(title: Text("Вы точно хотите добавить контакт?"),
+                      primaryButton: .cancel(Text("Нет")),
+                      secondaryButton: .default(Text("Да")) {
+                        let store = CNContactStore()
+                        let contact = CNMutableContact()
+                        
+                        contact.givenName = user.firstName ?? ""
+                        contact.familyName = user.lastName ?? ""
+                        
+                        if let email = user.email {
+                            contact.emailAddresses.append(CNLabeledValue(label: "email",
+                                                                         value: NSString(string: email)))
+                        }
+                        
+                        if let phone = user.phoneNumber {
+                            contact.phoneNumbers.append(CNLabeledValue(label: "мобильный",
+                                                                       value: CNPhoneNumber(stringValue: phone)))
+                        }
+                        
+                        let saveRequest = CNSaveRequest()
+                        saveRequest.add(contact, toContainerWithIdentifier: nil)
+                        try? store.execute(saveRequest)
+                        isEnableButton = true
+                      })
+            }
+            .disabled(self.isEnableButton)
+            
+        }
     }
 }
 
@@ -246,7 +249,8 @@ extension UserPage {
                             NavigationLink(destination:
                                             EventPage(compactEvent: CompactEventView(id: events[number]._id,
                                                                                      title: events[number].title,
-                                                                                     eventType: events[number].eventType,
+                                                                                     eventType: events[number]
+                                                                                        .eventType,
                                                                                      beginTime: nil,
                                                                                      endTime: nil,
                                                                                      address: events[number].address,
