@@ -1,5 +1,5 @@
 //
-//  ColorPaletteModel.swift
+//  ColorPaletteObservable.swift
 //  ITLab
 //
 //  Created by Mikhail Ivanov on 14.05.2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class ColorPaletteModel: ObservableObject {
+class ColorPaletteObservable: ObservableObject {
     @Published var mainColor: Color = Color.blue
     @Published var oneButtonColor: Color = Color.green
     @Published var twoButtonColor: Color = Color.green

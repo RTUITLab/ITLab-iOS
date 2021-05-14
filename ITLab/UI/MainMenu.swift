@@ -10,7 +10,7 @@ import PushNotification
 
 struct MainMenu: View {
     
-    let eventPage = EventsPage()
+    var eventPage = EventsPage()
     @State var user: UserView = UserView(_id: UUID(),
                                          firstName: nil,
                                          lastName: nil,
@@ -52,7 +52,7 @@ struct MainMenu: View {
             OAuthITLab.shared.getToken { token in
                 activateNotify(user: token)
                 
-                eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+                self.eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
                 
                 if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                     user = profile

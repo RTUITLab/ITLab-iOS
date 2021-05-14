@@ -9,7 +9,7 @@ import SwiftUI
 
 struct СolorPaletteView: View {
     
-    @ObservedObject private var colorPalatte = ColorPaletteModel()
+    @ObservedObject private var colorPalatte = ColorPaletteObservable()
     
     @State private var totalHeight = CGFloat(100)
     
