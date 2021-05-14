@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EventSalaryFullView: Codable {
 
     public var eventId: UUID?
@@ -31,7 +29,7 @@ public struct EventSalaryFullView: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case eventId
         case created
         case shiftSalaries

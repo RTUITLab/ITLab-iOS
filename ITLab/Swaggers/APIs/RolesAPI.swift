@@ -8,18 +8,16 @@
 import Foundation
 import Alamofire
 
-
 open class RolesAPI {
     /**
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiRolesGet(completion: @escaping ((_ data: [RoleView]?,_ error: Error?) -> Void)) {
+    open class func apiRolesGet(completion: @escaping ((_ data: [RoleView]?, _ error: Error?) -> Void)) {
         apiRolesGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - GET /api/roles
@@ -41,9 +39,8 @@ open class RolesAPI {
     open class func apiRolesGetWithRequestBuilder() -> RequestBuilder<[RoleView]> {
         let path = "/api/roles"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[RoleView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -55,12 +52,11 @@ open class RolesAPI {
      - parameter userId: (path) Id of user 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiRolesUserIdGet(userId: UUID, completion: @escaping ((_ data: [RoleView]?,_ error: Error?) -> Void)) {
+    open class func apiRolesUserIdGet(userId: UUID, completion: @escaping ((_ data: [RoleView]?, _ error: Error?) -> Void)) {
         apiRolesUserIdGetWithRequestBuilder(userId: userId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get roles for specific user
@@ -87,9 +83,8 @@ open class RolesAPI {
         let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{userId}", with: userIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<[RoleView]>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -101,12 +96,11 @@ open class RolesAPI {
      - parameter roleId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiRolesUserIdRoleIdDelete(userId: UUID, roleId: UUID, completion: @escaping ((_ data: Bool?,_ error: Error?) -> Void)) {
+    open class func apiRolesUserIdRoleIdDelete(userId: UUID, roleId: UUID, completion: @escaping ((_ data: Bool?, _ error: Error?) -> Void)) {
         apiRolesUserIdRoleIdDeleteWithRequestBuilder(userId: userId, roleId: roleId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - DELETE /api/roles/{userId}/{roleId}
@@ -130,9 +124,8 @@ open class RolesAPI {
         let roleIdPostEscape = roleIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{roleId}", with: roleIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Bool>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
@@ -144,12 +137,11 @@ open class RolesAPI {
      - parameter roleId: (path)  
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiRolesUserIdRoleIdPost(userId: UUID, roleId: UUID, completion: @escaping ((_ data: Bool?,_ error: Error?) -> Void)) {
+    open class func apiRolesUserIdRoleIdPost(userId: UUID, roleId: UUID, completion: @escaping ((_ data: Bool?, _ error: Error?) -> Void)) {
         apiRolesUserIdRoleIdPostWithRequestBuilder(userId: userId, roleId: roleId).execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      - POST /api/roles/{userId}/{roleId}
@@ -173,9 +165,8 @@ open class RolesAPI {
         let roleIdPostEscape = roleIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         path = path.replacingOccurrences(of: "{roleId}", with: roleIdPostEscape, options: .literal, range: nil)
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<Bool>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 

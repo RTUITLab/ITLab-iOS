@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct CompactEquipmentTypeView: Codable {
 
     public var _id: UUID?
@@ -27,7 +25,7 @@ public struct CompactEquipmentTypeView: Codable {
         self.parentId = parentId
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case title
         case shortTitle
@@ -37,4 +35,3 @@ public struct CompactEquipmentTypeView: Codable {
     }
 
 }
-

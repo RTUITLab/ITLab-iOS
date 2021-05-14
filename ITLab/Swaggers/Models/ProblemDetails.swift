@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ProblemDetails: Codable {
 
 //    public var type: String?
@@ -27,7 +25,6 @@ public struct ProblemDetails: Codable {
 //        self.extensions = extensions
 //    }
 
-
     public var type: String?
     public var title: String?
     public var status: Int?
@@ -41,6 +38,5 @@ public struct ProblemDetails: Codable {
         self.detail = detail
         self.instance = instance
     }
-    
-}
 
+}

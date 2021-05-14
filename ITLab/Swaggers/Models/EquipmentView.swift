@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EquipmentView: Codable {
 
     public var _id: UUID?
@@ -33,7 +31,7 @@ public struct EquipmentView: Codable {
         self.children = children
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case _id = "id"
         case serialNumber
         case _description = "description"
@@ -46,4 +44,3 @@ public struct EquipmentView: Codable {
     }
 
 }
-

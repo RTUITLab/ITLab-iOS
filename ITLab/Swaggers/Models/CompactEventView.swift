@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct CompactEventView: Codable, Identifiable {
 
     public var id: UUID?
@@ -35,7 +33,7 @@ public struct CompactEventView: Codable, Identifiable {
         self.participating = participating
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case id = "id"
         case title
         case eventType
@@ -49,4 +47,3 @@ public struct CompactEventView: Codable, Identifiable {
     }
 
 }
-

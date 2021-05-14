@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct UserPropertyEditRequest: Codable {
 
     public var value: String?
@@ -19,10 +17,9 @@ public struct UserPropertyEditRequest: Codable {
         self._id = _id
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case value
         case _id = "id"
     }
 
 }
-

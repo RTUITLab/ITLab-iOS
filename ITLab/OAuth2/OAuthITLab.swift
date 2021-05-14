@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import OAuthSwift
 
-class OAuthITLab: NSObject, ObservableObject  {
+class OAuthITLab: NSObject, ObservableObject {
     
     public static var shared: OAuthITLab = {
         let instance = OAuthITLab()
@@ -17,7 +17,7 @@ class OAuthITLab: NSObject, ObservableObject  {
         return instance
     }()
     
-    private var configuration : OAuthITLabConfiguration
+    private var configuration: OAuthITLabConfiguration
     private var userInfo: UserInfo?
     
     @Published private var oauthSwift: OAuth2Swift
@@ -27,11 +27,11 @@ class OAuthITLab: NSObject, ObservableObject  {
         self.configuration = OAuthITLabConfiguration()
         
         self.oauthSwift = OAuth2Swift(
-            consumerKey:    configuration.kClientID,
+            consumerKey: configuration.kClientID,
             consumerSecret: "",
-            authorizeUrl:   configuration.kIssuer + "/connect/authorize",
+            authorizeUrl: configuration.kIssuer + "/connect/authorize",
             accessTokenUrl: configuration.kIssuer + "/connect/token",
-            responseType:   "code"
+            responseType: "code"
         )
         super.init()
         
@@ -49,7 +49,6 @@ class OAuthITLab: NSObject, ObservableObject  {
     }
 }
 
-
 extension OAuthITLab {
     
     private struct OAuthITLabConfiguration {
@@ -64,7 +63,7 @@ extension OAuthITLab {
         
         private mutating func configurationСheck() {
             
-            guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? Dictionary<String, String> else {
+            guard let serverApi = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String] else {
                 assertionFailure("Server parameters are not specified in info.plist")
                 return
             }
@@ -75,7 +74,7 @@ extension OAuthITLab {
             }
             
             assert(serverURL != "",
-                   "Server reference not specified in config file. Property: API_Issuer");
+                   "Server reference not specified in config file. Property: API_Issuer")
             
             guard let isSecure = serverApi["isSecure"] as NSString? else {
                 assertionFailure("No parameter specifying the connection server")
@@ -88,14 +87,13 @@ extension OAuthITLab {
                 serverURL = "http://" + serverURL
             }
             
-            
             guard let clientName = serverApi["ClientName"] else {
                 assertionFailure("No parameter specifying the connection server.")
                 return
             }
             
             assert(clientName != "",
-                   "Client name not specified in config file. Property: API_Client");
+                   "Client name not specified in config file. Property: API_Client")
             
             guard let redirectURL = serverApi["RedirectURL"] else {
                 assertionFailure("No parameter specifying the connection server")
@@ -103,7 +101,7 @@ extension OAuthITLab {
             }
             
             assert(redirectURL != "",
-                   "RedirectURL not specified in config file. API_RedirectURL");
+                   "RedirectURL not specified in config file. API_RedirectURL")
             
             self.kIssuer = serverURL
             self.kClientID = clientName
@@ -146,41 +144,47 @@ extension OAuthITLab {
                     complited(nil)
                 }
             case .failure(let error):
-                
                 complited(error)
             }
         }
     }
     
     public func getToken(complited: @escaping () -> Void) {
+        getToken { _ in
+            complited()
+        }
+    }
+    
+    public func getToken(complited: @escaping (String) -> Void) {
         let credential = self.oauthSwift.client.credential
         
         let group = DispatchGroup()
         group.enter()
         
         if credential.isTokenExpired() {
-                debugPrint("token expired, going to refresh")
-                self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
-                    switch result {
-                    case .success(let token):
-                        SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
-                        self.saveState()
-                        group.leave()
-                        complited()
-                        
-                    case .failure(let error):
-                        print("Token refresh error: \(error.localizedDescription)")
-                        self.isAuthorize = false
-                        UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?.removeObject(forKey: self.configuration.kOAuthITLabStateKey)
-                        group.leave()
-                    }
+            debugPrint("token expired, going to refresh")
+            self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
+                switch result {
+                case .success(let token):
+                    SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
+                    self.saveState()
+                    group.leave()
+                    complited(token.credential.oauthToken)
+                    
+                case .failure(let error):
+                    print("Token refresh error: \(error.localizedDescription)")
+                    self.isAuthorize = false
+                    UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?
+                        .removeObject(forKey: self.configuration.kOAuthITLabStateKey)
+                    group.leave()
                 }
-            return
             }
+            return
+        }
         
         SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
         group.leave()
-        complited()
+        complited(credential.oauthToken)
     }
     
     private func isAuthorizeCheck() -> Bool {
@@ -220,10 +224,11 @@ extension OAuthITLab {
     
     private func saveState() {
         
-        var data : Data? = nil
+        var data: Data?
         
         do {
-            data = try NSKeyedArchiver.archivedData(withRootObject: oauthSwift.client.credential, requiringSecureCoding: true)
+            data = try NSKeyedArchiver.archivedData(withRootObject: oauthSwift.client.credential,
+                                                    requiringSecureCoding: true)
         } catch {
             print("Not save data")
         }
@@ -235,66 +240,63 @@ extension OAuthITLab {
     }
     
     private func loadState() {
-        guard let data = UserDefaults (suiteName: "group.ru.RTUITLab.ITLab")?
+        guard let data = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?
                 .object(forKey: self.configuration.kOAuthITLabStateKey) as? Data
         else {
             return
         }
         
         do {
-            let credential = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as! OAuthSwiftCredential
-            self.oauthSwift.client = OAuthSwiftClient(credential: credential)
-        }
-        catch {
+            if let credential = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? OAuthSwiftCredential {
+                self.oauthSwift.client = OAuthSwiftClient(credential: credential)
+            }
+        } catch {
             print("Not load data")
         }
     }
 }
 
-extension OAuthITLab {
+struct UserInfo: Codable {
+    let userId: UUID
+    var profile: UserView?
+    private var roles: [String: Bool] = ["CanEditEquipment": false,
+                                         "CanEditEvent": false,
+                                         "CanInviteToSystem": false,
+                                         "Participant": false,
+                                         "CanDeleteEventRole": false,
+                                         "CanEditEquipmentOwner": false,
+                                         "CanEditRoles": false,
+                                         "CanEditEquipmentType": false,
+                                         "CanEditEventType": false,
+                                         "CanEditUserPropertyTypes": false]
     
-    struct UserInfo: Codable {
-        let userId: UUID
-        var profile: UserView?
-        private var roles: [String:Bool] = ["CanEditEquipment": false,
-                                            "CanEditEvent": false,
-                                            "CanInviteToSystem": false,
-                                            "Participant": false,
-                                            "CanDeleteEventRole": false,
-                                            "CanEditEquipmentOwner": false,
-                                            "CanEditRoles": false,
-                                            "CanEditEquipmentType": false,
-                                            "CanEditEventType": false,
-                                            "CanEditUserPropertyTypes": false]
+    func getRole(_ key: String) -> Bool {
         
-        func getRole(_ key: String) ->  Bool {
-            
-            guard let index = roles.index(forKey: key) else {
-                return false
-            }
-            
-            return roles[index].value
+        guard let index = roles.index(forKey: key) else {
+            return false
         }
         
-        public enum CodingKeys: String, CodingKey {
-            case userId = "sub"
-            case roles = "role"
-            case profile
-        }
-        
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            userId = try container.decode(UUID.self, forKey: .userId)
-            profile = try? container.decode(UserView.self, forKey: .profile)
-            if let roles = try? container.decode([String].self, forKey: .roles) {
-                roles.forEach { (role) in
-                    self.roles.updateValue(true, forKey: role)
-                }
-            } else if let role = try? container.decode(String.self, forKey: .roles)  {
+        return roles[index].value
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        case userId = "sub"
+        case roles = "role"
+        case profile
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        userId = try container.decode(UUID.self, forKey: .userId)
+        profile = try? container.decode(UserView.self, forKey: .profile)
+        if let roles = try? container.decode([String].self, forKey: .roles) {
+            roles.forEach { (role) in
                 self.roles.updateValue(true, forKey: role)
-            } else if let roles = try? container.decode([String:Bool].self, forKey: .roles) {
-                self.roles = roles
             }
+        } else if let role = try? container.decode(String.self, forKey: .roles) {
+            self.roles.updateValue(true, forKey: role)
+        } else if let roles = try? container.decode([String: Bool].self, forKey: .roles) {
+            self.roles = roles
         }
     }
 }
@@ -307,7 +309,7 @@ extension OAuthITLab {
     
     public func getUserInfoReq(complited: @escaping () -> Void) {
         var urlRequest = URLRequest(url: URL(string: self.configuration.kIssuer + "/connect/userinfo")!)
-        urlRequest.allHTTPHeaderFields = ["Authorization":"Bearer \(self.oauthSwift.client.credential.oauthToken)"]
+        urlRequest.allHTTPHeaderFields = ["Authorization": "Bearer \(self.oauthSwift.client.credential.oauthToken)"]
         
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             

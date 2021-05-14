@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct ChangePasswordRequest: Codable {
 
     public var currentPassword: String?
@@ -19,6 +17,4 @@ public struct ChangePasswordRequest: Codable {
         self.newPassword = newPassword
     }
 
-
 }
-

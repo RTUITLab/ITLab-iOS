@@ -25,7 +25,7 @@ struct PlaceUIView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .center) {
-                VStack{
+                VStack {
                     Image(systemName: "chevron.right")
                             .foregroundColor(.gray)
                             .opacity(0.5)
@@ -65,7 +65,6 @@ struct PlaceUIView: View {
 
                 Spacer()
 
-
                 Button(action: {
                     self.showingActionSheet = true
                 }, label: {
@@ -74,14 +73,15 @@ struct PlaceUIView: View {
                         .buttonStyle(BorderlessButtonStyle())
                         .disabled(self.isEnableButton)
             }
-                    . onTapGesture(){
+                    . onTapGesture {
                         isExpanded.toggle()
                     }
                     .actionSheet(isPresented: $showingActionSheet) {
-                        ActionSheet(title: Text("Подать заявку"), message: Text("Выберите степень участия"), buttons: self.actionSheetButtons)
+                        ActionSheet(title: Text("Подать заявку"),
+                                    message: Text("Выберите степень участия"),
+                                    buttons: self.actionSheetButtons)
                     }
-            if isExpanded
-            {
+            if isExpanded {
                 VStack(alignment: .leading) {
 
                     Divider()
@@ -108,7 +108,6 @@ struct PlaceUIView: View {
                                 }
                             }
 
-
                         }
                     } else {
                         Text("Нет участников").padding(.top, 2)
@@ -119,12 +118,11 @@ struct PlaceUIView: View {
                         .transition(AnyTransition.slide.animation(.linear(duration: 0.3)))
             }
         }
-                .onAppear() {
+                .onAppear {
 
                     var usersCount = 0
 
                     var isParticipant = false, isWisher = false, isInvite = false
-
 
                     if let participants = place.participants {
                         usersCount += participants.count
@@ -151,27 +149,27 @@ struct PlaceUIView: View {
                     self.isUsers = usersCount != 0
                     self.isEquipment = place.equipment?.count ?? 0 != 0
 
-                    var kek: [ActionSheet.Button] = []
-                    for i in EventRole.data {
-                        kek.append(.default(Text(i.title ?? "nil")) {
-                            registrationEvent(event: i._id!)
+                    var actionButton: [ActionSheet.Button] = []
+                    for eventRole in EventRole.data {
+                        actionButton.append(.default(Text(eventRole.title ?? "nil")) {
+                            registrationEvent(event: eventRole._id!)
                         })
                     }
-                    kek.append(.cancel(Text("Отмена")))
+                    actionButton.append(.cancel(Text("Отмена")))
 
-                    self.actionSheetButtons = kek
+                    self.actionSheetButtons = actionButton
                 }
 
     }
 
     func registrationEvent(event id: UUID) {
         EventAPI.apiEventWishPlaceIdRoleIdPost(placeId: place._id!, roleId: id) { (_, error) in
-            
+
             if let error = error {
                 print(error)
                 return
             }
-            
+
             self.presentationMode.wrappedValue.dismiss()
 
         }
@@ -181,69 +179,70 @@ struct PlaceUIView: View {
 
         return "\(place.participants!.count + place.wishers!.count + place.invited!.count)/\(place.targetParticipantsCount!)"
     }
+}
 
-    private struct UserPlace: View {
-        enum UserType {
-            case participants
-            case wishers
-            case invited
-        }
+private struct UserPlace: View {
 
-        let user: UserAndEventRole
-        let userType: UserType
-
-        var body: some View {
-            VStack(alignment: .leading) {
-                HStack(alignment: .center) {
-
-                    VStack{
-                        switch userType {
-                        case .participants:
-                            Image(systemName: "person.fill")
-                                    .foregroundColor(.green)
-                        case .invited:
-                            Image(systemName: "person.fill")
-                                    .foregroundColor(.orange)
-                        case .wishers:
-                            Image(systemName: "person.fill")
-                                    .foregroundColor(.gray)
-                                    .opacity(0.5)
-                        }
-                    }
-                            .padding(.trailing, 5)
-
-                    Text("\(user.user!.lastName ?? "") \(user.user!.firstName ?? "")")
-                            .font(.callout)
-                            .bold()
-
-                    Text("—")
-                            .font(.callout)
-
-                    Text(user.eventRole!.title!.lowercased())
-                            .font(.callout)
-                }
-            }
-                    .padding(1.0)
-
-        }
+    enum UserType {
+        case participants
+        case wishers
+        case invited
     }
 
-    private struct EquipmentPlace: View {
-        let equipment: EquipmentView
+    let user: UserAndEventRole
+    let userType: UserType
 
-        var body: some View {
-            VStack(alignment: .leading) {
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack(alignment: .center) {
 
-                Text("\(equipment.equipmentType!.title!)")
-                        .font(.footnote)
+                VStack {
+                    switch userType {
+                    case .participants:
+                        Image(systemName: "person.fill")
+                                .foregroundColor(.green)
+                    case .invited:
+                        Image(systemName: "person.fill")
+                                .foregroundColor(.orange)
+                    case .wishers:
+                        Image(systemName: "person.fill")
+                                .foregroundColor(.gray)
+                                .opacity(0.5)
+                    }
+                }
+                        .padding(.trailing, 5)
+
+                Text("\(user.user!.lastName ?? "") \(user.user!.firstName ?? "")")
+                        .font(.callout)
                         .bold()
-                        .lineLimit(2)
 
-                Text(equipment.serialNumber!)
-                        .font(.caption)
+                Text("—")
+                        .font(.callout)
 
+                Text(user.eventRole!.title!.lowercased())
+                        .font(.callout)
             }
-                    .padding(5.0)
         }
+                .padding(1.0)
+
+    }
+}
+
+private struct EquipmentPlace: View {
+    let equipment: EquipmentView
+
+    var body: some View {
+        VStack(alignment: .leading) {
+
+            Text("\(equipment.equipmentType!.title!)")
+                    .font(.footnote)
+                    .bold()
+                    .lineLimit(2)
+
+            Text(equipment.serialNumber!)
+                    .font(.caption)
+
+        }
+                .padding(5.0)
     }
 }

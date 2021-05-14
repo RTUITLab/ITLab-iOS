@@ -21,7 +21,9 @@ extension UIApplication {
 }
 
 extension UIApplication: UIGestureRecognizerDelegate {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
+    -> Bool {
         return true // set to `false` if you don't want to detect tap during other gestures
     }
 }
@@ -43,7 +45,8 @@ struct SearchBar: UIViewRepresentable {
         }
 
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                            to: nil, from: nil, for: nil)
         }
     }
 
@@ -65,7 +68,6 @@ struct SearchBar: UIViewRepresentable {
     }
 }
 
-
 struct UsersListPage: View {
     @State var isLoading: Bool = true
     @State var users: [UserView] = []
@@ -75,14 +77,15 @@ struct UsersListPage: View {
         NavigationView {
             List {
                 if isLoading {
-                    GeometryReader() { g in
+                    GeometryReader { geometry in
                         ProgressView()
-                                .frame(width: g.size.width, height: g.size.height, alignment: .center)
+                                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
                     }
                 } else {
                     Section(header: SearchBar(text: $userSearch)) {
                         ForEach(self.users.filter {
-                            self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")".lowercased().contains(self.userSearch.lowercased())
+                            self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")"
+                                .lowercased().contains(self.userSearch.lowercased())
                         }, id: \._id) { user in
                             UserStack(user: user)
                         }
@@ -92,7 +95,7 @@ struct UsersListPage: View {
                     .listStyle(GroupedListStyle())
 
                     .navigationBarTitle("Пользователи", displayMode: .automatic)
-                    .onAppear() {
+                    .onAppear {
                         getUsers()
                         UIApplication.shared.addTapGestureRecognizer()
                     }
@@ -101,10 +104,10 @@ struct UsersListPage: View {
     }
 
     func getUsers() {
-        OAuthITLab.shared.getToken{
+        OAuthITLab.shared.getToken {
 
             UserAPI.apiUserGet(count: -1) { (users, error) in
-                
+
                 if let error = error {
                     print(error)
                     self.isLoading = false
@@ -118,8 +121,8 @@ struct UsersListPage: View {
                 }
                 DispatchQueue.main.async {
                     self.users =  users.filter {$0.lastName != nil}
-                    self.users.sort { (a, b) -> Bool in
-                        a.lastName ?? "" < b.lastName ?? ""
+                    self.users.sort {
+                        $0.lastName ?? "" < $1.lastName ?? ""
                     }
                     self.isLoading = false
                 }
@@ -150,8 +153,7 @@ extension UsersListPage {
                             .padding(.top, 10)
                             .padding(.bottom, 5)
 
-
-                    HStack (alignment: .center) {
+                    HStack(alignment: .center) {
                         VStack(alignment: .center, spacing: 10) {
                             if user.email != nil {
                                 Image(systemName: "envelope.fill")
@@ -183,11 +185,5 @@ extension UsersListPage {
             }
                     .buttonStyle(PlainButtonStyle())
         }
-    }
-}
-
-struct UsersListPage_Previews: PreviewProvider {
-    static var previews: some View {
-        UsersListPage()
     }
 }

@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 public struct EventSalaryCreateEdit: Codable {
 
     public var shiftSalaries: [ShiftSalaryEdit]?
@@ -23,7 +21,7 @@ public struct EventSalaryCreateEdit: Codable {
         self._description = _description
     }
 
-    public enum CodingKeys: String, CodingKey { 
+    public enum CodingKeys: String, CodingKey {
         case shiftSalaries
         case placeSalaries
         case count

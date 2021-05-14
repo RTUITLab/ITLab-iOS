@@ -7,9 +7,9 @@ public class ASWebAuthenticationSessionURLHandler: NSObject, OAuthSwiftURLHandle
     private var webAuthSession: ASWebAuthenticationSession!
     private let prefersEphemeralWebBrowserSession: Bool
     private let callbackUrlScheme: String
-    
+
     weak var presentationAnchor: ASPresentationAnchor?
-    
+
     public init(
         callbackUrlScheme: String,
         presentationAnchor: ASPresentationAnchor?,
@@ -18,7 +18,7 @@ public class ASWebAuthenticationSessionURLHandler: NSObject, OAuthSwiftURLHandle
         self.callbackUrlScheme = callbackUrlScheme
         self.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
     }
-    
+
     public func handle(_ url: URL) {
         webAuthSession = ASWebAuthenticationSession(
             url: url,
@@ -36,10 +36,10 @@ public class ASWebAuthenticationSessionURLHandler: NSObject, OAuthSwiftURLHandle
                 OAuthSwift.handle(url: callbackURL)
             }
         )
-        
+
         webAuthSession.presentationContextProvider = self
         webAuthSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession
-        
+
         _ = webAuthSession.start()
     }
 }

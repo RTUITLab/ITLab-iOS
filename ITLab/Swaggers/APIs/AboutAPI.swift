@@ -8,19 +8,17 @@
 import Foundation
 import Alamofire
 
-
 open class AboutAPI {
     /**
      Get build information
 
      - parameter completion: completion handler to receive the data and the error objects
      */
-    open class func apiAboutBuildGet(completion: @escaping ((_ data: BuildInformation?,_ error: Error?) -> Void)) {
+    open class func apiAboutBuildGet(completion: @escaping ((_ data: BuildInformation?, _ error: Error?) -> Void)) {
         apiAboutBuildGetWithRequestBuilder().execute { (response, error) -> Void in
             completion(response?.body, error)
         }
     }
-
 
     /**
      Get build information
@@ -40,9 +38,8 @@ open class AboutAPI {
     open class func apiAboutBuildGetWithRequestBuilder() -> RequestBuilder<BuildInformation> {
         let path = "/api/about/build"
         let URLString = SwaggerClientAPI.basePath + path
-        let parameters: [String:Any]? = nil
+        let parameters: [String: Any]? = nil
         let url = URLComponents(string: URLString)
-
 
         let requestBuilder: RequestBuilder<BuildInformation>.Type = SwaggerClientAPI.requestBuilderFactory.getBuilder()
 
