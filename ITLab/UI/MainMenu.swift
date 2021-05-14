@@ -49,13 +49,9 @@ struct MainMenu: View {
         }
         .onAppear {
             
-            if let profile = OAuthITLab.shared.getUserInfo()?.profile {
-                user = profile
+            OAuthITLab.shared.getToken { token in
+                activateNotify(user: token)
                 
-                activateNotify(user: user._id!)
-            }
-            
-            OAuthITLab.shared.getToken {
                 eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
                 
                 if let profile = OAuthITLab.shared.getUserInfo()?.profile {
@@ -67,7 +63,7 @@ struct MainMenu: View {
         }
     }
     
-    private func activateNotify(user id: UUID) {
+    private func activateNotify(user jwt: String) {
         if let serverAPI = Bundle.main.object(forInfoDictionaryKey: "ServerApi") as? [String: String] {
             if let pushURL = serverAPI["PushNotification"],
                !pushURL.isEmpty,
@@ -75,13 +71,12 @@ struct MainMenu: View {
                 url.scheme = "https"
                 
                 PushNotification.notificationActivate(url.string!,
-                                                      authenticationMethod: .user(id: id))
-            } else if let pushURL = serverAPI["ServerURL"],
-                      var url = URLComponents(string: pushURL + "/api/push") {
-                url.scheme = "https"
+                                                      authenticationMethod: .jwt(token: jwt))
+            } else if let url = URL(string: SwaggerClientAPI.getURL()
+                                                + "/api/push") {
                 
-                PushNotification.notificationActivate(url.string!,
-                                                      authenticationMethod: .user(id: id))
+                PushNotification.notificationActivate(url.string,
+                                                      authenticationMethod: .jwt(token: jwt))
             }
         }
     }
