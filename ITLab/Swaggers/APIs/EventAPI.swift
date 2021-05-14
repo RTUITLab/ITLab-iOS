@@ -3066,6 +3066,13 @@ open class EventAPI {
         apiEventWishPlaceIdRoleIdPostWithRequestBuilder(placeId: placeId, roleId: roleId).execute { (_, error) -> Void in
             if error == nil {
                 completion((), error)
+            } else if let error = error as? ErrorResponse {
+                switch error {
+                case .error(let code, _, _):
+                    if code == 200 {
+                        completion((), nil)
+                    }
+                }
             } else {
                 completion(nil, error)
             }
