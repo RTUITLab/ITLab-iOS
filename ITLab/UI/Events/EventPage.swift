@@ -130,7 +130,6 @@ struct EventPage: View {
                                 }
                             }
                         }
-                        
                     }
                 }
             }
@@ -143,9 +142,16 @@ struct EventPage: View {
                 
                 EventSalaryAPI.apiSalaryV1EventEventIdGet(eventId: self.compactEvent.id!) { salary, error in
                     
-                    if let error = error {
-                        print(error)
-                        return
+                    if let error = error as? ErrorResponse {
+                        switch error {
+                        case .error(let code, _, _):
+                            if code == 404 {
+                                return
+                            }
+                            
+                            print(error)
+                            return
+                        }
                     }
                     
                     self.salary = salary
@@ -163,7 +169,6 @@ struct EventPage: View {
                     
                     countingDate()
                 }
-                
             }
         }
         .navigationBarTitle(Text(event?.title ?? compactEvent.title ?? "Название события"), displayMode: .large)
