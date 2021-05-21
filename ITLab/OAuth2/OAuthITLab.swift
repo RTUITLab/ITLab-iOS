@@ -115,15 +115,8 @@ extension OAuthITLab {
     
     public func authorize(complited: @escaping (Error?) -> Void) {
         
-        let pkce = OAuthITLabPKCE()
-        
-        guard let codeVerifier = pkce.generateCodeVerifier() else {
-            return
-        }
-        
-        guard let codeChallenge = pkce.codeChallenge() else {
-            return
-        }
+        guard let codeVerifier = generateCodeVerifier() else {return}
+        guard let codeChallenge = generateCodeChallenge(codeVerifier: codeVerifier) else {return}
         
         oauthSwift.accessTokenBasicAuthentification = true
         
@@ -134,7 +127,7 @@ extension OAuthITLab {
             scope: "roles openid profile itlab.events offline_access itlab.salary",
             state: state,
             codeChallenge: codeChallenge,
-            codeChallengeMethod: pkce.codeChallengeMethod,
+            codeChallengeMethod: "S256",
             codeVerifier: codeVerifier) { result in
             switch result {
             case .success(_):
