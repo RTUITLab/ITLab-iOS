@@ -12,6 +12,7 @@ struct MainMenu: View {
     
     var eventPage = EventsPage()
     var usersPage = UsersListPage()
+    var projectsPage = ProjectsPage()
     @State var user: UserView = UserView()
     
     var body: some View {
@@ -21,6 +22,14 @@ struct MainMenu: View {
                     VStack {
                         Image(systemName: "calendar")
                         Text("События")
+                    }
+                }
+            
+            projectsPage
+                .tabItem {
+                    VStack {
+                        Image(systemName: "square.grid.2x2.fill")
+                        Text("Проекты")
                     }
                 }
             
