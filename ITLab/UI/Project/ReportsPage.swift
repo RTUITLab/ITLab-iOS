@@ -28,7 +28,7 @@ struct ReportsPage: View {
                         Text("Отчет (\(formateDate(report.date)))")
                             .font(.title3)
                             .fontWeight(.bold)
-                            .padding(.bottom, 0.1)
+                            .padding(.bottom, 2)
                         
 //                        Text("Утвержден: \(report.approved != nil ? "Да" : "Нет")")
                         if let approved = report.approved {
@@ -57,6 +57,7 @@ struct ReportsPage: View {
                             }
                         }
                     }
+                    .padding(.vertical, 5.0)
                 }
             }
         }
