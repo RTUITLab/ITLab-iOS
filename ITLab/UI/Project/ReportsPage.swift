@@ -22,10 +22,52 @@ struct ReportsPage: View {
         } else {
             
             ForEach(reportsObject.reportsModel, id: \.id) { report in
-                VStack {
-                    Text("\(report.approved?.count ?? 0)")
+                NavigationLink(
+                    destination: Text("В разработке")) {
+                    VStack(alignment: .leading) {
+                        Text("Отчет (\(formateDate(report.date)))")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 0.1)
+                        
+//                        Text("Утвержден: \(report.approved != nil ? "Да" : "Нет")")
+                        if let approved = report.approved {
+                            HStack {
+                                Image(systemName: "eye.fill")
+                                    .font(.callout)
+                                    .opacity(0.6)
+                                Text("Утверждено")
+                                    .opacity(0.6)
+                                
+                                Spacer()
+                                
+                                Image(systemName: "rublesign.circle.fill")
+                                    .font(.callout)
+                                    .opacity(0.6)
+                                Text("\(approved.count)")
+                                    .opacity(0.6)
+                            }
+                        } else {
+                            HStack {
+                                Image(systemName: "clock.arrow.circlepath")
+                                    .font(.callout)
+                                    .opacity(0.6)
+                                Text("На рассмотрении")
+                                    .opacity(0.6)
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+    
+    func formateDate(_ date: Date, isClock: Bool = true) -> String {
+        let dateFormat = DateFormatter()
+        dateFormat.locale = Locale(identifier: "ru")
+        
+        dateFormat.dateFormat = isClock ? "d.MM.yy HH:mm" : "d.MM.yy"
+        
+        return dateFormat.string(from: date)
     }
 }

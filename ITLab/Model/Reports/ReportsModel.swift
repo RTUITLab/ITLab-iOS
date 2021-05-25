@@ -29,9 +29,8 @@ struct ReportModel: Codable {
         text = try? container.decode(String.self, forKey: .pinSender)
         
         let dateString = try container.decode(String.self, forKey: .date)
-        
         let dateFormat = DateFormatter()
-        dateFormat.locale = Locale(identifier: "en_US_POSIX")
+        dateFormat.timeZone = .init(abbreviation: "GMT")
         dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
         if let date = dateFormat.date(from: dateString) {
@@ -50,6 +49,7 @@ struct ReportModel: Codable {
         
         let dateFormat = DateFormatter()
         dateFormat.locale = Locale(identifier: "en_US_POSIX")
+        dateFormat.timeZone = .init(abbreviation: "GMT")
         dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
         let dateString = dateFormat.string(from: date)

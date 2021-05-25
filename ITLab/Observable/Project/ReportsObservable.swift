@@ -16,7 +16,7 @@ final class ReportsObservable: ObservableObject {
         loadingReports = true
         
         print(SwaggerClientAPI.getURL())
-        AF.request("\(SwaggerClientAPI.getURL())/api/reports",
+        AF.request("\(SwaggerClientAPI.getURL())/api/reports?sorted_by=date",
                    method: .get,
                    headers: .init(SwaggerClientAPI.customHeaders))
             .validate()

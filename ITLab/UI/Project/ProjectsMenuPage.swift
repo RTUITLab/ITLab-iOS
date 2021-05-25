@@ -20,12 +20,18 @@ struct ProjectsMenuPage: View {
     var body: some View {
         NavigationView {
             List {
-                Section(header: Picker(selection: $pickers, label: Text("ChoosenPage"), content: {
-                    ForEach(ChoosenPage.allCases, id: \.self) {
-                        Text($0.rawValue).textCase(.none)
+                Section(header: VStack(alignment: .leading) {
+                    Picker(selection: $pickers, label: Text("ChoosenPage"), content: {
+                        ForEach(ChoosenPage.allCases, id: \.self) {
+                            Text($0.rawValue).textCase(.none)
+                        }
+                    }).pickerStyle(SegmentedPickerStyle())
+                    .padding(.bottom, 10)
+                    
+                    if pickers == .reports {
+                        Text("Отчет обо мне")
                     }
-                }).pickerStyle(SegmentedPickerStyle())
-                .padding(.bottom, 10)) {
+                }) {
                     content
                 }
             }
@@ -40,7 +46,7 @@ struct ProjectsMenuPage: View {
             switch pickers {
             case .project:
                 GeometryReader { geometry in
-                    Text("Пока в разработке")
+                    Text("В разработке")
                         .frame(width: geometry.size.width,
                                height: geometry.size.height,
                                alignment: .center)

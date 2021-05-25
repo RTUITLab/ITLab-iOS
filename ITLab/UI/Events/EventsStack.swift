@@ -13,7 +13,6 @@ struct EventStack: View {
     
     var body: some View {
         NavigationLink(destination: EventPage(compactEvent: event)) {
-            HStack {
                 VStack(alignment: .leading) {
                     Text(event.title ?? "Not title")
                         .font(.title3)
@@ -48,7 +47,6 @@ struct EventStack: View {
                     }
                     .padding(.vertical, 5)
                 }
-            }
             .frame(height: 100)
             
         }
