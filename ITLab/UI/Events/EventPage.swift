@@ -92,7 +92,7 @@ struct EventPage: View {
                 Section {
                     if self.event != nil && !self.event!._description!.isEmpty {
                         NavigationLink(
-                            destination: Markdown(markdown: (event?._description)!)
+                            destination: EventDescriptionMarkdown(markdown: (event?._description)!)
                                 .environmentObject(markdownSize)) {
                             HStack(alignment: .center) {
                                 Image(systemName: "info.circle.fill")

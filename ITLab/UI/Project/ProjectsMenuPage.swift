@@ -14,23 +14,26 @@ struct ProjectsMenuPage: View {
     }
     
     @State var pickers: ChoosenPage = .reports
+    
+    @ObservedObject var reportsObject = ReportsObservable()
+    
     var body: some View {
         NavigationView {
-                List {
-                    Section(header: Picker(selection: $pickers, label: Text("ChoosenPage"), content: {
-                        ForEach(ChoosenPage.allCases, id: \.self) {
-                            Text($0.rawValue).textCase(.none)
-                        }
-                    }).pickerStyle(SegmentedPickerStyle())
-                    .padding(.bottom, 10)) {
-                        content
+            List {
+                Section(header: Picker(selection: $pickers, label: Text("ChoosenPage"), content: {
+                    ForEach(ChoosenPage.allCases, id: \.self) {
+                        Text($0.rawValue).textCase(.none)
                     }
+                }).pickerStyle(SegmentedPickerStyle())
+                .padding(.bottom, 10)) {
+                    content
                 }
-                .listStyle(GroupedListStyle())
-                .navigationBarTitle(pickers.rawValue, displayMode: .automatic)
             }
-        .navigationViewStyle(StackNavigationViewStyle())
+            .listStyle(GroupedListStyle())
+            .navigationBarTitle(pickers.rawValue, displayMode: .automatic)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
     
     var content: some View {
         Group {
@@ -43,7 +46,17 @@ struct ProjectsMenuPage: View {
                                alignment: .center)
                 }
             case .reports:
-                ReportsPage()
+                if reportsObject.loadingReports {
+                    GeometryReader { geometry in
+                        ProgressView()
+                            .frame(width: geometry.size.width,
+                                   height: geometry.size.height,
+                                   alignment: .center)
+                    }
+                } else {
+                    ReportsPage()
+                        .environmentObject(reportsObject)
+                }
             }
         }
     }

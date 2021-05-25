@@ -56,6 +56,7 @@ struct MainMenu: View {
                 
                 usersPage.loadingData()
                 eventPage.loadingData()
+                projectsPage.reportsObject.getReports()
                 
                 if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                     user = profile

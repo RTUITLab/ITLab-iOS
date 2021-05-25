@@ -8,7 +8,24 @@
 import SwiftUI
 
 struct ReportsPage: View {
+    @EnvironmentObject var reportsObject: ReportsObservable
+    
     var body: some View {
-        Text("Hello, World!")
+        
+        if reportsObject.reportsModel.count == 0 {
+            GeometryReader { geometry in
+                Text("На данный момент отчеты отсутсвтуют")
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height,
+                           alignment: .center)
+            }
+        } else {
+            
+            ForEach(reportsObject.reportsModel, id: \.id) { report in
+                VStack {
+                    Text("\(report.date)")
+                }
+            }
+        }
     }
 }

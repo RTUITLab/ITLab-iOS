@@ -10,7 +10,7 @@ import Down
 import WebKit
 import Combine
 
-struct Markdown: View {
+struct EventDescriptionMarkdown: View {
 
     @State var markdown: String
     @EnvironmentObject var markdownSize: EventPage.MarkdownSize
@@ -18,14 +18,14 @@ struct Markdown: View {
     var body: some View {
         VStack(alignment: .leading) {
 
-            DownViewSwiftUI(markdown: markdown).environmentObject(markdownSize)
+            EventDownViewSwiftUI(markdown: markdown).environmentObject(markdownSize)
         }
         .navigationBarTitleDisplayMode(.inline)
     }
 
 }
 
-struct DownViewSwiftUI: UIViewRepresentable {
+struct EventDownViewSwiftUI: UIViewRepresentable {
     var markdown: String
 
     @EnvironmentObject var markdownSize: EventPage.MarkdownSize
@@ -58,7 +58,7 @@ struct DownViewSwiftUI: UIViewRepresentable {
         }
     }
 
-    func makeCoordinator() -> DownViewSwiftUI.Coordinator {
+    func makeCoordinator() -> EventDownViewSwiftUI.Coordinator {
             Coordinator(markdownSize)
         }
 
