@@ -12,7 +12,7 @@ struct MainMenu: View {
     
     var eventPage = EventsPage()
     var usersPage = UsersListPage()
-    var projectsPage = ProjectsPage()
+    var projectsPage = ProjectsMenuPage()
     @State var user: UserView = UserView()
     
     var body: some View {
