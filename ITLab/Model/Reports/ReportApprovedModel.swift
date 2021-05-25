@@ -1,38 +1,37 @@
 //
-//  ReportsModel.swift
+//  ReportApprovedModel.swift
 //  ITLab
 //
 //  Created by Mikhail Ivanov on 25.05.2021.
 //
 
 import Foundation
- 
-struct ReportModel: Codable {
-    var id: String
-    var pinSender: String?
+
+struct ReportApprovedModel: Codable {
+    var reportId: String
     var date: Date
-    var text: String?
-    
-    var approved: ReportApprovedModel?
+    var description: String
+    var count: Int
     
     enum CodingKeys: String, CodingKey {
-        case id
-        case pinSender
-        case date
-        case text
+        case date = "approved"
+        case description
+        case count
+        case reportId
       }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        pinSender = try? container.decode(String.self, forKey: .pinSender)
-        text = try? container.decode(String.self, forKey: .pinSender)
+        
+        reportId = try container.decode(String.self, forKey: .reportId)
+        count = try container.decode(Int.self, forKey: .count)
+        description = try container.decode(String.self, forKey: .description)
         
         let dateString = try container.decode(String.self, forKey: .date)
         
         let dateFormat = DateFormatter()
         dateFormat.locale = Locale(identifier: "en_US_POSIX")
-        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
         if let date = dateFormat.date(from: dateString) {
             self.date = date
@@ -44,13 +43,13 @@ struct ReportModel: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(id, forKey: .id)
-        try container.encode(text, forKey: .text)
-        try container.encode(pinSender, forKey: .pinSender)
+        try container.encode(reportId, forKey: .reportId)
+        try container.encode(description, forKey: .description)
+        try container.encode(count, forKey: .count)
         
         let dateFormat = DateFormatter()
         dateFormat.locale = Locale(identifier: "en_US_POSIX")
-        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
         let dateString = dateFormat.string(from: date)
         try container.encode(dateString, forKey: .date)

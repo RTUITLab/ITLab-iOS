@@ -14,7 +14,7 @@ struct ReportsPage: View {
         
         if reportsObject.reportsModel.count == 0 {
             GeometryReader { geometry in
-                Text("На данный момент отчеты отсутсвтуют")
+                Text("На данный момент отчеты отсутствуют")
                     .frame(width: geometry.size.width,
                            height: geometry.size.height,
                            alignment: .center)
@@ -23,7 +23,7 @@ struct ReportsPage: View {
             
             ForEach(reportsObject.reportsModel, id: \.id) { report in
                 VStack {
-                    Text("\(report.date)")
+                    Text("\(report.approved?.count ?? 0)")
                 }
             }
         }

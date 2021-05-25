@@ -16,14 +16,40 @@ final class ReportsObservable: ObservableObject {
         loadingReports = true
         
         print(SwaggerClientAPI.getURL())
-        AF.request("\(SwaggerClientAPI.getURL())/api/reports", method: .get, headers: .init(SwaggerClientAPI.customHeaders))
+        AF.request("\(SwaggerClientAPI.getURL())/api/reports",
+                   method: .get,
+                   headers: .init(SwaggerClientAPI.customHeaders))
             .validate()
             .responseDecodable(of: [ReportModel].self) { response in
                 switch response.result {
                 case .success(let reports):
-                    
-                    print(reports.count)
                     self.reportsModel = reports
+                    
+                    self.getReportApproved()
+                    
+                case .failure(let error):
+                    print(error)
+                    self.loadingReports.toggle()
+                }
+            }
+    }
+    
+    private func getReportApproved() {
+        AF.request("\(SwaggerClientAPI.getURL())/api/salary/v1/report/user/\(OAuthITLab.shared.getUserInfo()!.userId)",
+                   method: .get,
+                   headers: .init(SwaggerClientAPI.customHeaders))
+            .validate()
+            .responseDecodable(of: [ReportApprovedModel].self) { responseSalary in
+                switch responseSalary.result {
+                case .success(let reportsApproved):
+                    reportsApproved.forEach { reportApproved in
+                        if let index = self.reportsModel.firstIndex(where: { report in
+                            return report.id == reportApproved.reportId
+                        }) {
+                            self.reportsModel[index].approved = reportApproved
+                        }
+                    }
+                    
                 case .failure(let error):
                     print(error)
                 }
