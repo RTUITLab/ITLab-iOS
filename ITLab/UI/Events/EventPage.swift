@@ -9,12 +9,6 @@ import SwiftUI
 
 struct EventPage: View {
     
-    class MarkdownSize: ObservableObject {
-        @Published var height: CGFloat = 0
-    }
-    
-    @ObservedObject private var markdownSize = MarkdownSize()
-    
     @State var compactEvent: CompactEventView
     @State private var event: EventView?
     @State private var salary: EventSalaryFullView?
@@ -90,10 +84,11 @@ struct EventPage: View {
                 
             } else {
                 Section {
-                    if self.event != nil && !self.event!._description!.isEmpty {
+                    if self.event != nil,
+                       let eventDescription = self.event?._description,
+                       !eventDescription.isEmpty {
                         NavigationLink(
-                            destination: EventDescriptionMarkdown(markdown: (event?._description)!)
-                                .environmentObject(markdownSize)) {
+                            destination: EventDescription(markdown: eventDescription)) {
                             HStack(alignment: .center) {
                                 Image(systemName: "info.circle.fill")
                                     .padding(.trailing, 10)

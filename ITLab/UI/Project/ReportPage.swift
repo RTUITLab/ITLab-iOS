@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReportPage: View {
     @State var report: ReportModel
-    
+    @State private var height: CGFloat = .zero
     var body: some View {
         List {
             if let approved = report.approved {
@@ -33,7 +33,8 @@ struct ReportPage: View {
             }
             
             Section(header: Text("Текст")) {
-                Text(report.text)
+                Markdown(text: report.text, height: $height)
+                    .frame(minHeight: height)
             }
         }
         .listStyle(GroupedListStyle())
