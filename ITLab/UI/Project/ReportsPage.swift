@@ -23,14 +23,13 @@ struct ReportsPage: View {
             
             ForEach(reportsObject.reportsModel, id: \.id) { report in
                 NavigationLink(
-                    destination: Text("В разработке")) {
+                    destination: ReportPage(report: report)) {
                     VStack(alignment: .leading) {
-                        Text("Отчет (\(formateDate(report.date)))")
+                        Text("Отчет (\(ReportsPage.formateDate(report.date)))")
                             .font(.title3)
                             .fontWeight(.bold)
                             .padding(.bottom, 2)
                         
-//                        Text("Утвержден: \(report.approved != nil ? "Да" : "Нет")")
                         if let approved = report.approved {
                             HStack {
                                 Image(systemName: "eye.fill")
@@ -63,7 +62,7 @@ struct ReportsPage: View {
         }
     }
     
-    func formateDate(_ date: Date, isClock: Bool = true) -> String {
+    static func formateDate(_ date: Date, isClock: Bool = true) -> String {
         let dateFormat = DateFormatter()
         dateFormat.locale = Locale(identifier: "ru")
         

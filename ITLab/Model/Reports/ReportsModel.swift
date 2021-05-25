@@ -11,7 +11,7 @@ struct ReportModel: Codable {
     var id: String
     var pinSender: String?
     var date: Date
-    var text: String?
+    var text: String
     
     var approved: ReportApprovedModel?
     
@@ -26,7 +26,7 @@ struct ReportModel: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         pinSender = try? container.decode(String.self, forKey: .pinSender)
-        text = try? container.decode(String.self, forKey: .pinSender)
+        text = try container.decode(String.self, forKey: .text)
         
         let dateString = try container.decode(String.self, forKey: .date)
         let dateFormat = DateFormatter()
