@@ -11,17 +11,11 @@ import PushNotification
 struct MainMenu: View {
     
     var eventPage = EventsPage()
-    @State var user: UserView = UserView(_id: UUID(),
-                                         firstName: nil,
-                                         lastName: nil,
-                                         middleName: nil,
-                                         phoneNumber: nil,
-                                         email: nil,
-                                         properties: nil)
+    var usersPage = UsersListPage()
+    @State var user: UserView = UserView()
     
     var body: some View {
         TabView {
-            
             eventPage
                 .tabItem {
                     VStack {
@@ -30,7 +24,7 @@ struct MainMenu: View {
                     }
                 }
             
-            UsersListPage()
+            usersPage
                 .tabItem {
                     VStack {
                         Image(systemName: "person.2.fill")
@@ -48,11 +42,11 @@ struct MainMenu: View {
                 }
         }
         .onAppear {
-            
             OAuthITLab.shared.getToken { token in
                 activateNotify(user: token)
                 
-                self.eventPage.isEditingRight = OAuthITLab.shared.getUserInfo()?.getRole("CanEditEvent") ?? false
+                usersPage.loadingData()
+                eventPage.loadingData()
                 
                 if let profile = OAuthITLab.shared.getUserInfo()?.profile {
                     user = profile

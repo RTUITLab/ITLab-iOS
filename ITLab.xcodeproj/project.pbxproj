@@ -26,6 +26,8 @@
 		6D9A0C692518EBB2007796CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9A0C682518EBB2007796CD /* Assets.xcassets */; };
 		6D9A0C6C2518EBB2007796CD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9A0C6B2518EBB2007796CD /* Preview Assets.xcassets */; };
 		6DA91A40256283AC00F13191 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA91A3F256283AC00F13191 /* Contact.swift */; };
+		6DB50B8C265D0008002AD1FB /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB50B8B265D0008002AD1FB /* SearchBar.swift */; };
+		6DB50B8E265D004A002AD1FB /* UsersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB50B8D265D004A002AD1FB /* UsersList.swift */; };
 		6DDD81C8252DF78B008CE80A /* APIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD8178252DF78B008CE80A /* APIHelper.swift */; };
 		6DDD81C9252DF78B008CE80A /* AlamofireImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD8179252DF78B008CE80A /* AlamofireImplementations.swift */; };
 		6DDD81CA252DF78B008CE80A /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD817A252DF78B008CE80A /* JSONValue.swift */; };
@@ -158,6 +160,8 @@
 		6D9A0C6B2518EBB2007796CD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6D9A0C6D2518EBB2007796CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DA91A3F256283AC00F13191 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		6DB50B8B265D0008002AD1FB /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		6DB50B8D265D004A002AD1FB /* UsersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersList.swift; sourceTree = "<group>"; };
 		6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		6DDD8178252DF78B008CE80A /* APIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIHelper.swift; sourceTree = "<group>"; };
 		6DDD8179252DF78B008CE80A /* AlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireImplementations.swift; sourceTree = "<group>"; };
@@ -286,6 +290,7 @@
 			children = (
 				6D3EC19D264EAA7000DE67D3 /* ColorPalette */,
 				6D3EC1A0264EADC800DE67D3 /* Events */,
+				6DB50B8D265D004A002AD1FB /* UsersList.swift */,
 			);
 			path = Observable;
 			sourceTree = "<group>";
@@ -513,6 +518,7 @@
 				6DF0E0FE25496023007D8BC6 /* UsersListPage.swift */,
 				6DE117C12549A12E002D500E /* UserPage.swift */,
 				6D5DE58A25B5A16B003ED6DA /* ProfilePage.swift */,
+				6DB50B8B265D0008002AD1FB /* SearchBar.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -750,6 +756,7 @@
 				6DDD81D6252DF78B008CE80A /* EquipmentTypeAPI.swift in Sources */,
 				6DDD81DC252DF78B008CE80A /* JSONEncodableEncoding.swift in Sources */,
 				6DF717B125B81AA400F57D2D /* ReportUserSalaryEdit.swift in Sources */,
+				6DB50B8E265D004A002AD1FB /* UsersList.swift in Sources */,
 				6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */,
 				6DF717AF25B81AA400F57D2D /* EventSalaryCreateEdit.swift in Sources */,
 				6DDD81CF252DF78B008CE80A /* EventTypeAPI.swift in Sources */,
@@ -774,6 +781,7 @@
 				6DDD8208252DF78B008CE80A /* EventCreateRequest.swift in Sources */,
 				6DDD81FA252DF78B008CE80A /* VkVerifyRequest.swift in Sources */,
 				6DF717B225B81AA400F57D2D /* ReportUserSalaryFullView.swift in Sources */,
+				6DB50B8C265D0008002AD1FB /* SearchBar.swift in Sources */,
 				6DDD81CE252DF78B008CE80A /* SummaryAPI.swift in Sources */,
 				6DDD8212252DF78B008CE80A /* Extensions.swift in Sources */,
 				6DDD81F0252DF78B008CE80A /* EventRoleCreateRequest.swift in Sources */,

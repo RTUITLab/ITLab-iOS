@@ -106,7 +106,9 @@ struct EventsPage: View {
                 }
             }, label: {
                 Image(systemName: "arrow.clockwise").padding([.top, .bottom, .trailing], 15)
-            }), trailing:
+            })
+            .disabled(eventsObject.isLoadingEvents),
+            trailing:
                 VStack {
                     if eventsObject.isEditingRight {
                         Button(action: {
@@ -120,6 +122,10 @@ struct EventsPage: View {
                 })
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    func loadingData() {
+        eventsObject.loading()
     }
 }
 
