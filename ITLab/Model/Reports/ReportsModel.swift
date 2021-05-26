@@ -30,11 +30,18 @@ struct ReportModel: Codable {
         
         let dateString = try container.decode(String.self, forKey: .date)
         let dateFormat = DateFormatter()
-        dateFormat.timeZone = .init(abbreviation: "GMT")
-        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
-        if let date = dateFormat.date(from: dateString) {
-            self.date = date
+        // TODO: pending a fix in the ITLab-Reports repository
+        if let timeZoneGMT = TimeZone.init(abbreviation: "GMT") {
+            dateFormat.timeZone = timeZoneGMT
+            dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            
+            if let date = dateFormat.date(from: dateString) {
+                self.date = date
+            } else {
+                date = Date()
+            }
+            
         } else {
             date = Date()
         }
