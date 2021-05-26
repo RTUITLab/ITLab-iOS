@@ -30,25 +30,25 @@ struct Markdown: UIViewRepresentable {
     @Environment(\.colorScheme) var colorScheme
     private var text: String
     @Binding var dynamicHeight: CGFloat
-    @ObservedObject var test: MarkdownObservable
+    @ObservedObject var markdownObject: MarkdownObservable
     
     init(text: String, height: Binding<CGFloat>, isLoading: Binding<Bool>) {
         self.text = text
         self._dynamicHeight = height
-        self.test = MarkdownObservable(text: text, isLoading: isLoading)
+        self.markdownObject = MarkdownObservable(text: text, isLoading: isLoading)
     }
     
     func makeUIView(context: Context) -> UITextView {
         
-        test.textView.textAlignment = .justified
-        test.textView.isScrollEnabled = false
-        test.textView.isUserInteractionEnabled = false
-        test.textView.showsVerticalScrollIndicator = false
-        test.textView.showsHorizontalScrollIndicator = false
-        test.textView.allowsEditingTextAttributes = false
-        test.textView.backgroundColor = .clear
+        markdownObject.textView.textAlignment = .justified
+        markdownObject.textView.isScrollEnabled = false
+        markdownObject.textView.isUserInteractionEnabled = false
+        markdownObject.textView.showsVerticalScrollIndicator = false
+        markdownObject.textView.showsHorizontalScrollIndicator = false
+        markdownObject.textView.allowsEditingTextAttributes = false
+        markdownObject.textView.backgroundColor = .clear
         
-        return test.textView
+        return markdownObject.textView
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
