@@ -47,13 +47,14 @@ struct Markdown: UIViewRepresentable {
         test.textView.showsHorizontalScrollIndicator = false
         test.textView.allowsEditingTextAttributes = false
         test.textView.backgroundColor = .clear
-        test.textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        test.textView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        
         return test.textView
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
         DispatchQueue.main.async {
+            uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            uiView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
             uiView.textColor = colorScheme == .dark ? UIColor.white : UIColor.black
             DispatchQueue.main.async {
                 dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width,
@@ -70,9 +71,12 @@ final class ITLabStyler: DownStyler {
         if let urlImg = URL(string: url!) {
             let semaphore = DispatchSemaphore(value: 0)
             URLSession.shared.dataTask(with: urlImg) { data, _, _ in
-                if let data = data {
+                if let data = data,
+                   let img = UIImage(data: data) {
                     let image1Attachment = NSTextAttachment()
-                    image1Attachment.image = UIImage(data: data)
+                    
+                    image1Attachment.image = self.resizeImg(img: img)
+                    
                     let image1String = NSAttributedString(attachment: image1Attachment)
                     
                     str.setAttributedString(image1String)
@@ -83,5 +87,73 @@ final class ITLabStyler: DownStyler {
             
             semaphore.wait()
         }
+    }
+    
+    func resizeImg(img: UIImage) -> UIImage {
+        
+        if UIScreen.main.bounds.width < img.size.width {
+
+            let newImg = img.scalePreservingAspectRatio(width: UIScreen.main.bounds.width - 10)
+            
+            return newImg
+        }
+        
+        return img
+    }
+}
+
+extension UIImage {
+    
+    func scalePreservingAspectRatio(width: CGFloat) -> UIImage {
+        let widthRatio = size.width / width
+        let heightRatio = size.height / widthRatio
+        
+        // Compute the new image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: width,
+            height: heightRatio
+        )
+        
+        // Draw and return the resized UIImage
+        let renderer = UIGraphicsImageRenderer(
+            size: scaledImageSize
+        )
+        
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(
+                origin: .zero,
+                size: scaledImageSize
+            ))
+        }
+        
+        return scaledImage
+    }
+    
+    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage {
+        // Determine the scale factor that preserves aspect ratio
+        let widthRatio = targetSize.width / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        let scaleFactor = min(widthRatio, heightRatio)
+        
+        // Compute the new image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: size.width * scaleFactor,
+            height: size.height * scaleFactor
+        )
+        
+        // Draw and return the resized UIImage
+        let renderer = UIGraphicsImageRenderer(
+            size: scaledImageSize
+        )
+        
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(
+                origin: .zero,
+                size: scaledImageSize
+            ))
+        }
+        
+        return scaledImage
     }
 }
