@@ -26,6 +26,7 @@ struct EventDescription: View {
                 }
                 
                 Markdown(text: markdown, height: $height, isLoading: $isLoading)
+                    .frame(height: height)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
