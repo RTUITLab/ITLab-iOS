@@ -9,39 +9,57 @@ import SwiftUI
 import UIKit
 import Down
 
+class MarkdownObservable: ObservableObject {
+    var int: UIColor = UIColor.black
+    let textView = UITextView()
+    @Binding var isLoading: Bool
+    init(text: String, isLoading: Binding<Bool>) {
+        
+        let down = Down(markdownString: text)
+        _isLoading = isLoading
+        self.isLoading = true
+        DispatchQueue.main.async {
+            let attributedText = try? down.toAttributedString(styler: ITLabStyler())
+            self.textView.attributedText = attributedText
+            self.isLoading = false
+        }
+    }
+}
+
 struct Markdown: UIViewRepresentable {
     @Environment(\.colorScheme) var colorScheme
-    private var attributedText: NSAttributedString?
+    private var text: String
     @Binding var dynamicHeight: CGFloat
+    @ObservedObject var test: MarkdownObservable
     
-    init(text: String, height: Binding<CGFloat>) {
+    init(text: String, height: Binding<CGFloat>, isLoading: Binding<Bool>) {
+        self.text = text
         self._dynamicHeight = height
-        let down = Down(markdownString: text)
-        
-        self.attributedText = try? down.toAttributedString(styler: ITLabStyler())
+        self.test = MarkdownObservable(text: text, isLoading: isLoading)
     }
     
     func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
-        textView.textAlignment = .justified
-        textView.isScrollEnabled = false
-        textView.isUserInteractionEnabled = false
-        textView.showsVerticalScrollIndicator = false
-        textView.showsHorizontalScrollIndicator = false
-        textView.allowsEditingTextAttributes = false
-        textView.backgroundColor = .clear
-        textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        textView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        return textView
+        
+        test.textView.textAlignment = .justified
+        test.textView.isScrollEnabled = false
+        test.textView.isUserInteractionEnabled = false
+        test.textView.showsVerticalScrollIndicator = false
+        test.textView.showsHorizontalScrollIndicator = false
+        test.textView.allowsEditingTextAttributes = false
+        test.textView.backgroundColor = .clear
+        test.textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        test.textView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return test.textView
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.attributedText = attributedText
-        uiView.textColor = colorScheme == .dark ? UIColor.white : UIColor.black
         DispatchQueue.main.async {
-            dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width,
-                                                       height: CGFloat.greatestFiniteMagnitude))
-                .height
+            uiView.textColor = colorScheme == .dark ? UIColor.white : UIColor.black
+            DispatchQueue.main.async {
+                dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width,
+                                                           height: CGFloat.greatestFiniteMagnitude))
+                    .height
+            }
         }
     }
 }
