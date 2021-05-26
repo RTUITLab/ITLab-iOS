@@ -14,7 +14,7 @@ struct ReportPage: View {
     var body: some View {
         List {
             if let approved = report.approved {
-                Section(header: Text("Информацио об оплате")) {
+                Section(header: Text("Информация об оплате")) {
                     HStack {
                         Image(systemName: "rublesign.circle.fill")
                             .padding(.trailing, 4)
