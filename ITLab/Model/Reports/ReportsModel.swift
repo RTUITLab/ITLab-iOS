@@ -34,14 +34,12 @@ struct ReportModel: Codable {
         // TODO: pending a fix in the ITLab-Reports repository
         if let timeZoneGMT = TimeZone.init(abbreviation: "GMT") {
             dateFormat.timeZone = timeZoneGMT
-            dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            
-            if let date = dateFormat.date(from: dateString) {
-                self.date = date
-            } else {
-                date = Date()
-            }
-            
+        }
+        
+        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        if let date = dateFormat.date(from: dateString) {
+            self.date = date
         } else {
             date = Date()
         }
@@ -55,8 +53,11 @@ struct ReportModel: Codable {
         try container.encode(pinSender, forKey: .pinSender)
         
         let dateFormat = DateFormatter()
+        
         dateFormat.locale = Locale(identifier: "en_US_POSIX")
-        dateFormat.timeZone = .init(abbreviation: "GMT")
+        if let timeZoneGMT = TimeZone.init(abbreviation: "GMT") {
+            dateFormat.timeZone = timeZoneGMT
+        }
         dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
         let dateString = dateFormat.string(from: date)
