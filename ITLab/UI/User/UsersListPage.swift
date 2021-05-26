@@ -9,81 +9,21 @@ import SwiftUI
 import Combine
 import UIKit
 
-extension UIApplication {
-    func addTapGestureRecognizer() {
-        guard let window = windows.first else { return }
-        let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
-        tapGesture.requiresExclusiveTouchType = false
-        tapGesture.cancelsTouchesInView = false
-        tapGesture.delegate = self
-        window.addGestureRecognizer(tapGesture)
-    }
-}
-
-extension UIApplication: UIGestureRecognizerDelegate {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer)
-    -> Bool {
-        return true // set to `false` if you don't want to detect tap during other gestures
-    }
-}
-
-struct SearchBar: UIViewRepresentable {
-
-    @Binding var text: String
-
-    class Coordinator: NSObject, UISearchBarDelegate {
-
-        @Binding var text: String
-
-        init(text: Binding<String>) {
-            _text = text
-        }
-
-        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            text = searchText
-        }
-
-        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                            to: nil, from: nil, for: nil)
-        }
-    }
-
-    func makeCoordinator() -> SearchBar.Coordinator {
-        return Coordinator(text: $text)
-    }
-
-    func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
-        let searchBar = UISearchBar(frame: .zero)
-        searchBar.placeholder = "Поиск пользователя"
-        searchBar.delegate = context.coordinator
-        searchBar.searchBarStyle = .minimal
-        searchBar.autocapitalizationType = .none
-        return searchBar
-    }
-
-    func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
-        uiView.text = text
-    }
-}
-
 struct UsersListPage: View {
-    @State var isLoading: Bool = true
-    @State var users: [UserView] = []
+    @ObservedObject private var usersList = UsersListObservable()
     @State var userSearch: String = ""
 
     var body: some View {
         NavigationView {
             List {
-                if isLoading {
+                if usersList.isLoading {
                     GeometryReader { geometry in
                         ProgressView()
                                 .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
                     }
                 } else {
                     Section(header: SearchBar(text: $userSearch)) {
-                        ForEach(self.users.filter {
+                        ForEach(usersList.users.filter {
                             self.userSearch.isEmpty ? true : "\($0.lastName ?? "") \($0.firstName ?? "") \($0.middleName ?? "")"
                                 .lowercased().contains(self.userSearch.lowercased())
                         }, id: \._id) { user in
@@ -96,38 +36,14 @@ struct UsersListPage: View {
 
                     .navigationBarTitle("Пользователи", displayMode: .automatic)
                     .onAppear {
-                        getUsers()
                         UIApplication.shared.addTapGestureRecognizer()
                     }
         }
                 .navigationViewStyle(StackNavigationViewStyle())
     }
-
-    func getUsers() {
-        OAuthITLab.shared.getToken {
-
-            UserAPI.apiUserGet(count: -1) { (users, error) in
-
-                if let error = error {
-                    print(error)
-                    self.isLoading = false
-                    return
-                }
-
-                guard let users = users else {
-                    print("Not data")
-                    self.isLoading = false
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.users =  users.filter {$0.lastName != nil}
-                    self.users.sort {
-                        $0.lastName ?? "" < $1.lastName ?? ""
-                    }
-                    self.isLoading = false
-                }
-            }
-        }
+    
+    func loadingData() {
+        usersList.getUsers()
     }
 }
 

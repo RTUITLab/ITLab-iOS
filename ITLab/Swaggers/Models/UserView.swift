@@ -36,5 +36,6 @@ public struct UserView: Codable {
         case email
         case properties
     }
-
+    
+    public init() {}
 }

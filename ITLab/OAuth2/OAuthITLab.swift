@@ -115,15 +115,8 @@ extension OAuthITLab {
     
     public func authorize(complited: @escaping (Error?) -> Void) {
         
-        let pkce = OAuthITLabPKCE()
-        
-        guard let codeVerifier = pkce.generateCodeVerifier() else {
-            return
-        }
-        
-        guard let codeChallenge = pkce.codeChallenge() else {
-            return
-        }
+        guard let codeVerifier = generateCodeVerifier() else {return}
+        guard let codeChallenge = generateCodeChallenge(codeVerifier: codeVerifier) else {return}
         
         oauthSwift.accessTokenBasicAuthentification = true
         
@@ -131,10 +124,10 @@ extension OAuthITLab {
         
         oauthSwift.authorize(
             withCallbackURL: URL(string: configuration.kRedirectURL)!,
-            scope: "roles openid profile itlab.events offline_access itlab.salary",
+            scope: "roles openid profile itlab.events offline_access itlab.salary itlab.reports",
             state: state,
             codeChallenge: codeChallenge,
-            codeChallengeMethod: pkce.codeChallengeMethod,
+            codeChallengeMethod: "S256",
             codeVerifier: codeVerifier) { result in
             switch result {
             case .success(_):
@@ -158,17 +151,14 @@ extension OAuthITLab {
     public func getToken(complited: @escaping (String) -> Void) {
         let credential = self.oauthSwift.client.credential
         
-        let group = DispatchGroup()
-        group.enter()
-        
         if credential.isTokenExpired() {
+            
             debugPrint("token expired, going to refresh")
             self.oauthSwift.renewAccessToken(withRefreshToken: credential.oauthRefreshToken) { (result) in
                 switch result {
                 case .success(let token):
                     SwaggerClientAPI.customHeaders.updateValue("Bearer \(token.credential.oauthToken)", forKey: "Authorization")
                     self.saveState()
-                    group.leave()
                     complited(token.credential.oauthToken)
                     
                 case .failure(let error):
@@ -176,15 +166,13 @@ extension OAuthITLab {
                     self.isAuthorize = false
                     UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?
                         .removeObject(forKey: self.configuration.kOAuthITLabStateKey)
-                    group.leave()
                 }
             }
-            return
-        }
+        } else {
         
         SwaggerClientAPI.customHeaders.updateValue("Bearer \(credential.oauthToken)", forKey: "Authorization")
-        group.leave()
         complited(credential.oauthToken)
+        }
     }
     
     private func isAuthorizeCheck() -> Bool {
