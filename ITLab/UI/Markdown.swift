@@ -26,11 +26,13 @@ class MarkdownObservable: ObservableObject {
         let down = Down(markdownString: text)
         self.isLoading = true
         DispatchQueue(label: "markdownParse").async {
-            let attributedText = try? down.toAttributedString(styler: ITLabStyler())
+            let attributedText = try? down.toAttributedString(styler: ITLabStyler(
+                                                                configuration: .init(
+                                                                    fonts: ITLabFontCollection())))
             
             DispatchQueue.main.async {
                 self.textView.attributedText = attributedText
-            
+                
                 self.isLoading = false
             }
         }
@@ -197,5 +199,40 @@ extension UIImage {
         }
         
         return scaledImage
+    }
+}
+
+struct ITLabFontCollection: FontCollection {
+    
+    public var heading1: DownFont
+    public var heading2: DownFont
+    public var heading3: DownFont
+    public var heading4: DownFont
+    public var heading5: DownFont
+    public var heading6: DownFont
+    public var body: DownFont
+    public var code: DownFont
+    public var listItemPrefix: DownFont
+    
+    public init(
+        heading1: DownFont = .boldSystemFont(ofSize: 24),
+        heading2: DownFont = .boldSystemFont(ofSize: 20),
+        heading3: DownFont = .boldSystemFont(ofSize: 18),
+        heading4: DownFont = .boldSystemFont(ofSize: 16),
+        heading5: DownFont = .boldSystemFont(ofSize: 14),
+        heading6: DownFont = .boldSystemFont(ofSize: 12),
+        body: DownFont = .systemFont(ofSize: 12),
+        code: DownFont = DownFont(name: "menlo", size: 12) ?? .systemFont(ofSize: 12),
+        listItemPrefix: DownFont = DownFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
+    ) {
+        self.heading1 = heading1
+        self.heading2 = heading2
+        self.heading3 = heading3
+        self.heading4 = heading4
+        self.heading5 = heading5
+        self.heading6 = heading6
+        self.body = body
+        self.code = code
+        self.listItemPrefix = listItemPrefix
     }
 }
