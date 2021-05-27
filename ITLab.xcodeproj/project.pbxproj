@@ -13,7 +13,6 @@
 		6D18429C252347D100B95EBB /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18429B252347D100B95EBB /* MainMenu.swift */; };
 		6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */; };
 		6D2AB2802533686000AFCDBB /* EventDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2AB27F2533686000AFCDBB /* EventDescription.swift */; };
-		6D2AB28425337AEB00AFCDBB /* DownView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6D2AB28325337AEB00AFCDBB /* DownView.bundle */; };
 		6D2D860B2629DE5A00E98E0A /* PushNotification in Frameworks */ = {isa = PBXBuildFile; productRef = 6D2D860A2629DE5A00E98E0A /* PushNotification */; };
 		6D357CEB2539BF9A000B0F60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D357CEA2539BF9A000B0F60 /* LaunchScreen.storyboard */; };
 		6D3EC19A264EAA2100DE67D3 /* ColorPaletterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3EC199264EAA2100DE67D3 /* ColorPaletterView.swift */; };
@@ -153,7 +152,6 @@
 		6D18429B252347D100B95EBB /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsPage.swift; sourceTree = "<group>"; };
 		6D2AB27F2533686000AFCDBB /* EventDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDescription.swift; sourceTree = "<group>"; };
-		6D2AB28325337AEB00AFCDBB /* DownView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DownView.bundle; sourceTree = "<group>"; };
 		6D357CEA2539BF9A000B0F60 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6D3EC199264EAA2100DE67D3 /* ColorPaletterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletterView.swift; sourceTree = "<group>"; };
 		6D3EC19E264EAA9900DE67D3 /* ColorPaletteObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteObservable.swift; sourceTree = "<group>"; };
@@ -384,8 +382,6 @@
 		6D9A0C632518EBAA007796CD /* ITLab */ = {
 			isa = PBXGroup;
 			children = (
-				6DB6E848265D0D6F008B9EAD /* Model */,
-				6D2AB28325337AEB00AFCDBB /* DownView.bundle */,
 				6D0193B22608A54500346849 /* ITLab.entitlements */,
 				6D9A0C6D2518EBB2007796CD /* Info.plist */,
 				6D0193B42608A58D00346849 /* AppDelegate.swift */,
@@ -394,8 +390,9 @@
 				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
 				6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */,
 				6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */,
-				6D3EC19C264EAA6100DE67D3 /* Observable */,
+				6DB6E848265D0D6F008B9EAD /* Model */,
 				6DF4D02B25ECE27300C29407 /* OAuth2 */,
+				6D3EC19C264EAA6100DE67D3 /* Observable */,
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
 				6DDD8177252DF78B008CE80A /* Swaggers */,
 				6D97CA392535C8B600D66E9A /* UI */,
@@ -705,7 +702,6 @@
 			files = (
 				6D9A0C6C2518EBB2007796CD /* Preview Assets.xcassets in Resources */,
 				6D9A0C692518EBB2007796CD /* Assets.xcassets in Resources */,
-				6D2AB28425337AEB00AFCDBB /* DownView.bundle in Resources */,
 				6D357CEB2539BF9A000B0F60 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
