@@ -1,5 +1,5 @@
 //
-//  ReportMarkdown.swift
+//  Markdown.swift
 //  ITLab
 //
 //  Created by Mikhail Ivanov on 25.05.2021.
@@ -10,51 +10,59 @@ import UIKit
 import Down
 
 class MarkdownObservable: ObservableObject {
-    var int: UIColor = UIColor.black
     let textView = UITextView()
-    @Binding var isLoading: Bool
-    init(text: String, isLoading: Binding<Bool>) {
+    private let text: String
+    @Published var isLoading: Bool = true
+    
+    init(text: String) {
         
+        self.text = text
+        
+        loadDown()
+    }
+    
+    func loadDown() {
         let down = Down(markdownString: text)
-        _isLoading = isLoading
         self.isLoading = true
-        DispatchQueue.main.async {
+        DispatchQueue(label: "markdownParse").async {
             let attributedText = try? down.toAttributedString(styler: ITLabStyler())
-            self.textView.attributedText = attributedText
-            self.isLoading = false
+            
+            DispatchQueue.main.async {
+                self.textView.attributedText = attributedText
+            
+                self.isLoading = false
+            }
         }
     }
 }
 
-struct Markdown: UIViewRepresentable {
+struct MarkdownRepresentable: UIViewRepresentable {
     @Environment(\.colorScheme) var colorScheme
-    private var text: String
     @Binding var dynamicHeight: CGFloat
-    @ObservedObject var test: MarkdownObservable
+    @EnvironmentObject var markdownObject: MarkdownObservable
     
-    init(text: String, height: Binding<CGFloat>, isLoading: Binding<Bool>) {
-        self.text = text
+    init(height: Binding<CGFloat>) {
         self._dynamicHeight = height
-        self.test = MarkdownObservable(text: text, isLoading: isLoading)
     }
     
     func makeUIView(context: Context) -> UITextView {
         
-        test.textView.textAlignment = .justified
-        test.textView.isScrollEnabled = false
-        test.textView.isUserInteractionEnabled = false
-        test.textView.showsVerticalScrollIndicator = false
-        test.textView.showsHorizontalScrollIndicator = false
-        test.textView.allowsEditingTextAttributes = false
-        test.textView.backgroundColor = .clear
+        markdownObject.textView.textAlignment = .left
+        markdownObject.textView.isScrollEnabled = false
+        markdownObject.textView.isUserInteractionEnabled = false
+        markdownObject.textView.showsVerticalScrollIndicator = false
+        markdownObject.textView.showsHorizontalScrollIndicator = false
+        markdownObject.textView.allowsEditingTextAttributes = false
+        markdownObject.textView.backgroundColor = .clear
         
-        return test.textView
+        markdownObject.textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        markdownObject.textView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        
+        return markdownObject.textView
     }
     
     func updateUIView(_ uiView: UITextView, context: Context) {
         DispatchQueue.main.async {
-            uiView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-            uiView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
             uiView.textColor = colorScheme == .dark ? UIColor.white : UIColor.black
             DispatchQueue.main.async {
                 dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width,
@@ -62,6 +70,39 @@ struct Markdown: UIViewRepresentable {
                     .height
             }
         }
+    }
+}
+
+struct Markdown: View {
+    @ObservedObject var markdownObject: MarkdownObservable
+    var text: String
+    @State var isLoad: Bool = false
+    @State private var height: CGFloat = .zero
+    
+    init(text: String) {
+        self.text = text
+        self.markdownObject = MarkdownObservable(text: text)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            if isLoad {
+                GeometryReader { geometry in
+                    ProgressView()
+                        .frame(width: geometry.size.width,
+                               height: geometry.size.height,
+                               alignment: .center)
+                }
+            } else {
+                ScrollView {
+                    MarkdownRepresentable(height: $height)
+                        .frame(height: height)
+                        .environmentObject(markdownObject)
+                }
+            }
+        }.onReceive(markdownObject.$isLoading, perform: { bool in
+            isLoad = bool
+        })
     }
 }
 
@@ -92,7 +133,7 @@ final class ITLabStyler: DownStyler {
     func resizeImg(img: UIImage) -> UIImage {
         
         if UIScreen.main.bounds.width < img.size.width {
-
+            
             let newImg = img.scalePreservingAspectRatio(width: UIScreen.main.bounds.width - 10)
             
             return newImg
