@@ -9,8 +9,6 @@ import SwiftUI
 
 struct ReportPage: View {
     @State var report: ReportModel
-    @State private var height: CGFloat = .zero
-    @State private var isLoading: Bool = false
     var body: some View {
         List {
             if let approved = report.approved {
@@ -34,17 +32,7 @@ struct ReportPage: View {
             }
             Section(header: Text("Текст")) {
                 
-                if isLoading {
-                    GeometryReader { geometry in
-                        ProgressView()
-                            .frame(width: geometry.size.width,
-                                   height: geometry.size.height,
-                                   alignment: .center)
-                    }
-                }
-                
-                Markdown(text: report.text, height: $height, isLoading: $isLoading)
-                    .frame(minHeight: height)
+                Markdown(text: report.text)
             }
         }
         .listStyle(GroupedListStyle())
