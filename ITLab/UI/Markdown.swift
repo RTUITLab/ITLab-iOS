@@ -12,16 +12,17 @@ import Down
 class MarkdownObservable: ObservableObject {
     let textView = UITextView()
     private let text: String
+    
     @Published var isLoading: Bool = true
     
     init(text: String) {
         
         self.text = text
         
-        loadDown()
+        loadingDown()
     }
     
-    func loadDown() {
+    private func loadingDown() {
         let down = Down(markdownString: text)
         self.isLoading = true
         DispatchQueue(label: "markdownParse").async {
@@ -74,9 +75,9 @@ struct MarkdownRepresentable: UIViewRepresentable {
 }
 
 struct Markdown: View {
-    @ObservedObject var markdownObject: MarkdownObservable
-    var text: String
-    @State var isLoad: Bool = false
+    @ObservedObject private var markdownObject: MarkdownObservable
+    private var text: String
+    @State private var isLoading: Bool = false
     @State private var height: CGFloat = .zero
     
     init(text: String) {
@@ -86,7 +87,7 @@ struct Markdown: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            if isLoad {
+            if isLoading {
                 GeometryReader { geometry in
                     ProgressView()
                         .frame(width: geometry.size.width,
@@ -101,7 +102,7 @@ struct Markdown: View {
                 }
             }
         }.onReceive(markdownObject.$isLoading, perform: { bool in
-            isLoad = bool
+            isLoading = bool
         })
     }
 }
