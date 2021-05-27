@@ -12,24 +12,27 @@ import Down
 class MarkdownObservable: ObservableObject {
     let textView = UITextView()
     private let text: String
+    
     @Published var isLoading: Bool = true
     
     init(text: String) {
         
         self.text = text
         
-        loadDown()
+        loadingDown()
     }
     
-    func loadDown() {
+    private func loadingDown() {
         let down = Down(markdownString: text)
         self.isLoading = true
         DispatchQueue(label: "markdownParse").async {
-            let attributedText = try? down.toAttributedString(styler: ITLabStyler())
+            let attributedText = try? down.toAttributedString(styler: ITLabStyler(
+                                                                configuration: .init(
+                                                                    fonts: ITLabFontCollection())))
             
             DispatchQueue.main.async {
                 self.textView.attributedText = attributedText
-            
+                
                 self.isLoading = false
             }
         }
@@ -74,9 +77,9 @@ struct MarkdownRepresentable: UIViewRepresentable {
 }
 
 struct Markdown: View {
-    @ObservedObject var markdownObject: MarkdownObservable
-    var text: String
-    @State var isLoad: Bool = false
+    @ObservedObject private var markdownObject: MarkdownObservable
+    private var text: String
+    @State private var isLoading: Bool = false
     @State private var height: CGFloat = .zero
     
     init(text: String) {
@@ -86,7 +89,7 @@ struct Markdown: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            if isLoad {
+            if isLoading {
                 GeometryReader { geometry in
                     ProgressView()
                         .frame(width: geometry.size.width,
@@ -101,7 +104,7 @@ struct Markdown: View {
                 }
             }
         }.onReceive(markdownObject.$isLoading, perform: { bool in
-            isLoad = bool
+            isLoading = bool
         })
     }
 }
@@ -196,5 +199,40 @@ extension UIImage {
         }
         
         return scaledImage
+    }
+}
+
+struct ITLabFontCollection: FontCollection {
+    
+    public var heading1: DownFont
+    public var heading2: DownFont
+    public var heading3: DownFont
+    public var heading4: DownFont
+    public var heading5: DownFont
+    public var heading6: DownFont
+    public var body: DownFont
+    public var code: DownFont
+    public var listItemPrefix: DownFont
+    
+    public init(
+        heading1: DownFont = .boldSystemFont(ofSize: 24),
+        heading2: DownFont = .boldSystemFont(ofSize: 20),
+        heading3: DownFont = .boldSystemFont(ofSize: 18),
+        heading4: DownFont = .boldSystemFont(ofSize: 16),
+        heading5: DownFont = .boldSystemFont(ofSize: 14),
+        heading6: DownFont = .boldSystemFont(ofSize: 12),
+        body: DownFont = .systemFont(ofSize: 12),
+        code: DownFont = DownFont(name: "menlo", size: 12) ?? .systemFont(ofSize: 12),
+        listItemPrefix: DownFont = DownFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
+    ) {
+        self.heading1 = heading1
+        self.heading2 = heading2
+        self.heading3 = heading3
+        self.heading4 = heading4
+        self.heading5 = heading5
+        self.heading6 = heading6
+        self.body = body
+        self.code = code
+        self.listItemPrefix = listItemPrefix
     }
 }
