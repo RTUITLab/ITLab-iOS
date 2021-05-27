@@ -13,6 +13,7 @@
 		6D18429C252347D100B95EBB /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18429B252347D100B95EBB /* MainMenu.swift */; };
 		6D18A1E9252C8CE2002B0B3C /* EventsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D18A1E8252C8CE2002B0B3C /* EventsPage.swift */; };
 		6D2AB2802533686000AFCDBB /* EventDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2AB27F2533686000AFCDBB /* EventDescription.swift */; };
+		6D2AD5EB2660218B009FD4A9 /* Siren in Frameworks */ = {isa = PBXBuildFile; productRef = 6D2AD5EA2660218B009FD4A9 /* Siren */; };
 		6D2D860B2629DE5A00E98E0A /* PushNotification in Frameworks */ = {isa = PBXBuildFile; productRef = 6D2D860A2629DE5A00E98E0A /* PushNotification */; };
 		6D357CEB2539BF9A000B0F60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D357CEA2539BF9A000B0F60 /* LaunchScreen.storyboard */; };
 		6D3EC19A264EAA2100DE67D3 /* ColorPaletterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3EC199264EAA2100DE67D3 /* ColorPaletterView.swift */; };
@@ -283,6 +284,7 @@
 				6D5074252530F2BA00679B4C /* Down in Frameworks */,
 				6DDD8223252E0726008CE80A /* Alamofire in Frameworks */,
 				6DF4D03225ECE2AE00C29407 /* OAuthSwift in Frameworks */,
+				6D2AD5EB2660218B009FD4A9 /* Siren in Frameworks */,
 				6D2D860B2629DE5A00E98E0A /* PushNotification in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -629,6 +631,7 @@
 				6D5074242530F2BA00679B4C /* Down */,
 				6DF4D03125ECE2AE00C29407 /* OAuthSwift */,
 				6D2D860A2629DE5A00E98E0A /* PushNotification */,
+				6D2AD5EA2660218B009FD4A9 /* Siren */,
 			);
 			productName = ITLab;
 			productReference = 6D9A0C612518EBAA007796CD /* ITLab.app */;
@@ -684,6 +687,7 @@
 				6D5074232530F2BA00679B4C /* XCRemoteSwiftPackageReference "Down" */,
 				6DF4D03025ECE2AE00C29407 /* XCRemoteSwiftPackageReference "OAuthSwift" */,
 				6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */,
+				6D2AD5E92660218B009FD4A9 /* XCRemoteSwiftPackageReference "Siren" */,
 			);
 			productRefGroup = 6D9A0C622518EBAA007796CD /* Products */;
 			projectDirPath = "";
@@ -1127,6 +1131,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6D2AD5E92660218B009FD4A9 /* XCRemoteSwiftPackageReference "Siren" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ArtSabintsev/Siren";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.1;
+			};
+		};
 		6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RTUITLab/ITLab-PushNotification-iOS";
@@ -1162,6 +1174,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D2AD5EA2660218B009FD4A9 /* Siren */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6D2AD5E92660218B009FD4A9 /* XCRemoteSwiftPackageReference "Siren" */;
+			productName = Siren;
+		};
 		6D2D860A2629DE5A00E98E0A /* PushNotification */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */;

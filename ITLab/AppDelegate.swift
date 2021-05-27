@@ -8,6 +8,7 @@
 import SwiftUI
 import UserNotifications
 import PushNotification
+import Siren
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -15,6 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil)
     -> Bool {
         UNUserNotificationCenter.current().delegate = self
+        checkAppVersion()
         return true
     }
     
@@ -53,5 +55,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 withCompletionHandler completionHandler: @escaping
                                     (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .badge, .sound])
+    }
+    
+    func checkAppVersion() {
+        Siren.shared.apiManager = .init(country: .russia)
+        Siren.shared.presentationManager = PresentationManager(forceLanguageLocalization: .russian)
+        Siren.shared.rulesManager = .init(globalRules: .persistent)
+        
+        Siren.shared.wail()
     }
 }
