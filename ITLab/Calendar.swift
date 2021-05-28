@@ -92,7 +92,8 @@ extension ITLabCalendar {
         event.location = info.location
         event.startDate = info.startDates
         event.endDate = info.endDates
-        
+        event.alarms = [.init(relativeOffset: .init(-3600)),
+                        .init(relativeOffset: .init(-86400))]
         event.notes = info.note
         event.calendar = eventStore.calendar(withIdentifier: self.calendarIdentifier!)
         
