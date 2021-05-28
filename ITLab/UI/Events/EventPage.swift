@@ -6,8 +6,14 @@
 //
 
 import SwiftUI
+import EventKit
+import Down
 
 struct EventPage: View {
+    
+    enum ActiveAlert {
+        case add, success, failure
+    }
     
     @State var compactEvent: CompactEventView
     @State private var event: EventView?
@@ -18,6 +24,10 @@ struct EventPage: View {
     
     @State private var isLoadedSalary: Bool = false
     @State private var isExpandedDescription: Bool = false
+    
+    @State private var isAddCalendar: Bool = false
+    @State private var alertMode: ActiveAlert = .add
+    @State private var alertFailedMessage: String = ""
     
     var body: some View {
         List {
@@ -83,50 +93,9 @@ struct EventPage: View {
                 }
                 
             } else {
-                Section {
-                    if self.event != nil,
-                       let eventDescription = self.event?._description,
-                       !eventDescription.isEmpty {
-                        NavigationLink(
-                            destination: EventDescription(markdown: eventDescription)) {
-                            HStack(alignment: .center) {
-                                Image(systemName: "info.circle.fill")
-                                    .padding(.trailing, 10)
-                                    .foregroundColor(.gray)
-                                    .opacity(0.5)
-                                
-                                Text("Описание")
-                            }
-                        }
-                    }
-                }
+                description
                 
-                Section(header: Text("Смены")) {
-                    if event != nil {
-                        ForEach(event!.shifts!, id: \._id) { shift in
-                            
-                            NavigationLink(destination: ShiftUIView(shift: shift, salary: $salary)) {
-                                VStack(alignment: .leading) {
-                                    Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")
-                                    
-                                    if let salary = self.salary?.shiftSalaries?
-                                        .first(where: {$0.shiftId == shift._id})?.count {
-                                        HStack(alignment: .center) {
-                                            Image(systemName: "creditcard.fill")
-                                                .font(.callout)
-                                                .foregroundColor(.gray)
-                                                .opacity(0.5)
-                                            Text("\(salary) \u{20BD}")
-                                                .font(.callout)
-                                                .foregroundColor(Color.gray)
-                                        }
-                                        .padding(.top, 1)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                shifts
             }
             
         }
@@ -167,7 +136,116 @@ struct EventPage: View {
             }
         }
         .navigationBarTitle(Text(event?.title ?? compactEvent.title ?? "Название события"), displayMode: .large)
-        
+        .navigationBarItems(trailing: addCalendar)
+    }
+    
+    var addCalendar: some View {
+        VStack {
+            if EKEventStore.authorizationStatus(for: .event) == .authorized,
+               let event = self.event {
+                Button(action: {
+                    self.alertMode = .add
+                    self.isAddCalendar.toggle()
+                }, label: {
+                    Image(systemName: "calendar.badge.plus")
+                })
+                .disabled(!ITLabCalendar.shared.checkEvent(eventId: event._id!))
+                .alert(isPresented: $isAddCalendar) {
+                    switch alertMode {
+                    case .add:
+                        return Alert(title: Text("Добавить событие?"),
+                                     message: Text("В Ваш каледнарь добавиться событие \(event.title!)"),
+                                     primaryButton: .default(Text("Да")) {
+                                        
+                                        DispatchQueue(label: "add Calendar").async {
+                                            
+                                            var node = "Cсылка на событие: \(SwaggerClientAPI.getURL())/events/\(event._id!.uuidString)"
+                                            
+                                            if let description = event._description {
+                                                let down = Down(markdownString: description)
+                                                node = (try? down.toAttributedString().string + "\n\n\(node)") ?? node
+                                            }
+                                            
+                                            let event = ITLabCalendar.EventInfo(title: event.title!,
+                                                                                startDates: compactEvent.beginTime!,
+                                                                                endDates: compactEvent.endTime!,
+                                                                                location: event.address!,
+                                                                                note: node,
+                                                                                id: event._id!)
+                                            
+                                            let result = ITLabCalendar.shared.createEvent(event: event)
+                                            DispatchQueue.main.async {
+                                                switch result {
+                                                case .success():
+                                                    alertMode = .success
+                                                case .failure(let error):
+                                                    alertFailedMessage = error.localizedDescription
+                                                    alertMode = .failure
+                                                }
+                                                
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                                    self.isAddCalendar.toggle()
+                                                }
+                                            }
+                                        }
+                                     },
+                                     secondaryButton: .cancel(Text("Нет")))
+                    case .success:
+                        return Alert(title: Text("Событие добавлено в Ваш календарь"))
+                    case .failure:
+                        return Alert(title: Text(alertFailedMessage))
+                    }
+                }
+            }
+        }
+    }
+    
+    var shifts: some View {
+        Section(header: Text("Смены")) {
+            ForEach(event!.shifts!, id: \._id) { shift in
+                
+                NavigationLink(destination: ShiftUIView(shift: shift, salary: $salary)) {
+                    VStack(alignment: .leading) {
+                        Text("\(EventPage.localizedDate(shift.beginTime!).lowercased()) - \(EventPage.localizedDate(shift.endTime!).lowercased())")
+                        
+                        if let salary = self.salary?.shiftSalaries?
+                            .first(where: {$0.shiftId == shift._id})?.count {
+                            HStack(alignment: .center) {
+                                Image(systemName: "creditcard.fill")
+                                    .font(.callout)
+                                    .foregroundColor(.gray)
+                                    .opacity(0.5)
+                                Text("\(salary) \u{20BD}")
+                                    .font(.callout)
+                                    .foregroundColor(Color.gray)
+                            }
+                            .padding(.top, 1)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var description: some View {
+        Group {
+            if let eventDescription = self.event?._description,
+               !eventDescription.isEmpty {
+                Section {
+                    NavigationLink(
+                        destination: EventDescription(markdown: eventDescription)) {
+                        HStack(alignment: .center) {
+                            Image(systemName: "info.circle.fill")
+                                .padding(.trailing, 10)
+                                .foregroundColor(.gray)
+                                .opacity(0.5)
+                            
+                            Text("Описание")
+                        }
+                    }
+                }
+            }
+        }
     }
     
     var location: some View {

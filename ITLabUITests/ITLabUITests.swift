@@ -90,6 +90,15 @@ class ITLabUITests: XCTestCase {
             return false
         }
         
+        addUIInterruptionMonitor(withDescription: "Calendar permission") { (alert) -> Bool in
+            if (alert.buttons["OK"].exists) {
+                alert.buttons["OK"].tap()
+                return true
+            }
+            
+            return false
+        }
+        
         addUIInterruptionMonitor(withDescription: "Notify permission") { (alert) -> Bool in
             if (alert.buttons["Allow"].exists) {
                 alert.buttons["Allow"].tap()

@@ -74,6 +74,15 @@
         }
       },
       {
+        "package": "Siren",
+        "repositoryURL": "https://github.com/ArtSabintsev/Siren",
+        "state": {
+          "branch": null,
+          "revision": "9173fc529731705a737658b2801ccbc19dd385c8",
+          "version": "5.8.1"
+        }
+      },
+      {
         "package": "Swifter",
         "repositoryURL": "https://github.com/httpswift/swifter.git",
         "state": {
