@@ -12,7 +12,9 @@ final class ITLabCalendar {
     
     let eventStore = EKEventStore()
     
-    var calendarIdentifier: String?
+    private var calendarIdentifier: String?
+    
+    static public let shared = ITLabCalendar()
     
     private let nameKey = "calendar"
     
@@ -28,16 +30,14 @@ final class ITLabCalendar {
     
     static public func requestAccess() {
         
-        let calendar = ITLabCalendar()
-        
         switch EKEventStore.authorizationStatus(for: .event) {
         case .authorized:
-            calendar.loadCalendarIdentifier()
+            ITLabCalendar.shared.loadCalendarIdentifier()
         case .notDetermined:
             
-            calendar.eventStore.requestAccess(to: .event) { granted, _ in
+            ITLabCalendar.shared.eventStore.requestAccess(to: .event) { granted, _ in
                 if granted {
-                    calendar.createCalendar()
+                    ITLabCalendar.shared.createCalendar()
                 }
             }
         default:
@@ -76,7 +76,7 @@ final class ITLabCalendar {
         }
     }
     
-    func createEvent(event info: EventInfo) {
+    func createEvent(event info: EventInfo) -> Bool {
         let event = EKEvent(eventStore: self.eventStore)
         
         event.title = info.title
@@ -91,8 +91,10 @@ final class ITLabCalendar {
             try self.eventStore.save(event, span: .thisEvent)
             print("Saved event: \(String(describing: event.eventIdentifier))")
             
+            return true
         } catch let error as NSError {
             print("failed to save event with error : \(error)")
+            return false
         }
     }
     

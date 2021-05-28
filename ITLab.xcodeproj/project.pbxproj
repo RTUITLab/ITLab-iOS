@@ -389,6 +389,7 @@
 				6D0193B22608A54500346849 /* ITLab.entitlements */,
 				6D9A0C6D2518EBB2007796CD /* Info.plist */,
 				6D0193B42608A58D00346849 /* AppDelegate.swift */,
+				6D92BBD22660FDA700ED1404 /* Calendar.swift */,
 				6DA91A3F256283AC00F13191 /* Contact.swift */,
 				6D00FE7025501921000ED344 /* ITLabApp.swift */,
 				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
@@ -400,7 +401,6 @@
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
 				6DDD8177252DF78B008CE80A /* Swaggers */,
 				6D97CA392535C8B600D66E9A /* UI */,
-				6D92BBD22660FDA700ED1404 /* Calendar.swift */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
