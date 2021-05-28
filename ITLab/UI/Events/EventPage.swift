@@ -27,6 +27,7 @@ struct EventPage: View {
     
     @State private var isAddCalendar: Bool = false
     @State private var alertMode: ActiveAlert = .add
+    @State private var alertFailedMessage: String = ""
     
     var body: some View {
         List {
@@ -148,6 +149,7 @@ struct EventPage: View {
                 }, label: {
                     Image(systemName: "calendar.badge.plus")
                 })
+                .disabled(!ITLabCalendar.shared.checkEvent(eventId: event._id!))
                 .alert(isPresented: $isAddCalendar) {
                     switch alertMode {
                     case .add:
@@ -168,14 +170,17 @@ struct EventPage: View {
                                                                                 startDates: compactEvent.beginTime!,
                                                                                 endDates: compactEvent.endTime!,
                                                                                 location: event.address!,
-                                                                                note: node)
+                                                                                note: node,
+                                                                                id: event._id!)
                                             
                                             let result = ITLabCalendar.shared.createEvent(event: event)
                                             DispatchQueue.main.async {
-                                                if result {
-                                                    self.alertMode = .success
-                                                } else {
-                                                    self.alertMode = .failure
+                                                switch result {
+                                                case .success():
+                                                    alertMode = .success
+                                                case .failure(let error):
+                                                    alertFailedMessage = error.localizedDescription
+                                                    alertMode = .failure
                                                 }
                                                 
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -188,7 +193,7 @@ struct EventPage: View {
                     case .success:
                         return Alert(title: Text("Событие добавлено в Ваш календарь"))
                     case .failure:
-                        return Alert(title: Text("Произошла непредвиденная ошибка"))
+                        return Alert(title: Text(alertFailedMessage))
                     }
                 }
             }

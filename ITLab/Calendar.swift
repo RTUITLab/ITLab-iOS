@@ -16,7 +16,8 @@ final class ITLabCalendar {
     
     static public let shared = ITLabCalendar()
     
-    private let nameKey = "calendar"
+    private let calendarKey = "calendar"
+    private let eventsKey = "events"
     
     struct EventInfo {
         var title: String
@@ -24,15 +25,18 @@ final class ITLabCalendar {
         var endDates: Date
         var location: String
         var note: String?
+        
+        var id: UUID
     }
     
-    var events: [EventInfo] = []
+    var events: [UUID: String] = [:]
     
     static public func requestAccess() {
         
         switch EKEventStore.authorizationStatus(for: .event) {
         case .authorized:
             ITLabCalendar.shared.loadCalendarIdentifier()
+            ITLabCalendar.shared.loadEvent()
         case .notDetermined:
             
             ITLabCalendar.shared.eventStore.requestAccess(to: .event) { granted, _ in
@@ -44,39 +48,44 @@ final class ITLabCalendar {
             break
         }
     }
-    
-    func getEvent(retry: Bool = true) {
-        let calendars = eventStore.calendars(for: .event)
-        
-        if let calendar = calendars.first(where: { element in
-            return element.title == "ITLab"
-        }) {
-            print(calendar.calendarIdentifier)
-            let oneMonthAgo = Date(timeIntervalSinceNow: -30*24*3600)
-            let oneMonthAfter = Date(timeIntervalSinceNow: +30*24*3600)
-            
-            let predicate = eventStore.predicateForEvents(withStart: oneMonthAgo,
-                                                          end: oneMonthAfter,
-                                                          calendars: [calendar])
-            let events = eventStore.events(matching: predicate)
-            
-            for event in events {
-                let eve = EventInfo.init(title: event.title,
-                                         startDates: event.startDate,
-                                         endDates: event.endDate,
-                                         location: event.location ?? "")
-                self.events.append(eve)
+}
+
+// MARK: - Create calendar and event
+extension ITLabCalendar {
+    func checkEvent(eventId id: UUID) -> Bool {
+        if events.count != 0 {
+            if let event = events.first(where: {$0.key == id}) {
+                if self.eventStore.event(withIdentifier: event.value) != nil {
+                    return false
+                } else {
+                    events.removeValue(forKey: event.key)
+                    
+                    saveEvent()
+                    
+                    return true
+                }
             }
-            
-            print(self.events)
-        } else if retry {
-            getEvent(retry: false)
-        } else {
-            print("Can't create calendar")
         }
+        
+        return true
     }
     
-    func createEvent(event info: EventInfo) -> Bool {
+    func createEvent(event info: EventInfo) -> Result<Void, ITLabCalendarError> {
+        
+        createCalendar()
+        
+        if events.count != 0 {
+            if let event = events.first(where: {$0.key == info.id}) {
+                if self.eventStore.event(withIdentifier: event.value) != nil {
+                    return .failure(.eventAlreadyBeenCreated)
+                } else {
+                    events.removeValue(forKey: event.key)
+                    
+                    saveEvent()
+                }
+            }
+        }
+        
         let event = EKEvent(eventStore: self.eventStore)
         
         event.title = info.title
@@ -89,19 +98,24 @@ final class ITLabCalendar {
         
         do {
             try self.eventStore.save(event, span: .thisEvent)
-            print("Saved event: \(String(describing: event.eventIdentifier))")
             
-            return true
+            self.events.updateValue(event.eventIdentifier, forKey: info.id)
+            saveEvent()
+            
+            print("Saved event: \(String(describing: event.eventIdentifier!))")
+            
+            return .success(())
         } catch let error as NSError {
             print("failed to save event with error : \(error)")
-            return false
+            return .failure(.failedCreate)
         }
     }
     
     private func createCalendar() {
         
-        if self.calendarIdentifier != nil {
-            return
+        if let identifier = self.calendarIdentifier,
+           eventStore.calendar(withIdentifier: identifier) != nil {
+             return
         }
         
         let calendars = eventStore.calendars(for: .event)
@@ -124,10 +138,15 @@ final class ITLabCalendar {
                 saveCalendarIdentifier()
             } catch {
                 print("Not create calendar")
+                self.calendarIdentifier = nil
             }
         }
     }
-    
+}
+
+// MARK: - Save Data
+
+extension ITLabCalendar {
     private func saveCalendarIdentifier() {
         var data: Data?
         
@@ -140,7 +159,7 @@ final class ITLabCalendar {
             }
             
             if let userDefaults = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab") {
-                userDefaults.set(data, forKey: nameKey)
+                userDefaults.set(data, forKey: calendarKey)
                 userDefaults.synchronize()
             }
         }
@@ -148,7 +167,7 @@ final class ITLabCalendar {
     
     private func loadCalendarIdentifier() {
         guard let data = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?
-                .object(forKey: nameKey) as? Data
+                .object(forKey: calendarKey) as? Data
         else {
             return
         }
@@ -159,6 +178,57 @@ final class ITLabCalendar {
             }
         } catch {
             print("Not load calendar identifier")
+        }
+    }
+    
+    private func saveEvent() {
+        var data: Data?
+        
+        if self.events.count != 0 {
+            do {
+                data = try NSKeyedArchiver.archivedData(withRootObject: self.events,
+                                                        requiringSecureCoding: true)
+            } catch {
+                print("Not events list")
+            }
+            
+            if let userDefaults = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab") {
+                userDefaults.set(data, forKey: eventsKey)
+                userDefaults.synchronize()
+            }
+        }
+    }
+    
+    private func loadEvent() {
+        guard let data = UserDefaults(suiteName: "group.ru.RTUITLab.ITLab")?
+                .object(forKey: eventsKey) as? Data
+        else {
+            return
+        }
+        
+        do {
+            if let events = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [UUID: String] {
+                self.events = events
+            }
+        } catch {
+            print("Not load events list")
+        }
+    }
+}
+
+enum ITLabCalendarError: Error {
+    case eventAlreadyBeenCreated, failedCreate
+}
+
+extension ITLabCalendarError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .eventAlreadyBeenCreated:
+            return NSLocalizedString("Событие уже было добавлена в Ваш календарь ранее",
+                                     comment: "Event Already Been Created")
+        case .failedCreate:
+            return NSLocalizedString("Произошла непредвиденная ошибка. Событие не добавилось в календарь",
+                                     comment: "Failed Create")
         }
     }
 }
