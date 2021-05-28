@@ -8,7 +8,7 @@
 import Foundation
 import Contacts
 
-final class Contact: NSObject {
+final class Contact {
     public static var isAccessContacts = false
 
     public static func requestAccess() {
