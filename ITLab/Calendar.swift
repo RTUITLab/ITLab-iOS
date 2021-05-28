@@ -129,7 +129,7 @@ extension ITLabCalendar {
         let calendar: EKCalendar = .init(for: .event,
                                          eventStore: self.eventStore)
         calendar.title = "ITLab"
-        if let local = self.eventStore.sources.first(where: { $0.sourceType == .local }) {
+        if let local = changeCalendarSource() {
             calendar.source = local
             
             do {
@@ -142,6 +142,14 @@ extension ITLabCalendar {
                 self.calendarIdentifier = nil
             }
         }
+    }
+    
+    func changeCalendarSource() -> EKSource? {
+        let `default` = eventStore.defaultCalendarForNewEvents?.source
+        let local = eventStore.sources.first(where: { $0.sourceType == .local })
+        let iCloud = eventStore.sources.first(where: { $0.title == "iCloud" })
+        
+        return `default` ?? local ?? iCloud
     }
 }
 
