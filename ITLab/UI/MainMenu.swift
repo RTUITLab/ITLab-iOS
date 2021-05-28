@@ -64,6 +64,7 @@ struct MainMenu: View {
             }
             
             Contact.requestAccess()
+            ITLabCalendar.requestAccess()
         }
     }
     
