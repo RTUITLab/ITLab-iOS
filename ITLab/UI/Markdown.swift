@@ -52,12 +52,11 @@ struct MarkdownRepresentable: UIViewRepresentable {
         
         markdownObject.textView.textAlignment = .left
         markdownObject.textView.isScrollEnabled = false
-        markdownObject.textView.isUserInteractionEnabled = false
+        markdownObject.textView.isUserInteractionEnabled = true
         markdownObject.textView.showsVerticalScrollIndicator = false
         markdownObject.textView.showsHorizontalScrollIndicator = false
-        markdownObject.textView.allowsEditingTextAttributes = false
+        markdownObject.textView.isEditable = false
         markdownObject.textView.backgroundColor = .clear
-        
         markdownObject.textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         markdownObject.textView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         
