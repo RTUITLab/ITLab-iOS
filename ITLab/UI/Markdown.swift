@@ -67,11 +67,9 @@ struct MarkdownRepresentable: UIViewRepresentable {
     func updateUIView(_ uiView: UITextView, context: Context) {
         DispatchQueue.main.async {
             uiView.textColor = colorScheme == .dark ? UIColor.white : UIColor.black
-            DispatchQueue.main.async {
-                dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width,
-                                                           height: CGFloat.greatestFiniteMagnitude))
-                    .height
-            }
+            dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width,
+                                                       height: CGFloat.greatestFiniteMagnitude))
+                .height
         }
     }
 }
