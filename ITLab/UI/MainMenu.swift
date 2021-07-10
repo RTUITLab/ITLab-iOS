@@ -14,6 +14,7 @@ struct MainMenu: View {
     var usersPage = UsersListPage()
     var projectsPage = ProjectsMenuPage()
     @State var user: UserView = UserView()
+    var equipmentPage = EquipmentPage()
     
     var body: some View {
         TabView {
@@ -30,6 +31,14 @@ struct MainMenu: View {
                     VStack {
                         Image(systemName: "square.grid.2x2.fill")
                         Text("Проекты")
+                    }
+                }
+            
+            equipmentPage
+                .tabItem {
+                    VStack {
+                        Image(systemName: "display")
+                        Text("Оборудование")
                     }
                 }
             
@@ -84,5 +93,12 @@ struct MainMenu: View {
                                                       authenticationMethod: .jwt(token: jwt))
             }
         }
+    }
+}
+
+
+struct MainMenuView_Provider: PreviewProvider {
+    static var previews: some View {
+        MainMenu()
     }
 }
