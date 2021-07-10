@@ -134,6 +134,13 @@
 		6DF717B725B81AA400F57D2D /* EventSalaryFullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717AE25B81AA400F57D2D /* EventSalaryFullView.swift */; };
 		6DF717BC25B81ABE00F57D2D /* EventSalaryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717BA25B81ABE00F57D2D /* EventSalaryAPI.swift */; };
 		6DF717BD25B81ABE00F57D2D /* ReportSalaryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF717BB25B81ABE00F57D2D /* ReportSalaryAPI.swift */; };
+		A5280BD6269A282200168F9D /* EquipmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BD5269A282200168F9D /* EquipmentModel.swift */; };
+		A5280BD8269A283400168F9D /* EquipmentTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BD7269A283400168F9D /* EquipmentTypeModel.swift */; };
+		A5280BDF269A287100168F9D /* EquipmentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BDB269A287100168F9D /* EquipmentList.swift */; };
+		A5280BE0269A287100168F9D /* EquipmentSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BDC269A287100168F9D /* EquipmentSearchBar.swift */; };
+		A5280BE1269A287100168F9D /* EquipmentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BDD269A287100168F9D /* EquipmentPage.swift */; };
+		A5280BE2269A287100168F9D /* EquipmentScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BDE269A287100168F9D /* EquipmentScanView.swift */; };
+		A5280BE8269A292D00168F9D /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = A5280BE7269A292D00168F9D /* CarBode */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,7 +167,6 @@
 		6D3EC1A1264EADE600DE67D3 /* EventsObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsObservable.swift; sourceTree = "<group>"; };
 		6D3EC1A3264EB09200DE67D3 /* EventsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsStack.swift; sourceTree = "<group>"; };
 		6D5DE58A25B5A16B003ED6DA /* ProfilePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
-		6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = "<group>"; };
 		6D77A1BF252F5EE60086A360 /* EventPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPage.swift; sourceTree = "<group>"; };
 		6D92BBD22660FDA700ED1404 /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		6D9A0C612518EBAA007796CD /* ITLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +182,6 @@
 		6DB6E84F265D21BC008B9EAD /* ReportsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsPage.swift; sourceTree = "<group>"; };
 		6DB6E851265D37CF008B9EAD /* ReportApprovedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportApprovedModel.swift; sourceTree = "<group>"; };
 		6DB6E853265D5B5A008B9EAD /* ReportPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportPage.swift; sourceTree = "<group>"; };
-		6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		6DD40948265D6A8000917B2C /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		6DDD8178252DF78B008CE80A /* APIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIHelper.swift; sourceTree = "<group>"; };
 		6DDD8179252DF78B008CE80A /* AlamofireImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireImplementations.swift; sourceTree = "<group>"; };
@@ -276,6 +281,14 @@
 		6DF717AE25B81AA400F57D2D /* EventSalaryFullView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSalaryFullView.swift; sourceTree = "<group>"; };
 		6DF717BA25B81ABE00F57D2D /* EventSalaryAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSalaryAPI.swift; sourceTree = "<group>"; };
 		6DF717BB25B81ABE00F57D2D /* ReportSalaryAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportSalaryAPI.swift; sourceTree = "<group>"; };
+		A5280BD5269A282200168F9D /* EquipmentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentModel.swift; sourceTree = "<group>"; };
+		A5280BD7269A283400168F9D /* EquipmentTypeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentTypeModel.swift; sourceTree = "<group>"; };
+		A5280BDB269A287100168F9D /* EquipmentList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentList.swift; sourceTree = "<group>"; };
+		A5280BDC269A287100168F9D /* EquipmentSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentSearchBar.swift; sourceTree = "<group>"; };
+		A5280BDD269A287100168F9D /* EquipmentPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentPage.swift; sourceTree = "<group>"; };
+		A5280BDE269A287100168F9D /* EquipmentScanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquipmentScanView.swift; sourceTree = "<group>"; };
+		A5280BE4269A28D000168F9D /* DebugConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = "<group>"; };
+		A5280BE5269A28E600168F9D /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +299,7 @@
 				6D5074252530F2BA00679B4C /* Down in Frameworks */,
 				6DDD8223252E0726008CE80A /* Alamofire in Frameworks */,
 				6DF4D03225ECE2AE00C29407 /* OAuthSwift in Frameworks */,
+				A5280BE8269A292D00168F9D /* CarBode in Frameworks */,
 				6D2AD5EB2660218B009FD4A9 /* Siren in Frameworks */,
 				6D2D860B2629DE5A00E98E0A /* PushNotification in Frameworks */,
 			);
@@ -344,6 +358,7 @@
 		6D97CA392535C8B600D66E9A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A5280BDA269A287100168F9D /* Equipment */,
 				6DD40948265D6A8000917B2C /* Markdown.swift */,
 				6D9EE2EF265D0B1B00DF4269 /* Project */,
 				6D357CEA2539BF9A000B0F60 /* LaunchScreen.storyboard */,
@@ -386,6 +401,7 @@
 		6D9A0C632518EBAA007796CD /* ITLab */ = {
 			isa = PBXGroup;
 			children = (
+				A5280BE5269A28E600168F9D /* ReleaseConfig.xcconfig */,
 				6D0193B22608A54500346849 /* ITLab.entitlements */,
 				6D9A0C6D2518EBB2007796CD /* Info.plist */,
 				6D0193B42608A58D00346849 /* AppDelegate.swift */,
@@ -393,14 +409,13 @@
 				6DA91A3F256283AC00F13191 /* Contact.swift */,
 				6D00FE7025501921000ED344 /* ITLabApp.swift */,
 				6D9A0C682518EBB2007796CD /* Assets.xcassets */,
-				6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */,
-				6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */,
 				6DB6E848265D0D6F008B9EAD /* Model */,
 				6DF4D02B25ECE27300C29407 /* OAuth2 */,
 				6D3EC19C264EAA6100DE67D3 /* Observable */,
 				6D9A0C6A2518EBB2007796CD /* Preview Content */,
 				6DDD8177252DF78B008CE80A /* Swaggers */,
 				6D97CA392535C8B600D66E9A /* UI */,
+				A5280BE4269A28D000168F9D /* DebugConfig.xcconfig */,
 			);
 			path = ITLab;
 			sourceTree = "<group>";
@@ -426,6 +441,7 @@
 		6DB6E848265D0D6F008B9EAD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A5280BCE269A27DE00168F9D /* Equipment */,
 				6DB6E849265D0D77008B9EAD /* Reports */,
 			);
 			path = Model;
@@ -612,6 +628,26 @@
 			path = Salary;
 			sourceTree = "<group>";
 		};
+		A5280BCE269A27DE00168F9D /* Equipment */ = {
+			isa = PBXGroup;
+			children = (
+				A5280BD7269A283400168F9D /* EquipmentTypeModel.swift */,
+				A5280BD5269A282200168F9D /* EquipmentModel.swift */,
+			);
+			path = Equipment;
+			sourceTree = "<group>";
+		};
+		A5280BDA269A287100168F9D /* Equipment */ = {
+			isa = PBXGroup;
+			children = (
+				A5280BDB269A287100168F9D /* EquipmentList.swift */,
+				A5280BDC269A287100168F9D /* EquipmentSearchBar.swift */,
+				A5280BDD269A287100168F9D /* EquipmentPage.swift */,
+				A5280BDE269A287100168F9D /* EquipmentScanView.swift */,
+			);
+			path = Equipment;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -635,6 +671,7 @@
 				6DF4D03125ECE2AE00C29407 /* OAuthSwift */,
 				6D2D860A2629DE5A00E98E0A /* PushNotification */,
 				6D2AD5EA2660218B009FD4A9 /* Siren */,
+				A5280BE7269A292D00168F9D /* CarBode */,
 			);
 			productName = ITLab;
 			productReference = 6D9A0C612518EBAA007796CD /* ITLab.app */;
@@ -691,6 +728,7 @@
 				6DF4D03025ECE2AE00C29407 /* XCRemoteSwiftPackageReference "OAuthSwift" */,
 				6D2D86092629DE5A00E98E0A /* XCRemoteSwiftPackageReference "ITLab-PushNotification-iOS" */,
 				6D2AD5E92660218B009FD4A9 /* XCRemoteSwiftPackageReference "Siren" */,
+				A5280BE6269A292D00168F9D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */,
 			);
 			productRefGroup = 6D9A0C622518EBAA007796CD /* Products */;
 			projectDirPath = "";
@@ -762,6 +800,8 @@
 				6DDD820D252DF78B008CE80A /* EventRoleEditRequest.swift in Sources */,
 				6DDD81D1252DF78B008CE80A /* AccountAPI.swift in Sources */,
 				6DDD8204252DF78B008CE80A /* UserPropertyTypeCreateRequest.swift in Sources */,
+				A5280BE2269A287100168F9D /* EquipmentScanView.swift in Sources */,
+				A5280BDF269A287100168F9D /* EquipmentList.swift in Sources */,
 				6DB6E84E265D0F67008B9EAD /* ReportsObservable.swift in Sources */,
 				6DDD81D4252DF78B008CE80A /* AboutAPI.swift in Sources */,
 				6DDD81DF252DF78B008CE80A /* EventRoleView.swift in Sources */,
@@ -784,6 +824,7 @@
 				6D00FE6D255014A5000ED344 /* AuthorizationPage.swift in Sources */,
 				6DDD81EF252DF78B008CE80A /* ShiftEditRequest.swift in Sources */,
 				6D77A1C0252F5EE60086A360 /* EventPage.swift in Sources */,
+				A5280BD6269A282200168F9D /* EquipmentModel.swift in Sources */,
 				6DDD8214252DF78B008CE80A /* Models.swift in Sources */,
 				6DDD8206252DF78B008CE80A /* EquipmentTypeView.swift in Sources */,
 				6DDD81D5252DF78B008CE80A /* EventRoleAPI.swift in Sources */,
@@ -801,7 +842,9 @@
 				6DDD8203252DF78B008CE80A /* ResetPasswordRequest.swift in Sources */,
 				6DDD8210252DF78B008CE80A /* PlaceCreateRequest.swift in Sources */,
 				6D3EC1A4264EB09200DE67D3 /* EventsStack.swift in Sources */,
+				A5280BE1269A287100168F9D /* EquipmentPage.swift in Sources */,
 				6DDD81E5252DF78B008CE80A /* EquipmentCreateRequest.swift in Sources */,
+				A5280BE0269A287100168F9D /* EquipmentSearchBar.swift in Sources */,
 				6DF717BD25B81ABE00F57D2D /* ReportSalaryAPI.swift in Sources */,
 				6DB6E850265D21BC008B9EAD /* ReportsPage.swift in Sources */,
 				6D0193B52608A58D00346849 /* AppDelegate.swift in Sources */,
@@ -809,6 +852,7 @@
 				6DEE2DE92554B0C90087D656 /* PlaceUIView.swift in Sources */,
 				6DDD8207252DF78B008CE80A /* WisherEventView.swift in Sources */,
 				6DDD81E3252DF78B008CE80A /* DeletableRequest.swift in Sources */,
+				A5280BD8269A283400168F9D /* EquipmentTypeModel.swift in Sources */,
 				6DDD81FE252DF78B008CE80A /* AccountEditRequest.swift in Sources */,
 				6DDD81F3252DF78B008CE80A /* ShiftCreateRequest.swift in Sources */,
 				6D00FE7125501921000ED344 /* ITLabApp.swift in Sources */,
@@ -890,7 +934,6 @@
 /* Begin XCBuildConfiguration section */
 		6D9A0C6E2518EBB2007796CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D65A7B62541F03D00E918BD /* DebugConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -953,7 +996,6 @@
 		};
 		6D9A0C6F2518EBB2007796CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6DC9588725420D570064D8EC /* ReleaseConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1175,6 +1217,14 @@
 				minimumVersion = 2.1.2;
 			};
 		};
+		A5280BE6269A292D00168F9D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/heart/CarBode-Barcode-Scanner-For-SwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1202,6 +1252,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6DF4D03025ECE2AE00C29407 /* XCRemoteSwiftPackageReference "OAuthSwift" */;
 			productName = OAuthSwift;
+		};
+		A5280BE7269A292D00168F9D /* CarBode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5280BE6269A292D00168F9D /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */;
+			productName = CarBode;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
