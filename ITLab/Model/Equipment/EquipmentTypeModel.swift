@@ -24,6 +24,15 @@ struct EquipmentTypeModel: Codable {
         case parentId
     }
     
+    init(id: String, title: String, description: String, shortTitle: String, rootId: String? = nil, parentId: String? = nil) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.shortTitle = shortTitle
+        self.rootId = rootId
+        self.parentId = parentId
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
