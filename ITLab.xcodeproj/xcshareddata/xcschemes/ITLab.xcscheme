@@ -61,6 +61,16 @@
                ReferencedContainer = "container:ITLab.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A5280BEC269B035600168F9D"
+               BuildableName = "ITLabTests.xctest"
+               BlueprintName = "ITLabTests"
+               ReferencedContainer = "container:ITLab.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
