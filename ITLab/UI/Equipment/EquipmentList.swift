@@ -10,26 +10,73 @@ import SwiftUI
 struct EquipmentList: View {
     @State private var searchText = ""
     @State private var onlyFree = false
+    @State private var showOptions = true
+    @ObservedObject private var equipmentObject = EquipmentsObservable()
+    
     var body: some View {
         VStack {
-            EquipmentSearchBar(text: $searchText, placehodler: "Поиск оборудования")
+            if showOptions {
+                EquipmentSearchBar(text: $searchText, placehodler: "Поиск оборудования")
+            }
             HStack {
-                Toggle(
-                    isOn: $onlyFree,
-                    label: {
-                        Text("Только свободное")
-                            .font(.system(size: 12, weight: .light, design: .default))
-                    }
-                )
-                .toggleStyle(
-                    CheckBoxStyle()
-                )
+                if showOptions {
+                    Toggle(
+                        isOn: $onlyFree,
+                        label: {
+                            Text("Только свободное")
+                                .font(.system(size: 12, weight: .light, design: .default))
+                        }
+                    )
+                    .toggleStyle(
+                        CheckBoxStyle()
+                    )
+                }
                 
                 Spacer()
+                
+                Button(
+                    action: {
+                        self.showOptions.toggle()
+                    },
+                    label: {
+                        Image(systemName: "slider.horizontal.3")
+                    }
+                )
             }
-            
+            List {
+                if equipmentObject.loading {
+                    GeometryReader {
+                        geomety in
+                        ProgressView()
+                    }
+                } else {
+                    EquipmentListHeader()
+                    ForEach(self.equipmentObject.equipmentModel, id: \.id ) {
+                        equip in
+                        EquipmentItem(equipment: equip)
+                        
+                    }
+                }
+            }
+            .navigationBarTitle(Text("Оборудование"))
             Spacer()
         }
+    }
+    
+    func loadData() {
+        self.equipmentObject.getEquipment()
+    }
+}
+
+struct EquipmentListHeader: View {
+    var body: some View {
+        HStack {
+            Text("Тип")
+            Spacer()
+            Text("Номер")
+            Spacer()
+        }
+        
     }
 }
 
@@ -53,6 +100,8 @@ struct CheckBoxStyle: ToggleStyle {
 
 struct EquipmentList_Previews: PreviewProvider {
     static var previews: some View {
-        EquipmentList()
+        var view = EquipmentList()
+        view.loadData()
+        return view
     }
 }
