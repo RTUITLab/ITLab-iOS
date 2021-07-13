@@ -61,6 +61,7 @@ struct EquipmentList: View {
             .navigationBarTitle(Text("Оборудование"))
             Spacer()
         }
+        
     }
     
     func loadData() {
@@ -100,7 +101,7 @@ struct CheckBoxStyle: ToggleStyle {
 
 struct EquipmentList_Previews: PreviewProvider {
     static var previews: some View {
-        var view = EquipmentList()
+        let view = EquipmentList()
         view.loadData()
         return view
     }
