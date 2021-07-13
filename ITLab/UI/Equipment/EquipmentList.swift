@@ -58,8 +58,6 @@ struct EquipmentList: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Оборудование"))
-            Spacer()
         }
         
     }

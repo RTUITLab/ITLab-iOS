@@ -22,26 +22,36 @@ struct EquipmentItem: View {
                 Button(
                     action: {
                         self.loadData()
-                        withAnimation() {
-                            self.showFull.toggle()
-                        }
+                        self.showFull.toggle()
                     },
                     label: {
                         Image(systemName: "info.circle")
                     }
                 )
             }
-            if showFull {
-                AnyView(
-                        ShowFullEquipmentInfo(
-                        fullName: self.userObserved.getFullName(),
-                        serialNumber: equipment.serialNumber
-                    )
-                )
-                .transition(AnyTransition.asymmetric(insertion: .scale, removal: .scale))
-                .animation(Animation.linear(duration: 1))
-            }
         }
+        .popup(isPresented: showFull, alignment: .center, direction: .bottom) {
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                        Button(
+                            action: {
+                                self.showFull.toggle()
+                            },
+                            label: {
+                                Image(systemName: "multiply.circle")
+                            }
+                        )
+                    }
+                    ShowFullEquipmentInfo(equipment: equipment)
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.white)
+                )
+                .shadow(radius: 10)
+            }
+            .environmentObject(userObserved)
     }
     
     func loadData() {
@@ -52,20 +62,50 @@ struct EquipmentItem: View {
 }
 
 private struct ShowFullEquipmentInfo: View {
-    var fullName: String?
-    var serialNumber: String
+    @EnvironmentObject var userObserved: UserObservable
+    var equipment: EquipmentModel
     var body: some View {
-            VStack {
-                HStack(alignment: .center) {
-                    Text("Владелец:")
-                    Spacer(minLength: 40)
-                    Text("\(self.fullName ?? "Лаборатория")")
+        VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Text("Тип:")
+                        .padding(.horizontal)
+                    Spacer()
+                    Text("\(equipment.equipmentType.title)")
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(nil)
+                        .padding(.vertical)
                     Spacer()
                 }
-                HStack(alignment: .center) {
+                HStack {
+                    Text("Номер:")
+                        .padding(.leading)
+                    Spacer()
+                    Text("\(equipment.number)")
+                        .font(.subheadline)
+//                        .padding(.horizontal)
+                    Spacer()
+                }
+                HStack {
+                    Text("Владелец:")
+                        .padding(.horizontal)
+                    Spacer()
+                    Text("\(self.userObserved.getFullName() ?? "Лаборатория")")
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(nil)
+                        .padding(.vertical)
+                    Spacer()
+                }
+                HStack {
                     Text("Серийный номер: ")
-                    Spacer(minLength: 40)
-                    Text("\(self.serialNumber)")
+                        .padding(.leading)
+                    Spacer()
+                    Text("\(self.equipment.serialNumber)")
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(nil)
+                        .padding(.vertical)
                     Spacer()
                 }
             }
@@ -77,5 +117,11 @@ struct EquipmentItem_Previews: PreviewProvider {
         EquipmentItem(
             equipment: EquipmentModel(id: "some_id", serialNumber: "some_serial_number", number: 0, equipmentTypeId: "some_elementtypeid", equipmentType: EquipmentTypeModel(id: "some_id", title: "some_title", description: "some_description", shortTitle: "some_short_title"))
         )
+    }
+}
+
+struct EquipmentShowFull_Previews: PreviewProvider {
+    static var previews: some View {
+        ShowFullEquipmentInfo(equipment: EquipmentModel(id: "some_id", serialNumber: "some_serial_number", number: 0, equipmentTypeId: "some_elementtypeid", equipmentType: EquipmentTypeModel(id: "some_id", title: "some_title", description: "some_description", shortTitle: "some_short_title"))).environmentObject(UserObservable())
     }
 }
