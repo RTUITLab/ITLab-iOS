@@ -29,29 +29,11 @@ struct EquipmentItem: View {
                     }
                 )
             }
-        }
-        .popup(isPresented: showFull, alignment: .center, direction: .bottom) {
-                VStack(spacing: 0) {
-                    HStack {
-                        Spacer()
-                        Button(
-                            action: {
-                                self.showFull.toggle()
-                            },
-                            label: {
-                                Image(systemName: "multiply.circle")
-                            }
-                        )
-                    }
-                    ShowFullEquipmentInfo(equipment: equipment)
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(Color.white)
-                )
-                .shadow(radius: 10)
+            if showFull {
+                ShowFullEquipmentInfo(equipment: equipment)
+                    .environmentObject(userObserved)
             }
-            .environmentObject(userObserved)
+        }
     }
     
     func loadData() {
@@ -65,27 +47,7 @@ private struct ShowFullEquipmentInfo: View {
     @EnvironmentObject var userObserved: UserObservable
     var equipment: EquipmentModel
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text("Тип:")
-                        .padding(.horizontal)
-                    Spacer()
-                    Text("\(equipment.equipmentType.title)")
-                        .font(.subheadline)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(nil)
-                        .padding(.vertical)
-                    Spacer()
-                }
-                HStack {
-                    Text("Номер:")
-                        .padding(.leading)
-                    Spacer()
-                    Text("\(equipment.number)")
-                        .font(.subheadline)
-//                        .padding(.horizontal)
-                    Spacer()
-                }
+        VStack(alignment: .leading) {
                 HStack {
                     Text("Владелец:")
                         .padding(.horizontal)
