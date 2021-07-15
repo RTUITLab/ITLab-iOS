@@ -57,7 +57,7 @@ struct EquipmentList: View {
                         equipment in
                         return (
                             self.equipmentObject.onlyFree ? equipment.ownerId == nil : true &&
-                                self.equipmentObject.match.isEmpty ? true : "\(equipment.serialNumber) \(equipment.equipmentType.title) \(equipment.equipmentType.shortTitle)".lowercased().contains(self.equipmentObject.match.lowercased())
+                                self.equipmentObject.match.isEmpty ? true : "\(equipment.serialNumber) \(equipment.equipmentType.title) \(equipment.equipmentType.shortTitle ?? "" )".lowercased().contains(self.equipmentObject.match.lowercased())
                             )
                         },
                         id: \.id
