@@ -46,8 +46,11 @@ struct EquipmentList: View {
             List {
                 if equipmentObject.loading {
                     GeometryReader {
-                        geomety in
+                        geometry in
                         ProgressView()
+                            .frame(width: geometry.size.width,
+                                   height: geometry.size.height,
+                                   alignment: .center)
                     }
                 } else {
                     EquipmentListHeader()
@@ -57,7 +60,9 @@ struct EquipmentList: View {
                         
                     }
                 }
-            }
+            }.listStyle(
+                GroupedListStyle()
+            )
         }
         
     }
