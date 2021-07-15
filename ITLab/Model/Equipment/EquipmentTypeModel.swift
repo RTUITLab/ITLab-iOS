@@ -11,7 +11,7 @@ struct EquipmentTypeModel: Codable {
     var id: String
     var title: String
     var description: String
-    var shortTitle: String
+    var shortTitle: String?
     var rootId: String?
     var parentId: String?
     
@@ -24,7 +24,7 @@ struct EquipmentTypeModel: Codable {
         case parentId
     }
     
-    init(id: String, title: String, description: String, shortTitle: String, rootId: String? = nil, parentId: String? = nil) {
+    init(id: String, title: String, description: String, shortTitle: String? = nil, rootId: String? = nil, parentId: String? = nil) {
         self.id = id
         self.title = title
         self.description = description
@@ -38,7 +38,7 @@ struct EquipmentTypeModel: Codable {
         id = try container.decode(String.self, forKey: .id)
         title = try container.decode(String.self, forKey: .title)
         description = try container.decode(String.self, forKey: .description)
-        shortTitle = try container.decode(String.self, forKey: .shortTitle)
+        shortTitle = try? container.decode(String.self, forKey: .shortTitle)
         rootId = try? container.decode(String.self, forKey: .rootId)
         parentId = try? container.decode(String.self, forKey: .parentId)
     }
