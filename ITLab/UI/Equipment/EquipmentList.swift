@@ -8,20 +8,18 @@
 import SwiftUI
 
 struct EquipmentList: View {
-    @State private var searchText = ""
-    @State private var onlyFree = false
     @State private var showOptions = true
-    @ObservedObject private var equipmentObject = EquipmentsObservable()
+    @EnvironmentObject private var equipmentObject: EquipmentsObservable
     
     var body: some View {
         VStack {
             if showOptions {
-                EquipmentSearchBar(text: $searchText, placehodler: "Поиск оборудования")
+                EquipmentSearchBar(text: $equipmentObject.match, placehodler: "Поиск оборудования")
             }
             HStack {
                 if showOptions {
                     Toggle(
-                        isOn: $onlyFree,
+                        isOn: $equipmentObject.onlyFree,
                         label: {
                             Text("Только свободное")
                                 .font(.system(size: 12, weight: .light, design: .default))
@@ -54,10 +52,18 @@ struct EquipmentList: View {
                     }
                 } else {
                     EquipmentListHeader()
-                    ForEach(self.equipmentObject.equipmentModel, id: \.id ) {
+                    ForEach(
+                        self.equipmentObject.equipmentModel.filter {
+                        equipment in
+                        return (
+                            self.equipmentObject.onlyFree ? equipment.ownerId == nil : true &&
+                                self.equipmentObject.match.isEmpty ? true : "\(equipment.serialNumber) \(equipment.equipmentType.title) \(equipment.equipmentType.shortTitle)".lowercased().contains(self.equipmentObject.match.lowercased())
+                            )
+                        },
+                        id: \.id
+                    ) {
                         equip in
                         EquipmentItem(equipment: equip)
-                        
                     }
                 }
             }.listStyle(
@@ -65,10 +71,6 @@ struct EquipmentList: View {
             )
         }
         
-    }
-    
-    func loadData() {
-        self.equipmentObject.getEquipment()
     }
 }
 
@@ -104,8 +106,10 @@ struct CheckBoxStyle: ToggleStyle {
 
 struct EquipmentList_Previews: PreviewProvider {
     static var previews: some View {
+        var equipmentObservable = EquipmentsObservable()
         let view = EquipmentList()
-        view.loadData()
+        equipmentObservable.getEquipment()
         return view
+            .environmentObject(equipmentObservable)
     }
 }

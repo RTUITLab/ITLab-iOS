@@ -11,12 +11,9 @@ import SwiftUI
 final class EquipmentsObservable: ObservableObject {
     @Published var equipmentModel: [EquipmentModel] = []
     @Published var loading: Bool = false
-    var onlyFree: Binding<Bool>? = nil
+    @Published var onlyFree: Bool = false
     @Published var match: String = ""
     
-    init(onlyFree: Binding<Bool>? = nil) {
-        self.onlyFree = onlyFree
-    }
     
     #if targetEnvironment(simulator)
     func getEquipment() {

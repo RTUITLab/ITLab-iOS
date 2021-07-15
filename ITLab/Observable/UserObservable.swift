@@ -39,4 +39,14 @@ final class UserObservable: ObservableObject {
             return "\(user?.firstName!) \(user?.lastName)"
         }
     }
+    
+    func getFullNameWithEmail() -> String? {
+        let fullName = self.getFullName()
+        
+        if fullName == nil || user?.email == nil {
+            return nil
+        } else {
+            return "\(fullName), \(user?.email)"
+        }
+    }
 }
