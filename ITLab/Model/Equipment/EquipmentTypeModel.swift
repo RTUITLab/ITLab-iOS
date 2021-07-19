@@ -33,6 +33,12 @@ struct EquipmentTypeModel: Codable {
         self.parentId = parentId
     }
     
+    init() {
+        self.id = ""
+        self.title = ""
+        self.description = ""
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)

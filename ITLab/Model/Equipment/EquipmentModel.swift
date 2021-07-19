@@ -39,6 +39,15 @@ struct EquipmentModel: Codable {
         self.parentId = parentId
     }
     
+    init(serialNumber: String, equipmentTypeID: String) {
+        self.id = ""
+        self.serialNumber = serialNumber
+        self.description = ""
+        self.equipmentTypeId = equipmentTypeID
+        self.number = 0
+        self.equipmentType = EquipmentTypeModel()
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
