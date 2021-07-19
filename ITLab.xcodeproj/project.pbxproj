@@ -145,7 +145,7 @@
 		A5280BE8269A292D00168F9D /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = A5280BE7269A292D00168F9D /* CarBode */; };
 		A5280BF0269B035600168F9D /* ITLabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BEF269B035600168F9D /* ITLabTests.swift */; };
 		A5280BFA269B044000168F9D /* EquipmentTypeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5280BF9269B044000168F9D /* EquipmentTypeModelsTests.swift */; };
-		A578C93026A072CD00459014 /* EquipmentAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = A578C92F26A072CD00459014 /* EquipmentAdd.swift */; };
+		A578C93026A072CD00459014 /* EquipmentAddPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A578C92F26A072CD00459014 /* EquipmentAddPage.swift */; };
 		A578C93226A0730500459014 /* EquipmentTypeObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A578C93126A0730500459014 /* EquipmentTypeObservable.swift */; };
 		A578C93426A0740E00459014 /* EquipmentsTypeObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A578C93326A0740E00459014 /* EquipmentsTypeObservable.swift */; };
 		A58D6968269B0B01003A4B15 /* EquipmentModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58D6967269B0B01003A4B15 /* EquipmentModelTests.swift */; };
@@ -312,7 +312,7 @@
 		A5280BEF269B035600168F9D /* ITLabTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITLabTests.swift; sourceTree = "<group>"; };
 		A5280BF1269B035600168F9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5280BF9269B044000168F9D /* EquipmentTypeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentTypeModelsTests.swift; sourceTree = "<group>"; };
-		A578C92F26A072CD00459014 /* EquipmentAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentAdd.swift; sourceTree = "<group>"; };
+		A578C92F26A072CD00459014 /* EquipmentAddPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentAddPage.swift; sourceTree = "<group>"; };
 		A578C93126A0730500459014 /* EquipmentTypeObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentTypeObservable.swift; sourceTree = "<group>"; };
 		A578C93326A0740E00459014 /* EquipmentsTypeObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentsTypeObservable.swift; sourceTree = "<group>"; };
 		A58D6967269B0B01003A4B15 /* EquipmentModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentModelTests.swift; sourceTree = "<group>"; };
@@ -688,7 +688,7 @@
 				A5280BDD269A287100168F9D /* EquipmentPage.swift */,
 				A5280BDE269A287100168F9D /* EquipmentScanView.swift */,
 				A58D696C269B2D7D003A4B15 /* EquipmentItem.swift */,
-				A578C92F26A072CD00459014 /* EquipmentAdd.swift */,
+				A578C92F26A072CD00459014 /* EquipmentAddPage.swift */,
 			);
 			path = Equipment;
 			sourceTree = "<group>";
@@ -1021,7 +1021,7 @@
 				6DB6E84B265D0DA0008B9EAD /* ReportsModel.swift in Sources */,
 				6DDD81F0252DF78B008CE80A /* EventRoleCreateRequest.swift in Sources */,
 				6DDD820F252DF78B008CE80A /* ChangePasswordRequest.swift in Sources */,
-				A578C93026A072CD00459014 /* EquipmentAdd.swift in Sources */,
+				A578C93026A072CD00459014 /* EquipmentAddPage.swift in Sources */,
 				6DF717BC25B81ABE00F57D2D /* EventSalaryAPI.swift in Sources */,
 				6DDD81D8252DF78B008CE80A /* EquipmentUserAPI.swift in Sources */,
 				6DDD81D3252DF78B008CE80A /* UserPropertyTypeAPI.swift in Sources */,
@@ -1196,6 +1196,7 @@
 		};
 		6D9A0C712518EBB2007796CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 411E3C75269C5FDE009664BE /* DebugConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1223,6 +1224,7 @@
 		};
 		6D9A0C722518EBB2007796CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A59B25FF269DB7F300EF2D21 /* ReleaseConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1252,7 +1254,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZBVHAA67XK;
+				DEVELOPMENT_TEAM = 5NWTW64Y33;
 				INFOPLIST_FILE = ITLabUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1272,7 +1274,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZBVHAA67XK;
+				DEVELOPMENT_TEAM = 5NWTW64Y33;
 				INFOPLIST_FILE = ITLabUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1290,6 +1292,7 @@
 		};
 		A5280BF5269B035600168F9D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 411E3C75269C5FDE009664BE /* DebugConfig.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1311,6 +1314,7 @@
 		};
 		A5280BF6269B035600168F9D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A59B25FF269DB7F300EF2D21 /* ReleaseConfig.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
