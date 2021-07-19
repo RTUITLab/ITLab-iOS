@@ -10,15 +10,18 @@ import CarBode
 
 struct EquipmentScanView: View {
     @State private var flashIsOn = false
-    
+    @State private var showingModal = false
+    @State private var serialNumber: String = ""
     var body: some View {
             VStack {
                 CBScanner (
                     supportBarcode: .constant([.qr, .code128]),
                     torchLightIsOn: $flashIsOn,
                     scanInterval: .constant(5)
-                ) { _ in
-                    // TODO
+                ) {_ in
+                    self.serialNumber = "test_serial_number"
+
+                    showingModal = true
                 } onDraw: {
                     let lineWidth = CGFloat(2)
                     //line color
@@ -43,14 +46,24 @@ struct EquipmentScanView: View {
                         }
                     )
                     .frame(width: 30, height: 30)
-                }
+                }.sheet(
+                    isPresented: $showingModal,
+                    content: {
+                        self.addPage()
+                    }
+                )
             }
-            
+    }
+    
+    func addPage() -> some View {
+        let page = EquipmentAddPage(serialNumber: self.serialNumber)
+        page.loadData()
+        return page
     }
 }
 
 struct EquipmentScanView_Previews: PreviewProvider {
     static var previews: some View {
-        EquipmentScanView()
+            EquipmentScanView()
     }
 }
