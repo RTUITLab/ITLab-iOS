@@ -64,7 +64,6 @@ struct EquipmentAddPage: View {
 
 struct EquipmentTypePicker: View {
     @ObservedObject var equipmentsType: EquipmentsTypeObservable = EquipmentsTypeObservable()
-//    @EnvironmentObject var equipmentType: EquipmentTypeObservable
     @State var isAddingType: Bool = false
     @State var selectedTypeIndex: Int = 0
     @State var addedType: EquipmentTypeModel = EquipmentTypeModel(id: "", title: "", description: "")
@@ -86,6 +85,7 @@ struct EquipmentTypePicker: View {
                 ).pickerStyle(MenuPickerStyle())
             }
             if isAddingType {
+                // TODO: check if fields not empty
                 VStack {
                     HStack {
                         Text("Название")
